@@ -18,7 +18,6 @@ const waterSchema = new Schema(
     },
   },
   {
-    timestamps: true,
     versionKey: false,
   },
 );

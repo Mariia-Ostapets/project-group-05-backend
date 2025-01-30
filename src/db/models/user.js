@@ -4,7 +4,7 @@ const userSchema = new Schema(
   {
     name: {
       type: String,
-      default: '',
+      default: null,
     },
     email: {
       type: String,
@@ -26,13 +26,13 @@ const userSchema = new Schema(
     },
     avatar: {
       type: String,
-      default: '',
+      default: null,
     },
     token: {
       type: String,
     },
   },
-  { timestamps: true, versionKey: false },
+  { versionKey: false },
 );
 
 userSchema.methods.toJSON = function () {
