@@ -1,0 +1,24 @@
+openapi: 3.1.0
+info:
+  version: 1.0.0
+  title: Water Tracker App
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  description: This is a documentation of Water Tracker App
+tags:
+  - name: Auth
+    description: Auth operations
+  - name: Water
+    description: Water consumption tracking operations
+servers:
+  - url: http://localhost:3000
+paths:
+  /auth/register:
+    post:
+      $ref: ../swagger/paths/auth/register.yaml
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
