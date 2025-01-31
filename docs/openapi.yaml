@@ -12,7 +12,7 @@ tags:
   - name: Water
     description: Water consumption tracking operations
 servers:
-  - url: http://localhost:3000
+  - url: https://project-group-05-backend.onrender.com/
 paths:
   /auth/register:
     post:
