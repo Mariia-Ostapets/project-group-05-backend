@@ -8,7 +8,9 @@ import {addWaterSchema, updateWaterSchema} from '../validation/water.js';
 
 const waterRouter = new Router();
 
-waterRouter.get('/', ctrlWrapper(waterController.getWaterController));
+waterRouter.use(checkToken);
+
+waterRouter.get('/',  ctrlWrapper(waterController.getWaterController));
 
 waterRouter.get('/:id', isValidId, ctrlWrapper(waterController.getWaterByIdController));
 
@@ -22,6 +24,5 @@ waterRouter.patch('/:id', isValidId, validateBody(updateWaterSchema), ctrlWrappe
 
 waterRouter.delete('/:id', isValidId, ctrlWrapper(waterController.deleteWaterController));
 
-waterRouter.use(checkToken);
 
 export default waterRouter;

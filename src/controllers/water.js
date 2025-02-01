@@ -1,17 +1,17 @@
 import createError from 'http-errors';
 import * as waterServices from '../services/water.js';
 import { parsePaginationParams } from '../utils/parsePaginationParams.js';
-// import { parseFilterParams } from '../utils/parseFilterParams.js';
+import { parseFilterParams } from '../utils/parseFilterParams.js';
 
 export const getWaterController = async (req, res) => {
   const { page, perPage } = parsePaginationParams(req.query);
-  // const filter = parseFilterParams(req.query);
+  const filter = parseFilterParams(req.query);
 
-  // filter.userId = req.user._id;
+  filter.userId = req.user._id;
 
   const data = await waterServices.getWater({ page, perPage });
   res.json({ data });
-};
+ };
 
 export const getWaterByIdController = async (req, res) => {
   const { _id: userId } = req.user;
@@ -69,6 +69,7 @@ export const getWaterByMonthController = async (req, res, next) => {
 export const addWaterController = async (req, res) => {
   const { _id: userId } = req.user;
 
+
   const data = await waterServices.addWater({...req.body, userId});
 
   res.status(201).json(data);
@@ -84,7 +85,7 @@ export const updateWaterController = async (req, res) => {
     throw createError(404, 'Not found');
   }
 
-  res.json({ data: result.data });
+  res.json( {data: result.data} );
 };
 
 export const deleteWaterController = async (req, res) => {
