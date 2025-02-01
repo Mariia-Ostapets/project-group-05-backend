@@ -5,13 +5,7 @@ import bcrypt from 'bcrypt';
 export const registerController = async (req, res) => {
   const userData = await authServices.register(req.body);
 
-  res.status(201).json({
-    user: {
-      name: userData.name,
-      email: userData.email,
-    },
-    token: userData.token,
-  });
+  res.status(201).json({});
 };
 
 export const loginUserController = async (req, res) => {
@@ -41,4 +35,14 @@ export const loginUserController = async (req, res) => {
 export const loguotUserById = async (req, res) => {
   await authServices.clearToken(req.user._id);
   res.status(204).end();
+};
+
+export const refreshUser = (req, res) => {
+  const user = req.user;
+  res.json({
+    name: user.name,
+    email: user.email,
+    avatar: user.avatar,
+    gender: user.gender,
+  });
 };
