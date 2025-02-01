@@ -7,7 +7,6 @@ export const validateBody = (schema) => async (req, res, next) => {
     });
     next();
   } catch (err) {
-    console.log(err);
     const error = createHttpError(400, err.message);
     next(error);
   }

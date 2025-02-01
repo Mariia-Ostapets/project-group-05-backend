@@ -36,3 +36,13 @@ export const loguotUserById = async (req, res) => {
   await authServices.clearToken(req.user._id);
   res.status(204).end();
 };
+
+export const refreshUser = (req, res) => {
+  const user = req.user;
+  res.json({
+    name: user.name,
+    email: user.email,
+    avatar: user.avatar,
+    gender: user.gender,
+  });
+};
