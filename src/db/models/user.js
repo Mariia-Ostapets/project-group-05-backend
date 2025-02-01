@@ -1,4 +1,6 @@
 import { model, Schema } from 'mongoose';
+import { handleSaveError, setUpdateSettings } from './hooks.js';
+import { emailRegexp } from '../../constants/user.js';
 
 const userSchema = new Schema(
   {
@@ -10,6 +12,7 @@ const userSchema = new Schema(
       type: String,
       unique: true,
       required: true,
+      match: emailRegexp,
     },
     password: {
       type: String,
@@ -34,6 +37,12 @@ const userSchema = new Schema(
   },
   { versionKey: false },
 );
+
+userSchema.post('save', handleSaveError);
+
+userSchema.pre('findOneAndUpdate', setUpdateSettings);
+
+userSchema.post('findOneAndUpdate', handleSaveError);
 
 userSchema.methods.toJSON = function () {
   const obj = this.toObject();
