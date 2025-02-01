@@ -24,7 +24,6 @@ export const checkToken = async (req, res, next) => {
     next(createHttpError(401, 'Not authorizated'));
     return;
   }
-
   req.user = user;
   next();
 };
