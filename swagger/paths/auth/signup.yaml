@@ -1,8 +1,8 @@
 tags:
   - Auth
-summary: Register User
-operationId: Register
-description: 'Register User with email and password'
+summary: SignUp User
+operationId: SignUp
+description: 'SignUp User with email and password'
 security: []
 requestBody:
   content:
@@ -20,25 +20,13 @@ requestBody:
             example: '123456asd'
 responses:
   '201':
-    description: 'Register as a new user'
+    description: 'Register as a new user. User data is written to the database. The server returns nothing in response. A registered user needs to go through the login procedure in the app.'
     content:
       application/json:
         schema:
-          required:
-            - status
-            - message
-            - data
-          properties:
-            status:
-              type: integer
-              example: '201'
-            message:
-              type: string
-              example: 'Successfully registered a user!'
-            data:
-              $ref: ../../components/schemas/user.yaml
-  '409':
-    description: 'Conflict Error'
+          $ref: ../../components/schemas/user.yaml
+  '400':
+    description: 'Bad request. The server could not understand the request. Validation error.'
     content:
       application\json:
         schema:
@@ -46,21 +34,30 @@ responses:
           required:
             - status
             - message
-            - data
+          properties:
+            status:
+              type: integer
+              example: 400
+            message:
+              type: string
+              example: 'Email is required. Email should be in format example@mail.com. Password is required. Password should be at least 8 characters. Password should be at most 64 characters.'
+  '404':
+    $ref: '../../components/responses/404.yaml'
+  '409':
+    description: 'Conflict Error. The request conflicts with the current state of the server.'
+    content:
+      application\json:
+        schema:
+          type: object
+          required:
+            - status
+            - message
           properties:
             status:
               type: integer
               example: 409
             message:
               type: string
-              example: 'ConflictError'
-            data:
-              type: object
-              required:
-                - message
-              properties:
-                message:
-                  type: string
-                  example: 'Email in use'
+              example: 'Email in use.'
   '500':
     $ref: '../../components/responses/500.yaml'

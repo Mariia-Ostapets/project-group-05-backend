@@ -3,9 +3,9 @@ import * as authServices from '../services/auth.js';
 import bcrypt from 'bcrypt';
 
 export const registerController = async (req, res) => {
-  const userData = await authServices.register(req.body);
+  await authServices.register(req.body);
 
-  res.status(201).json({});
+  res.status(201).send();
 };
 
 export const loginUserController = async (req, res) => {

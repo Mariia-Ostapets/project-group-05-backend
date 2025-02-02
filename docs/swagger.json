@@ -11,6 +11,9 @@
   },
   "servers": [
     {
+      "url": "https://project-group-05-backend.onrender.com"
+    },
+    {
       "url": "http://localhost:3000"
     }
   ],
@@ -25,14 +28,14 @@
     }
   ],
   "paths": {
-    "/auth/register": {
+    "/auth/signup": {
       "post": {
         "tags": [
           "Auth"
         ],
-        "summary": "Register User",
-        "operationId": "Register",
-        "description": "Register User with email and password",
+        "summary": "SignUp User",
+        "operationId": "SignUp",
+        "description": "SignUp User with email and password",
         "security": [],
         "requestBody": {
           "content": {
@@ -58,42 +61,51 @@
         },
         "responses": {
           "201": {
-            "description": "Register as a new user",
+            "description": "Register as a new user. User data is written to the database. The server returns nothing in response. A registered user needs to go through the login procedure in the app.",
             "content": {
               "application/json": {
                 "schema": {
-                  "required": [
-                    "status",
-                    "message",
-                    "data"
-                  ],
-                  "properties": {
-                    "status": {
-                      "type": "integer",
-                      "example": "201"
-                    },
-                    "message": {
-                      "type": "string",
-                      "example": "Successfully registered a user!"
-                    },
-                    "data": {
-                      "$ref": "#/components/schemas/user"
-                    }
-                  }
+                  "$ref": "#/components/schemas/user"
                 }
               }
             }
           },
-          "409": {
-            "description": "Conflict Error",
+          "400": {
+            "description": "Bad request. The server could not understand the request. Validation error.",
             "content": {
               "application\\json": {
                 "schema": {
                   "type": "object",
                   "required": [
                     "status",
-                    "message",
-                    "data"
+                    "message"
+                  ],
+                  "properties": {
+                    "status": {
+                      "type": "integer",
+                      "example": 400
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Email is required. Email should be in format example@mail.com. Password is required. Password should be at least 8 characters. Password should be at most 64 characters."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "$ref": "#/components/responses/404"
+          },
+          "409": {
+            "description": "Conflict Error. The request conflicts with the current state of the server.",
+            "content": {
+              "application\\json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "status",
+                    "message"
                   ],
                   "properties": {
                     "status": {
@@ -102,24 +114,201 @@
                     },
                     "message": {
                       "type": "string",
-                      "example": "ConflictError"
-                    },
-                    "data": {
-                      "type": "object",
-                      "required": [
-                        "message"
-                      ],
-                      "properties": {
-                        "message": {
-                          "type": "string",
-                          "example": "Email in use"
-                        }
-                      }
+                      "example": "Email in use."
                     }
                   }
                 }
               }
             }
+          },
+          "500": {
+            "$ref": "#/components/responses/500"
+          }
+        }
+      }
+    },
+    "/auth/login": {
+      "post": {
+        "tags": [
+          "Auth"
+        ],
+        "summary": "SignIn User",
+        "operationId": "SignIn",
+        "description": "SignIn User with email and password",
+        "security": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "required": [
+                  "email",
+                  "password"
+                ],
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "example": "example@gmail.com"
+                  },
+                  "password": {
+                    "type": "string",
+                    "example": "123456asd"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Request successful. The server returns the user object and JWT token.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "required": [
+                    "user",
+                    "token"
+                  ],
+                  "properties": {
+                    "user": {
+                      "type": "object",
+                      "required": [
+                        "name",
+                        "email"
+                      ],
+                      "properties": {
+                        "name": {
+                          "type": "string",
+                          "example": "null"
+                        },
+                        "email": {
+                          "type": "string",
+                          "example": "example@mail.com"
+                        }
+                      }
+                    },
+                    "token": {
+                      "type": "string",
+                      "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3OWIzNTQwNDhlNTBkNzQwZWZhNzY4NCIsImlhdCI6MTczODQ5NjI2NX0.W5OVo5431woG8wIvNauHKa9Gn8kC1Q-0GByzG67x6hA"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized error. The request is unauthenticated.",
+            "content": {
+              "application\\json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "status",
+                    "message"
+                  ],
+                  "properties": {
+                    "status": {
+                      "type": "integer",
+                      "example": 401
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Email or password are wrong."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "$ref": "#/components/responses/404"
+          },
+          "500": {
+            "$ref": "#/components/responses/500"
+          }
+        }
+      }
+    },
+    "/auth/logout": {
+      "post": {
+        "tags": [
+          "Auth"
+        ],
+        "summary": "Logout User",
+        "operationId": "logout",
+        "description": "Logout User from account. The server returns nothing in response. JWT token is deleted from the database.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Logout from account. No content in the response body"
+          },
+          "401": {
+            "$ref": "#/components/responses/401"
+          },
+          "404": {
+            "$ref": "#/components/responses/404"
+          },
+          "500": {
+            "$ref": "#/components/responses/500"
+          }
+        }
+      }
+    },
+    "/auth/current": {
+      "get": {
+        "tags": [
+          "Auth"
+        ],
+        "summary": "Refresh User",
+        "operationId": "Refresh",
+        "description": "Refreshing User data",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Refreshing User data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "required": [
+                    "name",
+                    "email",
+                    "avatar",
+                    "gender"
+                  ],
+                  "properties": {
+                    "name": {
+                      "type": "string",
+                      "example": "John Doe"
+                    },
+                    "email": {
+                      "type": "string",
+                      "example": "example@mail.com"
+                    },
+                    "avatar": {
+                      "type": "string",
+                      "example": "https://res.cloudinary.com/dtfo6b7gi/image/upload/v1738226311/tzsd56ad…"
+                    },
+                    "gender": {
+                      "type": "string",
+                      "example": "female"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/401"
+          },
+          "404": {
+            "$ref": "#/components/responses/404"
           },
           "500": {
             "$ref": "#/components/responses/500"
@@ -149,17 +338,17 @@
             "example": "John Doe"
           },
           "email": {
-            "description": "User`s email",
+            "description": "User`s email. Is required. Should be in format example@mail.com",
             "type": "string",
-            "example": "johndoe@gmail.com"
+            "example": "example@mail.com"
           },
           "password": {
-            "description": "User`s password",
+            "description": "User`s password. Is required. Should be at least 8 and at most 64 characters",
             "type": "string",
             "example": "123456asd"
           },
           "gender": {
-            "description": "User`s gender",
+            "description": "User`s gender. Should be be one of the suggested values",
             "type": "string",
             "enum": [
               "female",
@@ -168,13 +357,13 @@
             "example": "female"
           },
           "dailyNorm": {
-            "description": "User`s daily norm of water",
+            "description": "User`s daily norm of water. Should be at most 15000 ml. Default value is 1500 ml",
             "type": "number",
             "example": 1500
           },
           "avatar": {
             "description": "User`s avatar",
-            "type": "number",
+            "type": "string",
             "example": "https://res.cloudinary.com/dtfo6b7gi/image/upload/v1738226311/tzsd56ad…"
           },
           "token": {
@@ -186,6 +375,54 @@
       }
     },
     "responses": {
+      "401": {
+        "description": "Unauthorized error. The request is unauthenticated.",
+        "content": {
+          "application\\json": {
+            "schema": {
+              "type": "object",
+              "required": [
+                "status",
+                "message"
+              ],
+              "properties": {
+                "status": {
+                  "type": "integer",
+                  "example": 401
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Not authorizated. Please provide Authorization header. Auth header should be of type Bearer."
+                }
+              }
+            }
+          }
+        }
+      },
+      "404": {
+        "description": "Not found error. Requested resource could not be found.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "required": [
+                "status",
+                "message"
+              ],
+              "properties": {
+                "status": {
+                  "type": "integer",
+                  "example": 404
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Route not found"
+                }
+              }
+            }
+          }
+        }
+      },
       "500": {
         "description": "Internal Server Error",
         "content": {
@@ -194,8 +431,7 @@
               "type": "object",
               "required": [
                 "status",
-                "message",
-                "data"
+                "message"
               ],
               "properties": {
                 "status": {
@@ -204,19 +440,7 @@
                 },
                 "message": {
                   "type": "string",
-                  "example": "Something went wrong"
-                },
-                "data": {
-                  "type": "object",
-                  "required": [
-                    "message"
-                  ],
-                  "properties": {
-                    "message": {
-                      "type": "string",
-                      "example": "Server Error"
-                    }
-                  }
+                  "example": "Server Error. Something went wrong"
                 }
               }
             }

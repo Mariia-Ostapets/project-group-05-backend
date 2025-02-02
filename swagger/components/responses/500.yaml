@@ -1,4 +1,4 @@
-description: 'Internal Server Error'
+description: Internal Server Error
 content:
   application\json:
     schema:
@@ -6,19 +6,10 @@ content:
       required:
         - status
         - message
-        - data
       properties:
         status:
           type: integer
           example: 500
         message:
           type: string
-          example: 'Something went wrong'
-        data:
-          type: object
-          required:
-            - message
-          properties:
-            message:
-              type: string
-              example: 'Server Error'
+          example: Server Error. Something went wrong

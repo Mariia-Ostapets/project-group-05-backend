@@ -1,1 +1,65 @@
-
+tags:
+  - Auth
+summary: SignIn User
+operationId: SignIn
+description: 'SignIn User with email and password'
+security: []
+requestBody:
+  content:
+    application/json:
+      schema:
+        required:
+          - email
+          - password
+        properties:
+          email:
+            type: string
+            example: 'example@gmail.com'
+          password:
+            type: string
+            example: '123456asd'
+responses:
+  '200':
+    description: 'Request successful. The server returns the user object and JWT token.'
+    content:
+      application/json:
+        schema:
+          required:
+            - user
+            - token
+          properties:
+            user:
+              type: object
+              required:
+                - name
+                - email
+              properties:
+                name:
+                  type: string
+                  example: 'null'
+                email:
+                  type: string
+                  example: 'example@mail.com'
+            token:
+              type: string
+              example: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3OWIzNTQwNDhlNTBkNzQwZWZhNzY4NCIsImlhdCI6MTczODQ5NjI2NX0.W5OVo5431woG8wIvNauHKa9Gn8kC1Q-0GByzG67x6hA'
+  '401':
+    description: 'Unauthorized error. The request is unauthenticated.'
+    content:
+      application\json:
+        schema:
+          type: object
+          required:
+            - status
+            - message
+          properties:
+            status:
+              type: integer
+              example: 401
+            message:
+              type: string
+              example: 'Email or password are wrong.'
+  '404':
+    $ref: '../../components/responses/404.yaml'
+  '500':
+    $ref: '../../components/responses/500.yaml'
