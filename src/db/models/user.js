@@ -19,6 +19,10 @@ const userSchema = new Schema(
       required: true,
       minlength: 8,
     },
+    newPassword: {
+      type: String,
+      minlength: 8,
+    },
     gender: {
       type: String,
       enum: ['female', 'male'],
