@@ -12,11 +12,21 @@ tags:
   - name: Water
     description: Water consumption tracking operations
 servers:
-  - url: https://project-group-05-backend.onrender.com/
+  - url: https://project-group-05-backend.onrender.com
+  # - url: http://localhost:3000
 paths:
-  /auth/register:
+  /auth/signup:
     post:
-      $ref: ../swagger/paths/auth/register.yaml
+      $ref: ../swagger/paths/auth/signup.yaml
+  /auth/login:
+    post:
+      $ref: ../swagger/paths/auth/login.yaml
+  /auth/logout:
+    post:
+      $ref: ../swagger/paths/auth/logout.yaml
+  /auth/current:
+    get:
+      $ref: ../swagger/paths/auth/refresh.yaml
 components:
   securitySchemes:
     bearerAuth:
