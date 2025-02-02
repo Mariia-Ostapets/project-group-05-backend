@@ -1,0 +1,37 @@
+tags:
+  - Auth
+summary: Refresh User
+operationId: Refresh
+description: 'Refreshing User data'
+security:
+  - bearerAuth: []
+responses:
+  '200':
+    description: 'Refreshing User data'
+    content:
+      application/json:
+        schema:
+          required:
+            - name
+            - email
+            - avatar
+            - gender
+          properties:
+            name:
+              type: string
+              example: 'John Doe'
+            email:
+              type: string
+              example: 'example@mail.com'
+            avatar:
+              type: string
+              example: 'https://res.cloudinary.com/dtfo6b7gi/image/upload/v1738226311/tzsd56ad…'
+            gender:
+              type: string
+              example: 'female'
+  '401':
+    $ref: '../../components/responses/401.yaml'
+  '404':
+    $ref: '../../components/responses/404.yaml'
+  '500':
+    $ref: '../../components/responses/500.yaml'

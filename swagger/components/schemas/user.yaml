@@ -8,25 +8,25 @@ properties:
     type: string
     example: 'John Doe'
   email:
-    description: 'User`s email'
+    description: 'User`s email. Is required. Should be in format example@mail.com'
     type: string
-    example: 'johndoe@gmail.com'
+    example: 'example@mail.com'
   password:
-    description: 'User`s password'
+    description: 'User`s password. Is required. Should be at least 8 and at most 64 characters'
     type: string
     example: '123456asd'
   gender:
-    description: 'User`s gender'
+    description: 'User`s gender. Should be be one of the suggested values'
     type: string
     enum: ['female', 'male']
     example: 'female'
   dailyNorm:
-    description: 'User`s daily norm of water'
+    description: 'User`s daily norm of water. Should be at most 15000 ml. Default value is 1500 ml'
     type: number
     example: 1500
   avatar:
     description: 'User`s avatar'
-    type: number
+    type: string
     example: 'https://res.cloudinary.com/dtfo6b7gi/image/upload/v1738226311/tzsd56ad…'
   token:
     description: 'User`s access token'

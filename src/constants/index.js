@@ -12,3 +12,5 @@ export const CLOUDINARY = {
 };
 
 export const SWAGGER_PATH = path.join(process.cwd(), 'docs', 'swagger.json');
+
+export const emailRegexp = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;

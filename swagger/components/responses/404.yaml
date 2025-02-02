@@ -1,4 +1,4 @@
-description: Contact not found
+description: Not found error. Requested resource could not be found.
 content:
   application/json:
     schema:
@@ -6,19 +6,10 @@ content:
       required:
         - status
         - message
-        - data
       properties:
         status:
           type: integer
           example: 404
         message:
           type: string
-          example: NotFoundError
-        data:
-          type: object
-          required:
-            - message
-          properties:
-            message:
-              type: string
-              example: 'Contact not found'
+          example: Route not found

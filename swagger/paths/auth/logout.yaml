@@ -1,1 +1,16 @@
-
+tags:
+  - Auth
+summary: Logout User
+operationId: logout
+description: 'Logout User from account. The server returns nothing in response. JWT token is deleted from the database.'
+security:
+  - bearerAuth: []
+responses:
+  '204':
+    description: 'Logout from account. No content in the response body'
+  '401':
+    $ref: '../../components/responses/401.yaml'
+  '404':
+    $ref: '../../components/responses/404.yaml'
+  '500':
+    $ref: '../../components/responses/500.yaml'
