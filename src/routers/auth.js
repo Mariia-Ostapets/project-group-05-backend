@@ -25,4 +25,6 @@ authRouter.post(
   ctrlWrapper(authController.loguotUserById),
 );
 
+authRouter.get('/current', checkToken, ctrlWrapper(authController.refreshUser));
+
 export default authRouter;
