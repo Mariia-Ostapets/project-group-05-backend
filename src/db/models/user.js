@@ -20,6 +20,10 @@ const userSchema = new Schema(
       minlength: 8,
       maxlength: 64,
     },
+    newPassword: {
+      type: String,
+      minlength: 8,
+    },
     gender: {
       type: String,
       enum: ['female', 'male'],
