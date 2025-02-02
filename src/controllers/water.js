@@ -27,19 +27,19 @@ export const getWaterByIdController = async (req, res) => {
 export const getWaterByDayController = async (req, res, next) => {
   try {
     const { _id: userId } = req.user;
-    const { date } = req.query;
+    const { date } = req.params;
 
     if (!date) {
-      throw createError(400, 'Date query parameter is required');
+      return res.status(400).json({ error: 'Date is required' });
     }
 
-    const dayWaterVolume = await waterServices.getWaterByDay(userId, date);
+    const waterRecord = await waterServices.getWaterByDay({ userId, date });
 
-    if (dayWaterVolume === null) {
-      throw createError(404, 'No water intake records found for this date');
+    if (!waterRecord) {
+      return res.status(404).json({ error: 'No water entries found for this date' });
     }
 
-    res.json({ date, waterVolume: dayWaterVolume });
+    res.status(200).json(waterRecord);
   } catch (error) {
     next(error);
   }
@@ -122,7 +122,7 @@ export const updateWaterController = async (req, res, next) => {
       return res.status(400).json({ error: 'Date, time, newTime, and waterVolume are required' });
     }
 
-    const updatedWaterRecord = await waterServices.editWaterEntry({ userId, date, time, newTime, waterVolume });
+    const updatedWaterRecord = await waterServices.updateWater({ userId, date, time, newTime, waterVolume });
 
     if (!updatedWaterRecord) {
       return res.status(404).json({ error: 'Water entry not found' });
@@ -133,28 +133,6 @@ export const updateWaterController = async (req, res, next) => {
     next(error);
   }
 };
-
-// export const updateWaterController = async (req, res, next) => {
-//   try {
-//     const { _id: userId } = req.user;
-//     const { date, entryId, time, waterVolume } = req.body;
-
-//     if (!date || !entryId || !time || !waterVolume) {
-//       return res.status(400).json({ error: 'Date, entryId, time, and waterVolume are required' });
-//     }
-
-//     const updatedWaterRecord = await waterServices.editWaterEntry({ userId, date, entryId, time, waterVolume });
-
-//     if (!updatedWaterRecord) {
-//       return res.status(404).json({ error: 'Water entry not found' });
-//     }
-
-//     res.status(200).json(updatedWaterRecord);
-//   } catch (error) {
-//     next(error);
-//   }
-// };
-
 
 // export const deleteWaterController = async (req, res) => {
 //   const { id: _id } = req.params;
@@ -168,18 +146,39 @@ export const updateWaterController = async (req, res, next) => {
 //   res.status(204).send();
 // };
 
+// export const deleteWaterController = async (req, res, next) => {
+//   try {
+//     const { _id: userId } = req.user;
+//     const { date, entryId } = req.params; // Отримуємо дату і ID конкретної порції
+
+//     const updatedWaterRecord = await waterServices.deleteWaterEntry({ userId, date, entryId });
+
+//     if (!updatedWaterRecord) {
+//       throw createError(404, 'Water entry not found or already deleted');
+//     }
+
+//     res.json({ message: 'Water entry deleted successfully', updatedWaterRecord });
+//   } catch (error) {
+//     next(error);
+//   }
+// };
+
 export const deleteWaterController = async (req, res, next) => {
   try {
     const { _id: userId } = req.user;
-    const { date, entryId } = req.params; // Отримуємо дату і ID конкретної порції
+    const { date, time } = req.params;
 
-    const updatedWaterRecord = await waterServices.deleteWaterEntry({ userId, date, entryId });
-
-    if (!updatedWaterRecord) {
-      throw createError(404, 'Water entry not found or already deleted');
+    if (!date || !time) {
+      return res.status(400).json({ error: 'Date and time are required' });
     }
 
-    res.json({ message: 'Water entry deleted successfully', updatedWaterRecord });
+    const updatedWaterRecord = await waterServices.deleteWater({ userId, date, time });
+
+    if (!updatedWaterRecord) {
+      return res.status(404).json({ error: 'Water entry not found' });
+    }
+
+    res.status(200).json({ message: 'Water entry deleted successfully', updatedWaterRecord });
   } catch (error) {
     next(error);
   }
