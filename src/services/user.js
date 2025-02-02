@@ -16,11 +16,10 @@ export const updateUser = async (filter, payload, options = {}) => {
     if (!user || !user.value) {
       return null;
     }
-    const isNew = Boolean(user.lastErrorObject.upserted);
-
+    const newUser = { ...user.value };
+    let { token, password, ...newData } = newUser._doc;
     return {
-      isNew,
-      data: user.value,
+      data: newData,
     };
   } else {
     const user = await UsersCollection.findOneAndUpdate(filter, payload, {
@@ -30,11 +29,10 @@ export const updateUser = async (filter, payload, options = {}) => {
     if (!user || !user.value) {
       return null;
     }
-    const isNew = Boolean(user.lastErrorObject.upserted);
-    // прибрати токен
+    const newUser = { ...user.value };
+    let { token, password, ...newData } = newUser._doc;
     return {
-      isNew,
-      data: user.value,
+      data: newData,
     };
   }
 };

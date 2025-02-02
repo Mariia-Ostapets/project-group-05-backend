@@ -81,14 +81,22 @@ export const addWater = async ({ userId, date, entries }) => {
 //   return result;
 // };
 
-export const updateWater = async ({ userId, date, time, newTime, waterVolume }) => {
+export const updateWater = async ({
+  userId,
+  date,
+  time,
+  newTime,
+  waterVolume,
+}) => {
   const waterRecord = await WaterCollection.findOne({ userId, date });
-console.log(waterRecord);
+  console.log(waterRecord);
   if (!waterRecord) {
     return null;
   }
 
-  const entryIndex = waterRecord.entries.findIndex(entry => entry.time === time);
+  const entryIndex = waterRecord.entries.findIndex(
+    (entry) => entry.time === time,
+  );
   if (entryIndex === -1) {
     return null;
   }
@@ -139,7 +147,9 @@ export const deleteWater = async ({ userId, date, time }) => {
     return null;
   }
 
-  const entryIndex = waterRecord.entries.findIndex(entry => entry.time === time);
+  const entryIndex = waterRecord.entries.findIndex(
+    (entry) => entry.time === time,
+  );
   if (entryIndex === -1) {
     return null;
   }

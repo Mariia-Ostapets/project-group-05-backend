@@ -24,8 +24,12 @@ export const loginUserController = async (req, res) => {
 
   res.json({
     user: {
+      _id: updatedUser._id,
       name: updatedUser.name,
       email: updatedUser.email,
+      gender: updatedUser.gender,
+      dailyNorm: updatedUser.dailyNorm,
+      avatar: updatedUser.avatar,
     },
     token: updatedUser.token,
   });
