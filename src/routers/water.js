@@ -16,8 +16,6 @@ waterRouter.get('/',  ctrlWrapper(waterController.getWaterController));
 
 waterRouter.get('/today/:date', ctrlWrapper(waterController.getWaterByDayController));
 
-// waterRouter.get('/today', ctrlWrapper(waterController.getWaterByDayController));
-
 waterRouter.get('/:year/:month', ctrlWrapper(waterController.getWaterByMonthController));
 
 waterRouter.post('/', validateBody(addWaterSchema), ctrlWrapper(waterController.addWaterController));

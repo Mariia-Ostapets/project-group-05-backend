@@ -25,27 +25,6 @@ export const getWaterController = async (req, res) => {
 //   res.json(data);
 // };
 
-// export const getWaterByDayController = async (req, res, next) => {
-//   try {
-//     const { _id: userId } = req.user;
-//     const { date } = req.params;
-
-//     if (!date) {
-//       return res.status(400).json({ error: 'Date is required' });
-//     }
-
-//     const waterRecord = await waterServices.getWaterByDay({ userId, date });
-
-//     if (!waterRecord) {
-//       return res.status(404).json({ error: 'No water entries found for this date' });
-//     }
-
-//     res.status(200).json(waterRecord);
-//   } catch (error) {
-//     next(error);
-//   }
-// };
-
 export const getWaterByDayController = async (req, res, next) => {
   try {
     const { _id: userId } = req.user;
@@ -144,18 +123,6 @@ export const addWaterController = async (req, res, next) => {
   }
 };
 
-// export const updateWaterController = async (req, res) => {
-//   const { _id: userId } = req.user;
-//   const { id: _id } = req.params;
-//   const result = await waterServices.updateWater({ _id, userId }, req.body);
-
-//   if (!result) {
-//     throw createError(404, 'Not found');
-//   }
-
-//   res.json( {data: result.data} );
-// };
-
 export const updateWaterController = async (req, res, next) => {
   try {
     const { _id: userId } = req.user;
@@ -176,18 +143,6 @@ export const updateWaterController = async (req, res, next) => {
     next(error);
   }
 };
-
-// export const deleteWaterController = async (req, res) => {
-//   const { id: _id } = req.params;
-//   const { _id: userId } = req.user;
-//   const data = await waterServices.deleteWater({ _id, userId });
-
-//   if (!data) {
-//     throw createError(404, 'Not found');
-//   }
-
-//   res.status(204).send();
-// };
 
 export const deleteWaterController = async (req, res, next) => {
   try {

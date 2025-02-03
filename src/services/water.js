@@ -14,7 +14,6 @@ export const getWaterByDay = async ({ userId, date }) => {
   return waterRecord || null;
 };
 
-
 export const getWaterByMonth = async ({ userId, year, month }) => {
   const startDate = `${year}-${month.padStart(2, "0")}-01`;
   const endDate = `${year}-${month.padStart(2, "0")}-31`;
@@ -26,8 +25,6 @@ export const getWaterByMonth = async ({ userId, year, month }) => {
 
   return waterRecords;
 };
-
-// export const addWater = (data) => WaterCollection.create(data);
 
 export const addWater = async ({ userId, date, entries }) => {
   let waterRecord = await WaterCollection.findOne({ userId, date });
@@ -41,11 +38,6 @@ export const addWater = async ({ userId, date, entries }) => {
   await waterRecord.save();
   return waterRecord;
 };
-
-// export const updateWater = async (_id, data) => {
-//   const result = await WaterCollection.findOneAndUpdate({ _id }, data);
-//   return result;
-// };
 
 export const updateWater = async ({
   userId,
@@ -73,8 +65,6 @@ export const updateWater = async ({
   await waterRecord.save();
   return waterRecord;
 };
-
-// export const deleteWater = (filter) => WaterCollection.findOneAndDelete(filter);
 
 export const deleteWater = async ({ userId, date, time }) => {
   const waterRecord = await WaterCollection.findOne({ userId, date });
