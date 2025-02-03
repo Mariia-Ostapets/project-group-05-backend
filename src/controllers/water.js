@@ -2,6 +2,7 @@ import createError from 'http-errors';
 import * as waterServices from '../services/water.js';
 import { parsePaginationParams } from '../utils/parsePaginationParams.js';
 import { parseFilterParams } from '../utils/parseFilterParams.js';
+import moment from 'moment';
 
 export const getWaterController = async (req, res) => {
   const { page, perPage } = parsePaginationParams(req.query);
@@ -13,24 +14,50 @@ export const getWaterController = async (req, res) => {
   res.json({ data });
  };
 
-export const getWaterByIdController = async (req, res) => {
-  const { _id: userId } = req.user;
-  const { id: _id } = req.params;
-  const data = await waterServices.getWaterById(_id, userId);
+// export const getWaterByIdController = async (req, res) => {
+//   const { _id: userId } = req.user;
+//   const { id: _id } = req.params;
+//   const data = await waterServices.getWaterById(_id, userId);
 
-  if (!data) {
-    throw createError(404, 'Not found');
-  }
-  res.json(data);
-};
+//   if (!data) {
+//     throw createError(404, 'Not found');
+//   }
+//   res.json(data);
+// };
+
+// export const getWaterByDayController = async (req, res, next) => {
+//   try {
+//     const { _id: userId } = req.user;
+//     const { date } = req.params;
+
+//     if (!date) {
+//       return res.status(400).json({ error: 'Date is required' });
+//     }
+
+//     const waterRecord = await waterServices.getWaterByDay({ userId, date });
+
+//     if (!waterRecord) {
+//       return res.status(404).json({ error: 'No water entries found for this date' });
+//     }
+
+//     res.status(200).json(waterRecord);
+//   } catch (error) {
+//     next(error);
+//   }
+// };
 
 export const getWaterByDayController = async (req, res, next) => {
   try {
     const { _id: userId } = req.user;
     const { date } = req.params;
+    const { dailyNorma } = req.query;
 
     if (!date) {
       return res.status(400).json({ error: 'Date is required' });
+    }
+
+    if (!dailyNorma || isNaN(dailyNorma) || dailyNorma<= 0) {
+      return res.status(400).json({ error: 'Valid dailyNorma is required' });
     }
 
     const waterRecord = await waterServices.getWaterByDay({ userId, date });
@@ -39,7 +66,16 @@ export const getWaterByDayController = async (req, res, next) => {
       return res.status(404).json({ error: 'No water entries found for this date' });
     }
 
-    res.status(200).json(waterRecord);
+    const totalWater = waterRecord.entries.reduce((sum, entry) => sum + entry.waterVolume, 0);
+
+    const percentage = ((totalWater / dailyNorma) * 100).toFixed(2);
+
+    res.status(200).json({
+      waterRecord,
+      totalWater,
+      percentage: `${percentage}%`
+    });
+
   } catch (error) {
     next(error);
   }
@@ -48,32 +84,41 @@ export const getWaterByDayController = async (req, res, next) => {
 export const getWaterByMonthController = async (req, res, next) => {
   try {
     const { _id: userId } = req.user;
-    const { month, year } = req.query;
+    const { year, month } = req.params;
+    const { dailyNorma } = req.query;
 
-    if (!month || !year) {
-      throw createError(400, 'Month and year query parameters are required');
+    if (!year || !month) {
+      return res.status(400).json({ error: "Year and month are required" });
     }
 
-    const monthlyWaterVolume = await waterServices.getWaterByMonth(userId, month, year);
-
-    if (monthlyWaterVolume === null) {
-      throw createError(404, 'No water intake records found for this month');
+    if (!dailyNorma || isNaN(dailyNorma) || dailyNorma <= 0) {
+      return res.status(400).json({ error: "Valid dailyNorma is required" });
     }
 
-    res.json({ month, year, waterVolume: monthlyWaterVolume });
+    const waterRecords = await waterServices.getWaterByMonth({ userId, year, month });
+
+    if (!waterRecords || waterRecords.length === 0) {
+      return res.status(404).json({ error: "No water entries found for this month" });
+    }
+
+    const formattedData = waterRecords.map(record => {
+      const totalWater = record.entries.reduce((sum, entry) => sum + entry.waterVolume, 0);
+      const percentage = ((totalWater / dailyNorma) * 100).toFixed(2);
+      const entryCount = record.entries.length;
+
+      return {
+        date: `${moment(record.date, "YYYY-MM-DD").date()}, ${moment(record.date, "YYYY-MM-DD").format("MMMM")}`,
+        dailyNorma: `${(dailyNorma / 1000).toFixed(1)} L`,
+        percentage: `${percentage}%`,
+        entryCount
+      };
+    });
+
+    res.status(200).json(formattedData);
   } catch (error) {
     next(error);
   }
 };
-
-// export const addWaterController = async (req, res) => {
-//   const { _id: userId } = req.user;
-
-
-//   const data = await waterServices.addWater({...req.body, userId});
-
-//   res.status(201).json(data);
-// };
 
 
 export const addWaterController = async (req, res, next) => {
@@ -87,7 +132,7 @@ export const addWaterController = async (req, res, next) => {
 
     entries.forEach((entry) => {
       if (!entry.time || !entry.waterVolume) {
-        throw new Error('Each entry must have time and waterVolume');
+        throw createError('Each entry must have time and waterVolume');
       }
     });
 
@@ -98,8 +143,6 @@ export const addWaterController = async (req, res, next) => {
     next(error);
   }
 };
-
-
 
 // export const updateWaterController = async (req, res) => {
 //   const { _id: userId } = req.user;
@@ -144,23 +187,6 @@ export const updateWaterController = async (req, res, next) => {
 //   }
 
 //   res.status(204).send();
-// };
-
-// export const deleteWaterController = async (req, res, next) => {
-//   try {
-//     const { _id: userId } = req.user;
-//     const { date, entryId } = req.params; // Отримуємо дату і ID конкретної порції
-
-//     const updatedWaterRecord = await waterServices.deleteWaterEntry({ userId, date, entryId });
-
-//     if (!updatedWaterRecord) {
-//       throw createError(404, 'Water entry not found or already deleted');
-//     }
-
-//     res.json({ message: 'Water entry deleted successfully', updatedWaterRecord });
-//   } catch (error) {
-//     next(error);
-//   }
 // };
 
 export const deleteWaterController = async (req, res, next) => {

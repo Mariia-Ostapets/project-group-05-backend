@@ -1,7 +1,6 @@
 import { model, Schema } from 'mongoose';
 import { handleSaveError, setUpdateSettings } from './hooks.js';
 
-// const dateRegexp = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}/;
 const dateRegexp = /^\d{4}-\d{2}-\d{2}$/;
 const dateTimeRegexp = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}$/;
 
@@ -25,10 +24,6 @@ const waterSchema = new Schema(
       match: dateRegexp,
       required: true,
     },
-    // waterVolume: {
-    //   type: Number,
-    //   required: true,
-    // },
     userId: {
       type: Schema.Types.ObjectId,
       ref: 'users',

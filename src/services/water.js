@@ -6,32 +6,7 @@ export const getWater = async ({ page = 1, perPage = 1 }) => {
   return WaterCollection.find().skip(skip).limit(limit);
 };
 
-export const getWaterById = (id) => WaterCollection.findById(id);
-
-// export const getWaterByDay = async (userId, date) => {
-//   const startOfDay = new Date(date);
-//   startOfDay.setHours(0, 0, 0, 0);
-
-//   const endOfDay = new Date(date);
-//   endOfDay.setHours(23, 59, 59, 999);
-
-//   const result = await WaterCollection.aggregate([
-//     {
-//       $match: {
-//         user: userId,
-//         date: { $gte: startOfDay, $lte: endOfDay },
-//       },
-//     },
-//     {
-//       $group: {
-//         _id: null,
-//         totalWaterVolume: { $sum: '$waterVolume' },
-//       },
-//     },
-//   ]);
-
-//   return result.length > 0 ? result[0].totalWaterVolume : null;
-// };
+// export const getWaterById = (id) => WaterCollection.findById(id);
 
 export const getWaterByDay = async ({ userId, date }) => {
   const waterRecord = await WaterCollection.findOne({ userId, date });
@@ -39,26 +14,17 @@ export const getWaterByDay = async ({ userId, date }) => {
   return waterRecord || null;
 };
 
-export const getWaterByMonth = async (userId, month, year) => {
-  const startOfMonth = new Date(year, month - 1, 1);
-  const endOfMonth = new Date(year, month, 0, 23, 59, 59, 999);
 
-  const result = await WaterCollection.aggregate([
-    {
-      $match: {
-        user: userId,
-        date: { $gte: startOfMonth, $lte: endOfMonth },
-      },
-    },
-    {
-      $group: {
-        _id: null,
-        totalWaterVolume: { $sum: '$waterVolume' },
-      },
-    },
-  ]);
+export const getWaterByMonth = async ({ userId, year, month }) => {
+  const startDate = `${year}-${month.padStart(2, "0")}-01`;
+  const endDate = `${year}-${month.padStart(2, "0")}-31`;
 
-  return result.length > 0 ? result[0].totalWaterVolume : null;
+  const waterRecords = await WaterCollection.find({
+    userId,
+    date: { $gte: startDate, $lte: endDate }
+  });
+
+  return waterRecords;
 };
 
 // export const addWater = (data) => WaterCollection.create(data);
@@ -81,14 +47,22 @@ export const addWater = async ({ userId, date, entries }) => {
 //   return result;
 // };
 
-export const updateWater = async ({ userId, date, time, newTime, waterVolume }) => {
+export const updateWater = async ({
+  userId,
+  date,
+  time,
+  newTime,
+  waterVolume,
+}) => {
   const waterRecord = await WaterCollection.findOne({ userId, date });
-console.log(waterRecord);
+  console.log(waterRecord);
   if (!waterRecord) {
     return null;
   }
 
-  const entryIndex = waterRecord.entries.findIndex(entry => entry.time === time);
+  const entryIndex = waterRecord.entries.findIndex(
+    (entry) => entry.time === time,
+  );
   if (entryIndex === -1) {
     return null;
   }
@@ -102,36 +76,6 @@ console.log(waterRecord);
 
 // export const deleteWater = (filter) => WaterCollection.findOneAndDelete(filter);
 
-// export const deleteWater = async ({ userId, date, entryId }) => {
-//   // Шукаємо запис за userId та датою
-//   const waterRecord = await WaterCollection.findOne({ userId, date });
-
-//   if (!waterRecord) {
-//     return null; // Якщо запису за день немає
-//   }
-
-//   // Шукаємо запис у масиві `entries`
-//   const entryIndex = waterRecord.entries.findIndex(
-//     (entry) => entry._id.toString() === entryId,
-//   );
-
-//   if (entryIndex === -1) {
-//     return null; // Якщо порція води не знайдена
-//   }
-
-//   // Видаляємо порцію води
-//   waterRecord.entries.splice(entryIndex, 1);
-
-//   // Якщо після видалення масив `entries` порожній — видаляємо весь запис дня
-//   if (waterRecord.entries.length === 0) {
-//     await WaterCollection.findByIdAndDelete(waterRecord._id);
-//     return { message: 'All entries for this day were deleted' };
-//   }
-
-//   await waterRecord.save();
-//   return waterRecord;
-// };
-
 export const deleteWater = async ({ userId, date, time }) => {
   const waterRecord = await WaterCollection.findOne({ userId, date });
 
@@ -139,15 +83,15 @@ export const deleteWater = async ({ userId, date, time }) => {
     return null;
   }
 
-  const entryIndex = waterRecord.entries.findIndex(entry => entry.time === time);
+  const entryIndex = waterRecord.entries.findIndex(
+    (entry) => entry.time === time,
+  );
   if (entryIndex === -1) {
     return null;
   }
 
-  // Видаляємо запис з масиву entries
   waterRecord.entries.splice(entryIndex, 1);
 
-  // Якщо більше немає записів, видаляємо весь день
   if (waterRecord.entries.length === 0) {
     await WaterCollection.deleteOne({ userId, date });
     return { message: 'All water entries for this day were deleted' };
