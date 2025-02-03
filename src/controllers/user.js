@@ -2,6 +2,7 @@ import createHttpError from 'http-errors';
 import bcrypt from 'bcrypt';
 import { updateUser } from '../services/user.js';
 import * as authServices from '../services/auth.js';
+import { saveFileToCloudinary } from '../utils/saveFileToCloudinary.js';
 
 export const refreshUser = (req, res) => {
   const user = req.user;
@@ -16,6 +17,12 @@ export const refreshUser = (req, res) => {
 
 export const patchUser = async (req, res) => {
   const user = req.user;
+  let photo;
+  console.log(req.file);
+  if (req.file) {
+    photo = await saveFileToCloudinary(req.file);
+  }
+
   const { id: _id } = user;
 
   const userEmail = await authServices.findUserByEmail(req.body.email);
@@ -30,8 +37,9 @@ export const patchUser = async (req, res) => {
       throw createHttpError(401, 'password is incorrect');
     }
   }
-  let { newPassword, ...newData } = req.body;
+  const { newPassword, ...newData } = req.body;
   newData.password = newPassword;
+  newData.avatar = photo;
   const newUser = await updateUser({ _id }, newData);
 
   res.json({
