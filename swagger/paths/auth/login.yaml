@@ -2,9 +2,10 @@ tags:
   - Auth
 summary: SignIn User
 operationId: SignIn
-description: 'SignIn User with email and password'
+description: 'SignIn User with email and password.'
 security: []
 requestBody:
+  required: true
   content:
     application/json:
       schema:
@@ -20,7 +21,7 @@ requestBody:
             example: '123456asd'
 responses:
   '200':
-    description: 'Request successful. The server returns the user object and JWT token.'
+    description: 'Request successful. The server returns the user object and token.'
     content:
       application/json:
         schema:
@@ -31,15 +32,31 @@ responses:
             user:
               type: object
               required:
+                - _id
                 - name
                 - email
+                - avatar
+                - gender
+                - dailyNorm
               properties:
+                _id:
+                  type: string
+                  example: '679f770240e2b0ff4b442974'
                 name:
                   type: string
-                  example: 'null'
+                  example: 'John Doe'
                 email:
                   type: string
                   example: 'example@mail.com'
+                avatar:
+                  type: string
+                  example: 'https://res.cloudinary.com/dtfo6b7gi/image/upload/v1738226311/tzsd56ad…'
+                gender:
+                  type: string
+                  example: 'female'
+                dailyNorm:
+                  type: number
+                  example: 1500
             token:
               type: string
               example: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3OWIzNTQwNDhlNTBkNzQwZWZhNzY4NCIsImlhdCI6MTczODQ5NjI2NX0.W5OVo5431woG8wIvNauHKa9Gn8kC1Q-0GByzG67x6hA'

@@ -23,6 +23,10 @@
       "description": "Auth operations"
     },
     {
+      "name": "User",
+      "description": "Operations with User data"
+    },
+    {
       "name": "Water",
       "description": "Water consumption tracking operations"
     }
@@ -38,6 +42,7 @@
         "description": "SignUp User with email and password",
         "security": [],
         "requestBody": {
+          "required": true,
           "content": {
             "application/json": {
               "schema": {
@@ -61,14 +66,7 @@
         },
         "responses": {
           "201": {
-            "description": "Register as a new user. User data is written to the database. The server returns nothing in response. A registered user needs to go through the login procedure in the app.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/user"
-                }
-              }
-            }
+            "description": "Register as a new user. User data is written to the database with unique _id. The server returns nothing in response. A registered user needs to go through the login procedure in the app."
           },
           "400": {
             "description": "Bad request. The server could not understand the request. Validation error.",
@@ -134,9 +132,10 @@
         ],
         "summary": "SignIn User",
         "operationId": "SignIn",
-        "description": "SignIn User with email and password",
+        "description": "SignIn User with email and password.",
         "security": [],
         "requestBody": {
+          "required": true,
           "content": {
             "application/json": {
               "schema": {
@@ -160,7 +159,7 @@
         },
         "responses": {
           "200": {
-            "description": "Request successful. The server returns the user object and JWT token.",
+            "description": "Request successful. The server returns the user object and token.",
             "content": {
               "application/json": {
                 "schema": {
@@ -172,17 +171,37 @@
                     "user": {
                       "type": "object",
                       "required": [
+                        "_id",
                         "name",
-                        "email"
+                        "email",
+                        "avatar",
+                        "gender",
+                        "dailyNorm"
                       ],
                       "properties": {
+                        "_id": {
+                          "type": "string",
+                          "example": "679f770240e2b0ff4b442974"
+                        },
                         "name": {
                           "type": "string",
-                          "example": "null"
+                          "example": "John Doe"
                         },
                         "email": {
                           "type": "string",
                           "example": "example@mail.com"
+                        },
+                        "avatar": {
+                          "type": "string",
+                          "example": "https://res.cloudinary.com/dtfo6b7gi/image/upload/v1738226311/tzsd56ad…"
+                        },
+                        "gender": {
+                          "type": "string",
+                          "example": "female"
+                        },
+                        "dailyNorm": {
+                          "type": "number",
+                          "example": 1500
                         }
                       }
                     },
@@ -235,7 +254,7 @@
         ],
         "summary": "Logout User",
         "operationId": "logout",
-        "description": "Logout User from account. The server returns nothing in response. JWT token is deleted from the database.",
+        "description": "Logout User from account. Requires authentication. Token is deleted from the database.",
         "security": [
           {
             "bearerAuth": []
@@ -257,14 +276,14 @@
         }
       }
     },
-    "/auth/current": {
+    "/user/current": {
       "get": {
         "tags": [
-          "Auth"
+          "User"
         ],
-        "summary": "Refresh User",
-        "operationId": "Refresh",
-        "description": "Refreshing User data",
+        "summary": "Get User data",
+        "operationId": "Current",
+        "description": "Get all User data. Requires authentication.",
         "security": [
           {
             "bearerAuth": []
@@ -272,15 +291,16 @@
         ],
         "responses": {
           "200": {
-            "description": "Refreshing User data",
+            "description": "Get all User data",
             "content": {
               "application/json": {
                 "schema": {
                   "required": [
                     "name",
                     "email",
-                    "avatar",
-                    "gender"
+                    "gender",
+                    "dailyNorm",
+                    "avatar"
                   ],
                   "properties": {
                     "name": {
@@ -291,13 +311,17 @@
                       "type": "string",
                       "example": "example@mail.com"
                     },
-                    "avatar": {
-                      "type": "string",
-                      "example": "https://res.cloudinary.com/dtfo6b7gi/image/upload/v1738226311/tzsd56ad…"
-                    },
                     "gender": {
                       "type": "string",
                       "example": "female"
+                    },
+                    "dailyNorm": {
+                      "type": "number",
+                      "example": "1500"
+                    },
+                    "avatar": {
+                      "type": "string",
+                      "example": "https://res.cloudinary.com/dtfo6b7gi/image/upload/v1738226311/tzsd56ad…"
                     }
                   }
                 }
@@ -315,6 +339,183 @@
           }
         }
       }
+    },
+    "/user/update": {
+      "patch": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Update User's Data",
+        "operationId": "updateUSer",
+        "description": "Partially or fully update the User data. Requires authentication.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "format": "email",
+                    "example": "example@gmail.com"
+                  },
+                  "password": {
+                    "type": "string",
+                    "example": "123456asd",
+                    "description": "Current password required for password change"
+                  },
+                  "newPassword": {
+                    "type": "string",
+                    "minLength": 8,
+                    "maxLength": 64,
+                    "example": "newSecureP@ss123",
+                    "description": "New password to replace the old one"
+                  },
+                  "name": {
+                    "type": "string",
+                    "example": "John Doe"
+                  },
+                  "gender": {
+                    "type": "string",
+                    "example": "male"
+                  },
+                  "dailyNorm": {
+                    "type": "number",
+                    "example": 1500
+                  },
+                  "avatar": {
+                    "type": "string",
+                    "format": "uri",
+                    "example": "https://res.cloudinary.com/dtfo6b7gi/image/upload/v1738226311/tzsd56ad…"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Request successful. The server has responded as required. The server returns an object with updated user data.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "integer",
+                      "example": 200
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Successfully update info!"
+                    },
+                    "data": {
+                      "type": "object",
+                      "required": [
+                        "_id",
+                        "name",
+                        "email",
+                        "gender",
+                        "dailyNorm",
+                        "avatar"
+                      ],
+                      "properties": {
+                        "_id": {
+                          "type": "string",
+                          "example": "679f770240e2b0ff4b442974"
+                        },
+                        "name": {
+                          "type": "string",
+                          "example": "John Doe"
+                        },
+                        "email": {
+                          "type": "string",
+                          "example": "example@mail.com"
+                        },
+                        "gender": {
+                          "type": "string",
+                          "example": "male"
+                        },
+                        "dailyNorm": {
+                          "type": "number",
+                          "example": 1500
+                        },
+                        "avatar": {
+                          "type": "string",
+                          "example": "https://res.cloudinary.com/dtfo6b7gi/image/upload/v1738226311/tzsd56ad…"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request. The server could not understand the request. Validation error.",
+            "content": {
+              "application\\json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "status",
+                    "message"
+                  ],
+                  "properties": {
+                    "status": {
+                      "type": "integer",
+                      "example": 400
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Email should be in format example@mail.com. Password should be at least 8 characters. Password should be at most 64 characters. Name should be at most 32 characters. Gender must be either \"male\" or \"female\". Daily norma should be at least 1. Daily norma should be at most 15000."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/401"
+          },
+          "404": {
+            "$ref": "#/components/responses/404"
+          },
+          "409": {
+            "description": "Conflict Error. The request conflicts with the current state of the server.",
+            "content": {
+              "application\\json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "status",
+                    "message"
+                  ],
+                  "properties": {
+                    "status": {
+                      "type": "integer",
+                      "example": 409
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Email in use."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "$ref": "#/components/responses/500"
+          }
+        }
+      }
     }
   },
   "components": {
@@ -325,15 +526,20 @@
       }
     },
     "schemas": {
-      "user": {
+      "User": {
         "type": "object",
         "required": [
           "email",
           "password"
         ],
         "properties": {
+          "_id": {
+            "description": "Backend-generated unique identifier.",
+            "type": "string",
+            "example": "679e59ee76bc89b649731a32"
+          },
           "name": {
-            "description": "User`s name",
+            "description": "User`s name. Should be at most 32 characters",
             "type": "string",
             "example": "John Doe"
           },
@@ -348,7 +554,7 @@
             "example": "123456asd"
           },
           "gender": {
-            "description": "User`s gender. Should be be one of the suggested values",
+            "description": "User`s gender. Should be one of the suggested values",
             "type": "string",
             "enum": [
               "female",
@@ -365,11 +571,6 @@
             "description": "User`s avatar",
             "type": "string",
             "example": "https://res.cloudinary.com/dtfo6b7gi/image/upload/v1738226311/tzsd56ad…"
-          },
-          "token": {
-            "description": "User`s access token",
-            "type": "string",
-            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiIxMjM0NTY3ODkwIiwidXNlcm5hbWUiOiJqb2huZG9lIiwiaWF0IjoxNjkyMjM4NDAwLCJleHAiOjE2OTIzMjQ4MDB9.f5e6b4b3d9e9a5b7c6d8e3b4f7c9a2d1e8f4g6h5i7j8k9l0m1n2o3p4q5r6s7t8"
           }
         }
       }

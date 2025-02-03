@@ -5,6 +5,7 @@ operationId: SignUp
 description: 'SignUp User with email and password'
 security: []
 requestBody:
+  required: true
   content:
     application/json:
       schema:
@@ -20,11 +21,7 @@ requestBody:
             example: '123456asd'
 responses:
   '201':
-    description: 'Register as a new user. User data is written to the database. The server returns nothing in response. A registered user needs to go through the login procedure in the app.'
-    content:
-      application/json:
-        schema:
-          $ref: ../../components/schemas/user.yaml
+    description: 'Register as a new user. User data is written to the database with unique _id. The server returns nothing in response. A registered user needs to go through the login procedure in the app.'
   '400':
     description: 'Bad request. The server could not understand the request. Validation error.'
     content:
