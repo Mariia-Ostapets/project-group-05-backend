@@ -21,7 +21,7 @@ export const patchUser = async (req, res) => {
   const userEmail = await authServices.findUserByEmail(req.body.email);
 
   if (userEmail && _id !== userEmail.id) {
-    throw createHttpError(409, 'Email in use');
+    throw createHttpError(409, 'Email in use!');
   }
 
   if (req.body.password) {
