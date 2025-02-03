@@ -1,6 +1,5 @@
 import Joi from 'joi';
 
-// const dateRegexp = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}/;
 const dateRegexp = /^\d{4}-\d{2}-\d{2}$/;
 const dateTimeRegexp = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}$/;
 
