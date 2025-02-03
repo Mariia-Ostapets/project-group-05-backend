@@ -1,0 +1,106 @@
+tags:
+  - Water
+summary: Get water by day
+operationId: getWaterByDay
+description: 'Get all portions of water by specific day. Requires authentication.'
+security:
+  - bearerAuth: []
+parameters:
+  - in: path
+    name: date
+    required: true
+    schema:
+      type: string
+      example: '2025-02-03'
+requestBody:
+  required: true
+  content:
+    application/json:
+      schema:
+        type: object
+        required:
+          - userId
+          - date
+        properties:
+          userId:
+            type: string
+            example: '679f770240e2b0ff4b442974'
+            description: 'User Id'
+          date:
+            type: string
+            example: '2025-02-03'
+            description: 'Date in the format YYYY-MM-DD for which the User receives all water portions'
+responses:
+  '200':
+    description: 'Request successful. The server returns the object with waterRecord.'
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            waterRecord:
+              type: object
+              properties:
+                _id:
+                  type: string
+                  example: '67a0d52a242782f7fdb53809'
+                date:
+                  type: string
+                  example: '2025-02-03'
+                userId:
+                  type: string
+                  example: '679b354048e50d740efa7684'
+                entries:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      time:
+                        type: string
+                        example: '2025-02-03T16:30'
+                      waterVolume:
+                        type: number
+                        example: 250
+                      _id:
+                        type: number
+                        example: '67a0d52a242782f7fdb5380a'
+            totalWater:
+              type: number
+              example: 1500
+            percentage:
+              type: string
+              example: '100.00%'
+  '400':
+    description: 'Bad request. The server could not understand the request. Validation error.'
+    content:
+      application\json:
+        schema:
+          type: object
+          required:
+            - status
+            - message
+          properties:
+            status:
+              type: integer
+              example: 400
+            message:
+              type: string
+              example: Date is required. Valid dailyNorm is required.
+  '404':
+    description: Not found error. Requested resource could not be found.
+    content:
+      application/json:
+        schema:
+          type: object
+          required:
+            - status
+            - message
+          properties:
+            status:
+              type: integer
+              example: 404
+            message:
+              type: string
+              example: No water entries found for this date. Route not found.
+  '500':
+    $ref: '../../components/responses/500.yaml'

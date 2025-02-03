@@ -13,7 +13,7 @@ properties:
     type: string
     example: '65af5c7e8d3f3b1f2e3a7c9a'
   entries:
-    description: 'Array of records about water consumption'
+    description: 'Array of records about water consumption, consists of time in format YYYY-MM-DDTHH-MM and waterVolume'
     type: array
     items:
       type: object

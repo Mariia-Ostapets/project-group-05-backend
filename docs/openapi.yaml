@@ -33,8 +33,11 @@ paths:
     patch:
       $ref: ../swagger/paths/user/update.yaml
   /water:
+    post:
+      $ref: ../swagger/paths/water/addWater.yaml
+  /water/today/:date:
     get:
-      $ref: ../swagger/paths/user/getWater.yaml
+      $ref: ../swagger/paths/water/getWaterByDay.yaml
 components:
   securitySchemes:
     bearerAuth:
