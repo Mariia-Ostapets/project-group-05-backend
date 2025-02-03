@@ -10,7 +10,7 @@ const waterRouter = new Router();
 
 waterRouter.use(checkToken);
 
-waterRouter.get('/',  ctrlWrapper(waterController.getWaterController));
+// waterRouter.get('/',  ctrlWrapper(waterController.getWaterController));
 
 // waterRouter.get('/:id', isValidId, ctrlWrapper(waterController.getWaterByIdController));
 
@@ -20,8 +20,11 @@ waterRouter.get('/:year/:month', ctrlWrapper(waterController.getWaterByMonthCont
 
 waterRouter.post('/', validateBody(addWaterSchema), ctrlWrapper(waterController.addWaterController));
 
-waterRouter.patch('/:date/:time', validateBody(updateWaterSchema), ctrlWrapper(waterController.updateWaterController));
+// waterRouter.patch('/:date/:time', validateBody(updateWaterSchema), ctrlWrapper(waterController.updateWaterController));
+waterRouter.patch('/:entryId', validateBody(updateWaterSchema), ctrlWrapper(waterController.updateWaterController));
 
-waterRouter.delete('/:date/:time', ctrlWrapper(waterController.deleteWaterController));
+
+// waterRouter.delete('/:date/:time', ctrlWrapper(waterController.deleteWaterController));
+waterRouter.delete('/:entryId', ctrlWrapper(waterController.deleteWaterController));
 
 export default waterRouter;

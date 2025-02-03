@@ -1,10 +1,10 @@
 import { WaterCollection } from '../db/models/water.js';
 
-export const getWater = async ({ page = 1, perPage = 1 }) => {
-  const limit = perPage;
-  const skip = (page - 1) * limit;
-  return WaterCollection.find().skip(skip).limit(limit);
-};
+// export const getWater = async ({ page = 1, perPage = 1 }) => {
+//   const limit = perPage;
+//   const skip = (page - 1) * limit;
+//   return WaterCollection.find().skip(skip).limit(limit);
+// };
 
 // export const getWaterById = (id) => WaterCollection.findById(id);
 
@@ -15,12 +15,12 @@ export const getWaterByDay = async ({ userId, date }) => {
 };
 
 export const getWaterByMonth = async ({ userId, year, month }) => {
-  const startDate = `${year}-${month.padStart(2, "0")}-01`;
-  const endDate = `${year}-${month.padStart(2, "0")}-31`;
+  const startDate = `${year}-${month.padStart(2, '0')}-01`;
+  const endDate = `${year}-${month.padStart(2, '0')}-31`;
 
   const waterRecords = await WaterCollection.find({
     userId,
-    date: { $gte: startDate, $lte: endDate }
+    date: { $gte: startDate, $lte: endDate },
   });
 
   return waterRecords;
@@ -39,53 +39,100 @@ export const addWater = async ({ userId, date, entries }) => {
   return waterRecord;
 };
 
+// export const updateWater = async ({
+//   userId,
+//   date,
+//   time,
+//   newTime,
+//   waterVolume,
+// }) => {
+//   const waterRecord = await WaterCollection.findOne({ userId, date });
+
+//   if (!waterRecord) {
+//     return null;
+//   }
+
+//   const entryIndex = waterRecord.entries.findIndex(
+//     (entry) => entry.time === time,
+//   );
+//   if (entryIndex === -1) {
+//     return null;
+//   }
+
+//   waterRecord.entries[entryIndex].time = newTime;
+//   waterRecord.entries[entryIndex].waterVolume = waterVolume;
+
+//   await waterRecord.save();
+//   return waterRecord;
+// };
+
 export const updateWater = async ({
   userId,
-  date,
-  time,
+  entryId,
   newTime,
   waterVolume,
 }) => {
-  const waterRecord = await WaterCollection.findOne({ userId, date });
-  console.log(waterRecord);
+  const waterRecord = await WaterCollection.findOne({
+    userId,
+    'entries._id': entryId,
+  });
+
   if (!waterRecord) {
     return null;
   }
 
-  const entryIndex = waterRecord.entries.findIndex(
-    (entry) => entry.time === time,
+  const entry = waterRecord.entries.find(
+    (entry) => entry._id.toString() === entryId,
   );
-  if (entryIndex === -1) {
+  if (!entry) {
     return null;
   }
 
-  waterRecord.entries[entryIndex].time = newTime;
-  waterRecord.entries[entryIndex].waterVolume = waterVolume;
+  entry.time = newTime;
+  entry.waterVolume = waterVolume;
 
   await waterRecord.save();
   return waterRecord;
 };
 
-export const deleteWater = async ({ userId, date, time }) => {
-  const waterRecord = await WaterCollection.findOne({ userId, date });
+// export const deleteWater = async ({ userId, date, time }) => {
+//   const waterRecord = await WaterCollection.findOne({ userId, date });
+
+//   if (!waterRecord) {
+//     return null;
+//   }
+
+//   const entryIndex = waterRecord.entries.findIndex(
+//     (entry) => entry.time === time,
+//   );
+//   if (entryIndex === -1) {
+//     return null;
+//   }
+
+//   waterRecord.entries.splice(entryIndex, 1);
+
+//   if (waterRecord.entries.length === 0) {
+//     await WaterCollection.deleteOne({ userId, date });
+//     return { message: 'All water entries for this day were deleted' };
+//   }
+
+//   await waterRecord.save();
+//   return waterRecord;
+// };
+
+export const deleteWater = async ({ userId, entryId }) => {
+  const waterRecord = await WaterCollection.findOne({
+    userId,
+    'entries._id': entryId,
+  });
 
   if (!waterRecord) {
     return null;
   }
 
-  const entryIndex = waterRecord.entries.findIndex(
-    (entry) => entry.time === time,
+  waterRecord.entries = waterRecord.entries.filter(
+    (entry) => entry._id.toString() !== entryId,
   );
-  if (entryIndex === -1) {
-    return null;
-  }
-
-  waterRecord.entries.splice(entryIndex, 1);
-
-  if (waterRecord.entries.length === 0) {
-    await WaterCollection.deleteOne({ userId, date });
-    return { message: 'All water entries for this day were deleted' };
-  }
 
   await waterRecord.save();
   return waterRecord;
