@@ -1,21 +1,22 @@
 tags:
-  - Auth
-summary: Refresh User
-operationId: Refresh
-description: 'Refreshing User data'
+  - User
+summary: Get User data
+operationId: Current
+description: 'Get all User data. Requires authentication.'
 security:
   - bearerAuth: []
 responses:
   '200':
-    description: 'Refreshing User data'
+    description: 'Get all User data'
     content:
       application/json:
         schema:
           required:
             - name
             - email
-            - avatar
             - gender
+            - dailyNorm
+            - avatar
           properties:
             name:
               type: string
@@ -23,12 +24,16 @@ responses:
             email:
               type: string
               example: 'example@mail.com'
-            avatar:
-              type: string
-              example: 'https://res.cloudinary.com/dtfo6b7gi/image/upload/v1738226311/tzsd56ad…'
             gender:
               type: string
               example: 'female'
+            dailyNorm:
+              type: number
+              example: '1500'
+            avatar:
+              type: string
+              example: 'https://res.cloudinary.com/dtfo6b7gi/image/upload/v1738226311/tzsd56ad…'
+
   '401':
     $ref: '../../components/responses/401.yaml'
   '404':

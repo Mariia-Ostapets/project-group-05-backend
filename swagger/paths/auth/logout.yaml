@@ -2,7 +2,7 @@ tags:
   - Auth
 summary: Logout User
 operationId: logout
-description: 'Logout User from account. The server returns nothing in response. JWT token is deleted from the database.'
+description: 'Logout User from account. Requires authentication. Token is deleted from the database.'
 security:
   - bearerAuth: []
 responses:
