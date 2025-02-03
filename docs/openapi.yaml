@@ -35,7 +35,7 @@ paths:
   /water:
     post:
       $ref: ../swagger/paths/water/addWater.yaml
-  /water/today/:date:
+  /water/today/{date}:
     get:
       $ref: ../swagger/paths/water/getWaterByDay.yaml
 components:

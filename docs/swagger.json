@@ -660,7 +660,7 @@
         }
       }
     },
-    "/water/today/:date": {
+    "/water/today/{date}": {
       "get": {
         "tags": [
           "Water"
@@ -684,32 +684,6 @@
             }
           }
         ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "required": [
-                  "userId",
-                  "date"
-                ],
-                "properties": {
-                  "userId": {
-                    "type": "string",
-                    "example": "679f770240e2b0ff4b442974",
-                    "description": "User Id"
-                  },
-                  "date": {
-                    "type": "string",
-                    "example": "2025-02-03",
-                    "description": "Date in the format YYYY-MM-DD for which the User receives all water portions"
-                  }
-                }
-              }
-            }
-          }
-        },
         "responses": {
           "200": {
             "description": "Request successful. The server returns the object with waterRecord.",
