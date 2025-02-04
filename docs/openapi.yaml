@@ -32,6 +32,12 @@ paths:
   /user/update:
     patch:
       $ref: ../swagger/paths/user/update.yaml
+  /water:
+    post:
+      $ref: ../swagger/paths/water/addWater.yaml
+  /water/today/:date:
+    get:
+      $ref: ../swagger/paths/water/getWaterByDay.yaml
 components:
   securitySchemes:
     bearerAuth:
@@ -73,3 +79,35 @@ components:
           description: 'User`s avatar'
           type: string
           example: 'https://res.cloudinary.com/dtfo6b7gi/image/upload/v1738226311/tzsd56ad…'
+    Water:
+      type: object
+      required:
+        - date
+        - userId
+        - entries
+      properties:
+        date:
+          description: 'Recording date in format YYYY-MM-DD'
+          type: string
+          example: '2024-02-01'
+        userId:
+          description: 'The ID of the User who created the entry'
+          type: string
+          example: '65af5c7e8d3f3b1f2e3a7c9a'
+        entries:
+          description: 'Array of records about water consumption'
+          type: array
+          items:
+            type: object
+            required:
+              - time
+              - waterVolume
+            properties:
+              time:
+                description: 'Water consumption time in format YYYY-MM-DDTHH:MM'
+                type: string
+                example: '2024-02-01T08:30'
+              waterVolume:
+                description: 'Volume of water drunk in milliliters'
+                type: number
+                example: 250
