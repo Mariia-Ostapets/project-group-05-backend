@@ -20,10 +20,10 @@ responses:
           properties:
             name:
               type: string
-              example: 'John Doe'
+              example: 'Lady Gaga'
             email:
               type: string
-              example: 'example@mail.com'
+              example: 'ladygaga@mail.com'
             gender:
               type: string
               example: 'female'

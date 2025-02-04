@@ -53,11 +53,13 @@
                 "properties": {
                   "email": {
                     "type": "string",
-                    "example": "example@gmail.com"
+                    "example": "ladygaga@gmail.com"
                   },
                   "password": {
                     "type": "string",
-                    "example": "123456asd"
+                    "minLength": 8,
+                    "maxLength": 64,
+                    "example": "1234567890"
                   }
                 }
               }
@@ -66,7 +68,7 @@
         },
         "responses": {
           "201": {
-            "description": "Register as a new user. User data is written to the database with unique _id. The server returns nothing in response. A registered user needs to go through the login procedure in the app."
+            "description": "Register as a new User. User data is written to the database with unique _id. The server returns nothing in response. A registered User needs to go through the login procedure in the app."
           },
           "400": {
             "description": "Bad request. The server could not understand the request. Validation error.",
@@ -146,11 +148,13 @@
                 "properties": {
                   "email": {
                     "type": "string",
-                    "example": "example@gmail.com"
+                    "example": "ladygaga@gmail.com"
                   },
                   "password": {
                     "type": "string",
-                    "example": "123456asd"
+                    "minLength": 8,
+                    "maxLength": 64,
+                    "example": "1234567890"
                   }
                 }
               }
@@ -159,7 +163,7 @@
         },
         "responses": {
           "200": {
-            "description": "Request successful. The server returns the user object and token.",
+            "description": "Request successful. The server returns the User object and token.",
             "content": {
               "application/json": {
                 "schema": {
@@ -181,15 +185,15 @@
                       "properties": {
                         "_id": {
                           "type": "string",
-                          "example": "679f770240e2b0ff4b442974"
+                          "example": "67a210a28f7f42ba355eb221"
                         },
                         "name": {
                           "type": "string",
-                          "example": "John Doe"
+                          "example": "Lady Gaga"
                         },
                         "email": {
                           "type": "string",
-                          "example": "example@mail.com"
+                          "example": "ladygaga@gmail.com"
                         },
                         "avatar": {
                           "type": "string",
@@ -262,7 +266,7 @@
         ],
         "responses": {
           "204": {
-            "description": "Logout from account. No content in the response body"
+            "description": "Logout from account. No content in the response body."
           },
           "401": {
             "$ref": "#/components/responses/401"
@@ -305,11 +309,11 @@
                   "properties": {
                     "name": {
                       "type": "string",
-                      "example": "John Doe"
+                      "example": "Lady Gaga"
                     },
                     "email": {
                       "type": "string",
-                      "example": "example@mail.com"
+                      "example": "ladygaga@mail.com"
                     },
                     "gender": {
                       "type": "string",
@@ -362,37 +366,39 @@
                 "properties": {
                   "email": {
                     "type": "string",
-                    "format": "email",
-                    "example": "example@gmail.com"
+                    "example": "ladygaga@gmail.com",
+                    "description": "User`s email. Should be in format example@mail.com."
                   },
                   "password": {
                     "type": "string",
-                    "example": "123456asd",
-                    "description": "Current password required for password change"
+                    "example": "1234567890",
+                    "description": "Current password required for password change."
                   },
                   "newPassword": {
                     "type": "string",
-                    "minLength": 8,
-                    "maxLength": 64,
-                    "example": "newSecureP@ss123",
-                    "description": "New password to replace the old one"
+                    "example": "0987654321",
+                    "description": "New password to replace the old one."
                   },
                   "name": {
                     "type": "string",
-                    "example": "John Doe"
+                    "example": "Lady Gaga",
+                    "description": "User`s name. Should be at most 32 characters."
                   },
                   "gender": {
                     "type": "string",
-                    "example": "male"
+                    "example": "female",
+                    "description": "User`s gender. Should be be one of the suggested values female or male. Default value is female."
                   },
                   "dailyNorm": {
                     "type": "number",
-                    "example": 1500
+                    "example": 1500,
+                    "description": "User`s daily norm of water. Should be at most 15000 ml. Default value is 1500 ml."
                   },
                   "avatar": {
                     "type": "string",
                     "format": "uri",
-                    "example": "https://res.cloudinary.com/dhfwc4nmz/image/upload/v1738667492/ysf70wtw63hihtf14spo.avif"
+                    "example": "https://res.cloudinary.com/dhfwc4nmz/image/upload/v1738667492/ysf70wtw63hihtf14spo.avif",
+                    "description": "User`s avatar"
                   }
                 }
               }
@@ -401,7 +407,7 @@
         },
         "responses": {
           "200": {
-            "description": "Request successful. The server has responded as required. The server returns an object with updated user data.",
+            "description": "Request successful. The server has responded as required. The server returns an object with updated User data.",
             "content": {
               "application/json": {
                 "schema": {
@@ -428,19 +434,19 @@
                       "properties": {
                         "_id": {
                           "type": "string",
-                          "example": "679f770240e2b0ff4b442974"
+                          "example": "67a210a28f7f42ba355eb221"
                         },
                         "name": {
                           "type": "string",
-                          "example": "John Doe"
+                          "example": "Lady Gaga"
                         },
                         "email": {
                           "type": "string",
-                          "example": "example@mail.com"
+                          "example": "ladygaga@gmail.com"
                         },
                         "gender": {
                           "type": "string",
-                          "example": "male"
+                          "example": "female"
                         },
                         "dailyNorm": {
                           "type": "number",
@@ -575,19 +581,19 @@
                       "properties": {
                         "_id": {
                           "type": "string",
-                          "example": "679f770240e2b0ff4b442974"
+                          "example": "67a210a28f7f42ba355eb221"
                         },
                         "name": {
                           "type": "string",
-                          "example": "John Doe"
+                          "example": "Lady Gaga"
                         },
                         "email": {
                           "type": "string",
-                          "example": "example@mail.com"
+                          "example": "ladygaga@gmail.com"
                         },
                         "gender": {
                           "type": "string",
-                          "example": "male"
+                          "example": "female"
                         },
                         "dailyNorm": {
                           "type": "number",
@@ -595,7 +601,7 @@
                         },
                         "avatar": {
                           "type": "string",
-                          "example": "https://res.cloudinary.com/dtfo6b7gi/image/upload/v1738226311/tzsd56ad…"
+                          "example": "https://res.cloudinary.com/dhfwc4nmz/image/upload/v1738667492/ysf70wtw63hihtf14spo.avif"
                         }
                       }
                     }
@@ -667,12 +673,12 @@
                 "properties": {
                   "userId": {
                     "type": "string",
-                    "example": "679f770240e2b0ff4b442974",
+                    "example": "67a210a28f7f42ba355eb221",
                     "description": "User Id"
                   },
                   "date": {
                     "type": "string",
-                    "example": "2025-02-03",
+                    "example": "2025-02-04",
                     "description": "Date of addition of water portion in format YYYY-MM-DD"
                   },
                   "entries": {
@@ -686,12 +692,12 @@
                       "properties": {
                         "time": {
                           "type": "string",
-                          "example": "2024-02-01T08:30",
-                          "description": "Water consumption time in format YYYY-MM-DDTHH:MM"
+                          "example": "2024-02-04T15:00",
+                          "description": "Water consumption time in format YYYY-MM-DDTHH:mm"
                         },
                         "waterVolume": {
                           "type": "number",
-                          "example": 250,
+                          "example": 400,
                           "description": "Volume of water drunk in milliliters"
                         }
                       }
@@ -712,15 +718,15 @@
                   "properties": {
                     "_id": {
                       "type": "string",
-                      "example": "67a0d52a242782f7fdb53809"
+                      "example": "67a211838f7f42ba355eb247"
                     },
                     "date": {
                       "type": "string",
-                      "example": "2025-02-03"
+                      "example": "2025-02-04"
                     },
                     "userId": {
                       "type": "string",
-                      "example": "679b354048e50d740efa7684"
+                      "example": "67a210a28f7f42ba355eb221"
                     },
                     "entries": {
                       "type": "array",
@@ -729,15 +735,15 @@
                         "properties": {
                           "time": {
                             "type": "string",
-                            "example": "2024-02-01T08:30"
+                            "example": "2024-02-04T15:00"
                           },
                           "waterVolume": {
                             "type": "number",
-                            "example": 250
+                            "example": 400
                           },
                           "_id": {
                             "type": "number",
-                            "example": "67a0d52a242782f7fdb5380a"
+                            "example": "67a211b08f7f42ba355eb253"
                           }
                         }
                       }
@@ -803,7 +809,7 @@
             "required": true,
             "schema": {
               "type": "string",
-              "example": "2025-02-03"
+              "example": "2025-02-04"
             }
           }
         ],
@@ -824,11 +830,11 @@
                         },
                         "date": {
                           "type": "string",
-                          "example": "2025-02-03"
+                          "example": "2025-02-04"
                         },
                         "userId": {
                           "type": "string",
-                          "example": "679b354048e50d740efa7684"
+                          "example": "67a210a28f7f42ba355eb221"
                         },
                         "entries": {
                           "type": "array",
@@ -837,15 +843,15 @@
                             "properties": {
                               "time": {
                                 "type": "string",
-                                "example": "2025-02-03T16:30"
+                                "example": "2025-02-04T16:00"
                               },
                               "waterVolume": {
                                 "type": "number",
-                                "example": 250
+                                "example": 300
                               },
                               "_id": {
                                 "type": "number",
-                                "example": "67a0d52a242782f7fdb5380a"
+                                "example": "67a211b08f7f42ba355eb253"
                               }
                             }
                           }
@@ -854,11 +860,11 @@
                     },
                     "totalWater": {
                       "type": "number",
-                      "example": 1500
+                      "example": 300
                     },
                     "percentage": {
                       "type": "string",
-                      "example": "100.00%"
+                      "example": "20%"
                     }
                   }
                 }
@@ -919,6 +925,125 @@
         }
       }
     },
+    "/water/{year}/{month}": {
+      "get": {
+        "tags": [
+          "Water"
+        ],
+        "summary": "Get water by month",
+        "operationId": "getWaterByMonth",
+        "description": "Get all portions of water by specific month and year. Requires authentication.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "year",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "2025"
+            }
+          },
+          {
+            "in": "path",
+            "name": "month",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "02"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Request successful. The server returns the array of the objects with statistic informaion about specific month. Every day of month is single object.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "date": {
+                        "type": "string",
+                        "example": "4, February"
+                      },
+                      "dailyNorma": {
+                        "type": "string",
+                        "example": "1.5 L"
+                      },
+                      "percentage": {
+                        "type": "string",
+                        "example": "20%"
+                      },
+                      "entryCount": {
+                        "type": "number",
+                        "example": 1
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request. The server could not understand the request. Validation error.",
+            "content": {
+              "application\\json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "status",
+                    "message"
+                  ],
+                  "properties": {
+                    "status": {
+                      "type": "integer",
+                      "example": 400
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Year and month are required. Valid dailyNorm is required."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found error. Requested resource could not be found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "status",
+                    "message"
+                  ],
+                  "properties": {
+                    "status": {
+                      "type": "integer",
+                      "example": 404
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "No water entries found for this month. Route not found."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "$ref": "#/components/responses/500"
+          }
+        }
+      }
+    },
     "/water/{entryId}": {
       "patch": {
         "tags": [
@@ -939,7 +1064,7 @@
             "required": true,
             "schema": {
               "type": "string",
-              "example": "67a1ead237b1d7c4cbf45e9a"
+              "example": "67a211b08f7f42ba355eb253"
             }
           }
         ],
@@ -956,12 +1081,12 @@
                 "properties": {
                   "newTime": {
                     "type": "string",
-                    "example": "2025-02-04T12:40",
-                    "description": "Time in the format YYYY-MM-DDTHH:mm at which the User changes the waterVolume record"
+                    "example": "2025-02-04T16:00",
+                    "description": "Time in the format YYYY-MM-DDTHH:mm at which the User changes the waterVolume record."
                   },
                   "waterVolume": {
-                    "type": "string",
-                    "example": "300",
+                    "type": "number",
+                    "example": 300,
                     "description": "Volume of a portion of water in milliliters"
                   }
                 }
@@ -979,7 +1104,7 @@
                   "properties": {
                     "_id": {
                       "type": "string",
-                      "example": "67a1ead237b1d7c4cbf45e99"
+                      "example": "67a211838f7f42ba355eb247"
                     },
                     "date": {
                       "type": "string",
@@ -987,7 +1112,7 @@
                     },
                     "userId": {
                       "type": "string",
-                      "example": "679b354048e50d740efa7684"
+                      "example": "67a210a28f7f42ba355eb221"
                     },
                     "entries": {
                       "type": "array",
@@ -996,7 +1121,7 @@
                         "properties": {
                           "time": {
                             "type": "string",
-                            "example": "2025-02-04T12:40"
+                            "example": "2025-02-04T16:00"
                           },
                           "waterVolume": {
                             "type": "number",
@@ -1004,7 +1129,7 @@
                           },
                           "_id": {
                             "type": "number",
-                            "example": "67a1ead237b1d7c4cbf45e9a"
+                            "example": "67a211b08f7f42ba355eb253"
                           }
                         }
                       }
@@ -1086,7 +1211,7 @@
             "required": true,
             "schema": {
               "type": "string",
-              "example": "67a1ead237b1d7c4cbf45e9a"
+              "example": "67a211b08f7f42ba355eb253"
             }
           }
         ],
@@ -1115,7 +1240,7 @@
                         },
                         "userId": {
                           "type": "string",
-                          "example": "679b354048e50d740efa7684"
+                          "example": "67a210a28f7f42ba355eb221"
                         },
                         "entries": {
                           "type": "array",
@@ -1217,25 +1342,25 @@
           "_id": {
             "description": "Backend-generated unique identifier.",
             "type": "string",
-            "example": "679e59ee76bc89b649731a32"
+            "example": "67a210a28f7f42ba355eb221"
           },
           "name": {
             "description": "User`s name. Should be at most 32 characters",
             "type": "string",
-            "example": "John Doe"
+            "example": "Lady Gaga"
           },
           "email": {
-            "description": "User`s email. Is required. Should be in format example@mail.com",
+            "description": "User`s email. Is required. Should be in format example@mail.com.",
             "type": "string",
-            "example": "example@mail.com"
+            "example": "ladygaga@mail.com"
           },
           "password": {
-            "description": "User`s password. Is required. Should be at least 8 and at most 64 characters",
+            "description": "User`s password. Is required. Should be at least 8 and at most 64 characters.",
             "type": "string",
-            "example": "123456asd"
+            "example": "1234567890"
           },
           "gender": {
-            "description": "User`s gender. Should be one of the suggested values",
+            "description": "User`s gender. Should be one of the suggested values.",
             "type": "string",
             "enum": [
               "female",
@@ -1244,14 +1369,14 @@
             "example": "female"
           },
           "dailyNorm": {
-            "description": "User`s daily norm of water. Should be at most 15000 ml. Default value is 1500 ml",
+            "description": "User`s daily norm of water. Should be at most 15000 ml. Default value is 1500 ml.",
             "type": "number",
             "example": 1500
           },
           "avatar": {
             "description": "User`s avatar",
             "type": "string",
-            "example": "https://res.cloudinary.com/dtfo6b7gi/image/upload/v1738226311/tzsd56ad…"
+            "example": "https://res.cloudinary.com/dhfwc4nmz/image/upload/v1738667492/ysf70wtw63hihtf14spo.avif"
           }
         }
       },
@@ -1264,17 +1389,17 @@
         ],
         "properties": {
           "date": {
-            "description": "Recording date in format YYYY-MM-DD",
+            "description": "Recording date in format YYYY-MM-DD.",
             "type": "string",
-            "example": "2024-02-01"
+            "example": "2024-02-04"
           },
           "userId": {
-            "description": "The ID of the User who created the entry",
+            "description": "The ID of the User who created the entry.",
             "type": "string",
-            "example": "65af5c7e8d3f3b1f2e3a7c9a"
+            "example": "67a210a28f7f42ba355eb221"
           },
           "entries": {
-            "description": "Array of records about water consumption",
+            "description": "Array of records about water consumption, consists of time in format YYYY-MM-DDTHH:mm and waterVolume.",
             "type": "array",
             "items": {
               "type": "object",
@@ -1284,12 +1409,12 @@
               ],
               "properties": {
                 "time": {
-                  "description": "Water consumption time in format YYYY-MM-DDTHH:MM",
+                  "description": "Water consumption time in format YYYY-MM-DDTHH:mm.",
                   "type": "string",
-                  "example": "2024-02-01T08:30"
+                  "example": "2024-02-04T15:30"
                 },
                 "waterVolume": {
-                  "description": "Volume of water drunk in milliliters",
+                  "description": "Volume of water drunk in milliliters.",
                   "type": "number",
                   "example": 250
                 }
@@ -1365,7 +1490,7 @@
                 },
                 "message": {
                   "type": "string",
-                  "example": "Server Error. Something went wrong"
+                  "example": "Server Error. Something went wrong."
                 }
               }
             }

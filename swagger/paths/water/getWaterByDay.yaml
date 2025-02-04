@@ -11,25 +11,7 @@ parameters:
     required: true
     schema:
       type: string
-      example: '2025-02-03'
-# requestBody:
-#   required: true
-#   content:
-#     application/json:
-#       schema:
-#         type: object
-#         required:
-#           - userId
-#           - date
-#         properties:
-#           userId:
-#             type: string
-#             example: '679f770240e2b0ff4b442974'
-#             description: 'User Id'
-#           date:
-#             type: string
-#             example: '2025-02-03'
-#             description: 'Date in the format YYYY-MM-DD for which the User receives all water portions'
+      example: '2025-02-04'
 responses:
   '200':
     description: 'Request successful. The server returns the object with waterRecord.'
@@ -46,10 +28,10 @@ responses:
                   example: '67a0d52a242782f7fdb53809'
                 date:
                   type: string
-                  example: '2025-02-03'
+                  example: '2025-02-04'
                 userId:
                   type: string
-                  example: '679b354048e50d740efa7684'
+                  example: '67a210a28f7f42ba355eb221'
                 entries:
                   type: array
                   items:
@@ -57,19 +39,19 @@ responses:
                     properties:
                       time:
                         type: string
-                        example: '2025-02-03T16:30'
+                        example: '2025-02-04T16:00'
                       waterVolume:
                         type: number
-                        example: 250
+                        example: 300
                       _id:
                         type: number
-                        example: '67a0d52a242782f7fdb5380a'
+                        example: '67a211b08f7f42ba355eb253'
             totalWater:
               type: number
-              example: 1500
+              example: 300
             percentage:
               type: string
-              example: '100.00%'
+              example: '20%'
   '400':
     description: 'Bad request. The server could not understand the request. Validation error.'
     content:

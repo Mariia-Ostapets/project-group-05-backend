@@ -6,33 +6,33 @@ properties:
   _id:
     description: 'Backend-generated unique identifier.'
     type: string
-    example: '679e59ee76bc89b649731a32'
+    example: '67a210a28f7f42ba355eb221'
   name:
-    description: 'User`s name. Should be at most 32 characters'
+    description: 'User`s name. Should be at most 32 characters.'
     type: string
-    example: 'John Doe'
+    example: 'Lady Gaga'
   email:
-    description: 'User`s email. Is required. Should be in format example@mail.com'
+    description: 'User`s email. Is required. Should be in format example@mail.com.'
     type: string
-    example: 'example@mail.com'
+    example: 'ladygaga@gmail.com'
   password:
-    description: 'User`s password. Is required. Should be at least 8 and at most 64 characters'
+    description: 'User`s password. Is required. Should be at least 8 and at most 64 characters.'
     type: string
-    example: '123456asd'
+    example: '1234567890'
   gender:
-    description: 'User`s gender. Should be be one of the suggested values'
+    description: 'User`s gender. Should be be one of the suggested values. Default value is female.'
     type: string
     enum: ['female', 'male']
     example: 'female'
   dailyNorm:
-    description: 'User`s daily norm of water. Should be at most 15000 ml. Default value is 1500 ml'
+    description: 'User`s daily norm of water. Should be at most 15000 ml. Default value is 1500 ml.'
     type: number
     example: 1500
   avatar:
     description: 'User`s avatar'
     type: string
     example: 'https://res.cloudinary.com/dhfwc4nmz/image/upload/v1738667492/ysf70wtw63hihtf14spo.avif'
-  # token:
-  #   description: 'User`s access token'
-  #   type: string
-  #   example: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiIxMjM0NTY3ODkwIiwidXNlcm5hbWUiOiJqb2huZG9lIiwiaWF0IjoxNjkyMjM4NDAwLCJleHAiOjE2OTIzMjQ4MDB9.f5e6b4b3d9e9a5b7c6d8e3b4f7c9a2d1e8f4g6h5i7j8k9l0m1n2o3p4q5r6s7t8'
+  token:
+    description: 'User`s access token'
+    type: string
+    example: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiIxMjM0NTY3ODkwIiwidXNlcm5hbWUiOiJqb2huZG9lIiwiaWF0IjoxNjkyMjM4NDAwLCJleHAiOjE2OTIzMjQ4MDB9.f5e6b4b3d9e9a5b7c6d8e3b4f7c9a2d1e8f4g6h5i7j8k9l0m1n2o3p4q5r6s7t8'

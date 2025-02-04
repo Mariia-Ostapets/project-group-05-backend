@@ -11,7 +11,7 @@ parameters:
     required: true
     schema:
       type: string
-      example: '67a1ead237b1d7c4cbf45e9a'
+      example: '67a211b08f7f42ba355eb253'
 requestBody:
   required: true
   content:
@@ -24,11 +24,11 @@ requestBody:
         properties:
           newTime:
             type: string
-            example: '2025-02-04T12:40'
-            description: 'Time in the format YYYY-MM-DDTHH:mm at which the User changes the waterVolume record'
+            example: '2025-02-04T16:00'
+            description: 'Time in the format YYYY-MM-DDTHH:mm at which the User changes the waterVolume record.'
           waterVolume:
-            type: string
-            example: '300'
+            type: number
+            example: 300
             description: 'Volume of a portion of water in milliliters'
 responses:
   '200':
@@ -40,13 +40,13 @@ responses:
           properties:
             _id:
               type: string
-              example: '67a1ead237b1d7c4cbf45e99'
+              example: '67a211838f7f42ba355eb247'
             date:
               type: string
               example: '2025-02-04'
             userId:
               type: string
-              example: '679b354048e50d740efa7684'
+              example: '67a210a28f7f42ba355eb221'
             entries:
               type: array
               items:
@@ -54,13 +54,13 @@ responses:
                 properties:
                   time:
                     type: string
-                    example: '2025-02-04T12:40'
+                    example: '2025-02-04T16:00'
                   waterVolume:
                     type: number
                     example: 300
                   _id:
                     type: number
-                    example: '67a1ead237b1d7c4cbf45e9a'
+                    example: '67a211b08f7f42ba355eb253'
   '400':
     description: 'Bad request. The server could not understand the request. Validation error.'
     content:

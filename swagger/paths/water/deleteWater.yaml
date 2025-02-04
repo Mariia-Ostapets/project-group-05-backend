@@ -11,7 +11,7 @@ parameters:
     required: true
     schema:
       type: string
-      example: '67a1ead237b1d7c4cbf45e9a'
+      example: '67a211b08f7f42ba355eb253'
 responses:
   '200':
     description: 'Request successful. A portion of water has been deleted. The server returns an object with updated water data.'
@@ -34,7 +34,7 @@ responses:
                   example: '2025-02-04'
                 userId:
                   type: string
-                  example: '679b354048e50d740efa7684'
+                  example: '67a210a28f7f42ba355eb221'
                 entries:
                   type: array
                   items:

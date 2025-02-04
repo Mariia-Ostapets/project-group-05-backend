@@ -15,13 +15,15 @@ requestBody:
         properties:
           email:
             type: string
-            example: 'example@gmail.com'
+            example: 'ladygaga@gmail.com'
           password:
             type: string
-            example: '123456asd'
+            minLength: 8
+            maxLength: 64
+            example: '1234567890'
 responses:
   '200':
-    description: 'Request successful. The server returns the user object and token.'
+    description: 'Request successful. The server returns the User object and token.'
     content:
       application/json:
         schema:
@@ -41,13 +43,13 @@ responses:
               properties:
                 _id:
                   type: string
-                  example: '679f770240e2b0ff4b442974'
+                  example: '67a210a28f7f42ba355eb221'
                 name:
                   type: string
-                  example: 'John Doe'
+                  example: 'Lady Gaga'
                 email:
                   type: string
-                  example: 'example@mail.com'
+                  example: 'ladygaga@gmail.com'
                 avatar:
                   type: string
                   example: 'https://res.cloudinary.com/dhfwc4nmz/image/upload/v1738667492/ysf70wtw63hihtf14spo.avif'

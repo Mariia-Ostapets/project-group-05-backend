@@ -18,11 +18,11 @@ requestBody:
         properties:
           userId:
             type: string
-            example: '679f770240e2b0ff4b442974'
+            example: '67a210a28f7f42ba355eb221'
             description: 'User Id'
           date:
             type: string
-            example: '2025-02-03'
+            example: '2025-02-04'
             description: 'Date of addition of water portion in format YYYY-MM-DD'
           entries:
             type: array
@@ -34,11 +34,11 @@ requestBody:
               properties:
                 time:
                   type: string
-                  example: '2024-02-01T08:30'
-                  description: 'Water consumption time in format YYYY-MM-DDTHH:MM'
+                  example: '2024-02-04T15:00'
+                  description: 'Water consumption time in format YYYY-MM-DDTHH:mm'
                 waterVolume:
                   type: number
-                  example: 250
+                  example: 400
                   description: 'Volume of water drunk in milliliters'
 responses:
   '201':
@@ -50,13 +50,13 @@ responses:
           properties:
             _id:
               type: string
-              example: '67a0d52a242782f7fdb53809'
+              example: '67a211838f7f42ba355eb247'
             date:
               type: string
-              example: '2025-02-03'
+              example: '2025-02-04'
             userId:
               type: string
-              example: '679b354048e50d740efa7684'
+              example: '67a210a28f7f42ba355eb221'
             entries:
               type: array
               items:
@@ -64,13 +64,13 @@ responses:
                 properties:
                   time:
                     type: string
-                    example: '2024-02-01T08:30'
+                    example: '2024-02-04T15:00'
                   waterVolume:
                     type: number
-                    example: 250
+                    example: 400
                   _id:
                     type: number
-                    example: '67a0d52a242782f7fdb5380a'
+                    example: '67a211b08f7f42ba355eb253'
   '400':
     description: 'Bad request. The server could not understand the request. Validation error.'
     content:

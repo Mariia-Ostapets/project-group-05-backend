@@ -41,22 +41,22 @@ responses:
               properties:
                 _id:
                   type: string
-                  example: '679f770240e2b0ff4b442974'
+                  example: '67a210a28f7f42ba355eb221'
                 name:
                   type: string
-                  example: 'John Doe'
+                  example: 'Lady Gaga'
                 email:
                   type: string
-                  example: 'example@mail.com'
+                  example: 'ladygaga@gmail.com'
                 gender:
                   type: string
-                  example: 'male'
+                  example: 'female'
                 dailyNorm:
                   type: number
                   example: 2000
                 avatar:
                   type: string
-                  example: 'https://res.cloudinary.com/dtfo6b7gi/image/upload/v1738226311/tzsd56ad…'
+                  example: 'https://res.cloudinary.com/dhfwc4nmz/image/upload/v1738667492/ysf70wtw63hihtf14spo.avif'
   '400':
     description: 'Bad request. The server could not understand the request. Validation error.'
     content:

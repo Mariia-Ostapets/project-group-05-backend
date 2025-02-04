@@ -5,15 +5,15 @@ required:
   - entries
 properties:
   date:
-    description: 'Recording date in format YYYY-MM-DD'
+    description: 'Recording date in format YYYY-MM-DD.'
     type: string
-    example: '2024-02-01'
+    example: '2024-02-04'
   userId:
-    description: 'The ID of the User who created the entry'
+    description: 'The ID of the User who created the entry.'
     type: string
-    example: '679b354048e50d740efa7684'
+    example: '67a210a28f7f42ba355eb221'
   entries:
-    description: 'Array of records about water consumption, consists of time in format YYYY-MM-DDTHH-MM and waterVolume'
+    description: 'Array of records about water consumption, consists of time in format YYYY-MM-DDTHH:mm and waterVolume.'
     type: array
     items:
       type: object
@@ -22,10 +22,10 @@ properties:
         - waterVolume
       properties:
         time:
-          description: 'Water consumption time in format YYYY-MM-DDTHH:MM'
+          description: 'Water consumption time in format YYYY-MM-DDTHH:mm.'
           type: string
-          example: '2024-02-01T08:30'
+          example: '2024-02-04T15:30'
         waterVolume:
-          description: 'Volume of water drunk in milliliters'
+          description: 'Volume of water drunk in milliliters.'
           type: number
           example: 250

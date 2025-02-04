@@ -15,13 +15,15 @@ requestBody:
         properties:
           email:
             type: string
-            example: 'example@gmail.com'
+            example: 'ladygaga@gmail.com'
           password:
             type: string
-            example: '123456asd'
+            minLength: 8
+            maxLength: 64
+            example: '1234567890'
 responses:
   '201':
-    description: 'Register as a new user. User data is written to the database with unique _id. The server returns nothing in response. A registered user needs to go through the login procedure in the app.'
+    description: 'Register as a new User. User data is written to the database with unique _id. The server returns nothing in response. A registered User needs to go through the login procedure in the app.'
   '400':
     description: 'Bad request. The server could not understand the request. Validation error.'
     content:
