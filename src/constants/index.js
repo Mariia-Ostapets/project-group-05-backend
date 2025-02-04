@@ -14,3 +14,6 @@ export const CLOUDINARY = {
 export const SWAGGER_PATH = path.join(process.cwd(), 'docs', 'swagger.json');
 
 export const emailRegexp = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+
+export const dateRegexp = /^\d{4}-\d{2}-\d{2}$/;
+export const dateTimeRegexp = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}$/;
