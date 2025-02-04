@@ -29,54 +29,99 @@ export const getWaterByDayController = async (req, res, next) => {
   try {
     const { _id: userId } = req.user;
     const { date } = req.params;
-    const { dailyNorm } = req.user;
 
     if (!date) {
       return res.status(400).json({ error: 'Date is required' });
     }
 
-    if (!dailyNorm || isNaN(dailyNorm) || dailyNorm <= 0) {
-      return res.status(400).json({ error: 'Valid dailyNorm is required' });
-    }
-
-    const waterRecord = await waterServices.getWaterByDay({ userId, date });
+    const { waterRecord, totalWater, dailyNorm } =
+      await waterServices.getWaterByDay(userId, date);
 
     if (!waterRecord) {
-      return res
-        .status(404)
-        .json({ error: 'No water entries found for this date' });
+      return res.status(200).json({
+        date: moment(date, 'YYYY-MM-DD').format('YYYY-MM-DD'),
+        dailyNorm: 'N/A',
+        totalWater: 0,
+        percentage: '0%',
+        entries: [],
+      });
     }
 
-    const totalWater = waterRecord.entries.reduce(
-      (sum, entry) => sum + entry.waterVolume,
-      0,
-    );
-
-    const percentage = ((totalWater / dailyNorm) * 100).toFixed(2);
+    const percentage = ((totalWater / dailyNorm) * 100).toFixed(0);
 
     res.status(200).json({
-      waterRecord,
+      date: moment(date, 'YYYY-MM-DD').format('YYYY-MM-DD'),
+      dailyNorm: `${(dailyNorm / 1000).toFixed(1)} L`,
       totalWater,
       percentage: `${percentage}%`,
+      entries: waterRecord.entries,
     });
   } catch (error) {
     next(error);
   }
 };
 
+// export const getWaterByMonthController = async (req, res, next) => {
+//   try {
+//     const { _id: userId } = req.user;
+//     const { year, month } = req.params;
+//     const { dailyNorm } = req.user;
+
+//     if (!year || !month) {
+//       return res.status(400).json({ error: 'Year and month are required' });
+//     }
+
+//     if (!dailyNorm || isNaN(dailyNorm) || dailyNorm <= 0) {
+//       return res.status(400).json({ error: 'Valid dailyNorm is required' });
+//     }
+
+//     const waterRecords = await waterServices.getWaterByMonth({
+//       userId,
+//       year,
+//       month,
+//     });
+
+//     if (!waterRecords || waterRecords.length === 0) {
+//       return res
+//         .status(404)
+//         .json({ error: 'No water entries found for this month' });
+//     }
+
+//     const formattedData = waterRecords.map((record) => {
+//       const totalWater = record.entries.reduce(
+//         (sum, entry) => sum + entry.waterVolume,
+//         0,
+//       );
+//       const percentage = ((totalWater / dailyNorm) * 100).toFixed(0);
+//       const entryCount = record.entries.length;
+
+//       return {
+//         date: `${moment(record.date, 'YYYY-MM-DD').date()}, ${moment(
+//           record.date,
+//           'YYYY-MM-DD',
+//         ).format('MMMM')}`,
+//         dailyNorma: `${(dailyNorm / 1000).toFixed(1)} L`,
+//         percentage: `${percentage}%`,
+//         entryCount,
+//       };
+//     });
+
+//     res.status(200).json(formattedData);
+//   } catch (error) {
+//     next(error);
+//   }
+// };
+
 export const getWaterByMonthController = async (req, res, next) => {
   try {
     const { _id: userId } = req.user;
-    const { year, month } = req.params;
-    const { dailyNorm } = req.user;
+    const { yearMonth } = req.params;
 
-    if (!year || !month) {
-      return res.status(400).json({ error: 'Year and month are required' });
+    if (!yearMonth || !/^\d{4}-\d{2}$/.test(yearMonth)) {
+      return res.status(400).json({ error: 'Invalid format. Use YYYY-MM' });
     }
 
-    if (!dailyNorm || isNaN(dailyNorm) || dailyNorm <= 0) {
-      return res.status(400).json({ error: 'Valid dailyNorm is required' });
-    }
+    const [year, month] = yearMonth.split('-');
 
     const waterRecords = await waterServices.getWaterByMonth({
       userId,
@@ -91,19 +136,15 @@ export const getWaterByMonthController = async (req, res, next) => {
     }
 
     const formattedData = waterRecords.map((record) => {
-      const totalWater = record.entries.reduce(
-        (sum, entry) => sum + entry.waterVolume,
-        0,
-      );
-      const percentage = ((totalWater / dailyNorm) * 100).toFixed(2);
+      const dailyNorm = record.dailyNorm || 1500;
+      const totalWater = record.totalWater || 0;
+      const percentage = ((totalWater / dailyNorm) * 100).toFixed(0);
       const entryCount = record.entries.length;
 
       return {
-        date: `${moment(record.date, 'YYYY-MM-DD').date()}, ${moment(
-          record.date,
-          'YYYY-MM-DD',
-        ).format('MMMM')}`,
-        dailyNorma: `${(dailyNorm / 1000).toFixed(1)} L`,
+        date: moment(record.date, 'YYYY-MM-DD').format('YYYY-MM-DD'),
+        dailyNorm: `${(dailyNorm / 1000).toFixed(1)} L`,
+        totalWater,
         percentage: `${percentage}%`,
         entryCount,
       };
@@ -114,6 +155,51 @@ export const getWaterByMonthController = async (req, res, next) => {
     next(error);
   }
 };
+
+// export const getWaterByMonthController = async (req, res, next) => {
+//   try {
+//     const { _id: userId, dailyNorm } = req.user;
+//     const { yearMonth } = req.params;
+
+//     if (!yearMonth) {
+//       return res.status(400).json({ error: 'Date parameter is required' });
+//     }
+
+//     const isValidDateFormat = /^\d{4}-\d{2}$/.test(yearMonth);
+//     if (!isValidDateFormat) {
+//       return res.status(400).json({ error: 'Invalid date format. Use YYYY-MM' });
+//     }
+
+//     const [year, month] = yearMonth.split('-');
+
+//     if (!dailyNorm || isNaN(dailyNorm) || dailyNorm <= 0) {
+//       return res.status(400).json({ error: 'Valid dailyNorm is required' });
+//     }
+
+//     const waterRecords = await waterServices.getWaterByMonth({ userId, year, month });
+
+//     if (!waterRecords || waterRecords.length === 0) {
+//       return res.status(404).json({ error: 'No water entries found for this month' });
+//     }
+
+//     const formattedData = waterRecords.map((record) => {
+//       const totalWater = record.entries.reduce((sum, entry) => sum + entry.waterVolume, 0);
+//       const percentage = Math.floor((totalWater / dailyNorm) * 100);
+//       const entryCount = record.entries.length;
+
+//       return {
+//         date: `${moment(record.date, 'YYYY-MM-DD').date()}, ${moment(record.date, 'YYYY-MM-DD').format('MMMM')}`,
+//         dailyNorma: `${(dailyNorm / 1000).toFixed(1)} L`,
+//         percentage: `${percentage}%`,
+//         entryCount,
+//       };
+//     });
+
+//     res.status(200).json(formattedData);
+//   } catch (error) {
+//     next(error);
+//   }
+// };
 
 export const addWaterController = async (req, res, next) => {
   try {
@@ -128,7 +214,7 @@ export const addWaterController = async (req, res, next) => {
 
     entries.forEach((entry) => {
       if (!entry.time || !entry.waterVolume) {
-        throw createError('Each entry must have time and waterVolume');
+        throw createError(400, 'Each entry must have time and waterVolume');
       }
     });
 
@@ -147,13 +233,21 @@ export const addWaterController = async (req, res, next) => {
 // export const updateWaterController = async (req, res, next) => {
 //   try {
 //     const { _id: userId } = req.user;
-//     const { date, time, newTime, waterVolume } = req.body;
+//     const { newTime, waterVolume } = req.body;
+//     const { entryId } = req.params;
 
-//     if (!date || !time || !newTime || !waterVolume) {
-//       return res.status(400).json({ error: 'Date, time, newTime, and waterVolume are required' });
+//     if (!entryId || !newTime || !waterVolume) {
+//       return res
+//         .status(400)
+//         .json({ error: 'EntryId, newTime, and waterVolume are required' });
 //     }
 
-//     const updatedWaterRecord = await waterServices.updateWater({ userId, date, time, newTime, waterVolume });
+//     const updatedWaterRecord = await waterServices.updateWater({
+//       userId,
+//       entryId,
+//       newTime,
+//       waterVolume,
+//     });
 
 //     if (!updatedWaterRecord) {
 //       return res.status(404).json({ error: 'Water entry not found' });
@@ -164,7 +258,6 @@ export const addWaterController = async (req, res, next) => {
 //     next(error);
 //   }
 // };
-
 export const updateWaterController = async (req, res, next) => {
   try {
     const { _id: userId } = req.user;
@@ -197,19 +290,25 @@ export const updateWaterController = async (req, res, next) => {
 // export const deleteWaterController = async (req, res, next) => {
 //   try {
 //     const { _id: userId } = req.user;
-//     const { date, time } = req.params;
+//     const { entryId } = req.params;
 
-//     if (!date || !time) {
-//       return res.status(400).json({ error: 'Date and time are required' });
+//     if (!entryId) {
+//       return res.status(400).json({ error: 'Entry ID is required' });
 //     }
 
-//     const updatedWaterRecord = await waterServices.deleteWater({ userId, date, time });
+//     const updatedWaterRecord = await waterServices.deleteWater({
+//       userId,
+//       entryId,
+//     });
 
 //     if (!updatedWaterRecord) {
 //       return res.status(404).json({ error: 'Water entry not found' });
 //     }
 
-//     res.status(200).json({ message: 'Water entry deleted successfully', updatedWaterRecord });
+//     res.status(200).json({
+//       message: 'Water entry deleted successfully',
+//       updatedWaterRecord,
+//     });
 //   } catch (error) {
 //     next(error);
 //   }
@@ -233,12 +332,10 @@ export const deleteWaterController = async (req, res, next) => {
       return res.status(404).json({ error: 'Water entry not found' });
     }
 
-    res
-      .status(200)
-      .json({
-        message: 'Water entry deleted successfully',
-        updatedWaterRecord,
-      });
+    res.status(200).json({
+      message: 'Water entry deleted successfully',
+      updatedWaterRecord,
+    });
   } catch (error) {
     next(error);
   }

@@ -29,6 +29,16 @@ const waterSchema = new Schema(
       ref: 'users',
       required: true,
     },
+    dailyNorm: {
+      type: Number,
+      required: true,
+      default: 1500
+    },
+    totalWater: {
+      type: Number,
+      required: true,
+      default: 0,
+    },
     entries: [waterEntrySchema],
   },
   {

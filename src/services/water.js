@@ -1,3 +1,5 @@
+import createHttpError from 'http-errors';
+import { UsersCollection } from '../db/models/user.js';
 import { WaterCollection } from '../db/models/water.js';
 
 // export const getWater = async ({ page = 1, perPage = 1 }) => {
@@ -8,15 +10,35 @@ import { WaterCollection } from '../db/models/water.js';
 
 // export const getWaterById = (id) => WaterCollection.findById(id);
 
-export const getWaterByDay = async ({ userId, date }) => {
+export const getWaterByDay = async (userId, date) => {
   const waterRecord = await WaterCollection.findOne({ userId, date });
 
-  return waterRecord || null;
+  if (!waterRecord) {
+    return null;
+  }
+
+  const { dailyNorm, totalWater, entries } = waterRecord;
+  const totalWaterCalculated =
+    totalWater || entries.reduce((sum, entry) => sum + entry.waterVolume, 0);
+
+  return { waterRecord, totalWater: totalWaterCalculated, dailyNorm };
 };
 
+// export const getWaterByMonth = async ({ userId, year, month }) => {
+//   const startDate = `${year}-${month.padStart(2, '0')}-01`;
+//   const endDate = `${year}-${month.padStart(2, '0')}-31`;
+
+//   const waterRecords = await WaterCollection.find({
+//     userId,
+//     date: { $gte: startDate, $lte: endDate },
+//   });
+
+//   return waterRecords;
+// };
+
 export const getWaterByMonth = async ({ userId, year, month }) => {
-  const startDate = `${year}-${month.padStart(2, '0')}-01`;
-  const endDate = `${year}-${month.padStart(2, '0')}-31`;
+  const startDate = `${year}-${month}-01`;
+  const endDate = `${year}-${month}-31`;
 
   const waterRecords = await WaterCollection.find({
     userId,
@@ -26,13 +48,41 @@ export const getWaterByMonth = async ({ userId, year, month }) => {
   return waterRecords;
 };
 
+// export const getWaterByMonth = async ({ userId, year, month }) => {
+//   const monthPattern = `${year}-${month}`;
+
+//   const waterRecords = await WaterCollection.find({
+//     userId,
+//     date: { $regex: `^${monthPattern}-\\d{2}$` },
+//   });
+
+//   return waterRecords;
+// };
+
 export const addWater = async ({ userId, date, entries }) => {
+  const user = await UsersCollection.findById(userId);
+  if (!user) {
+    throw createHttpError(404, 'User not found');
+  }
+
+  const dailyNorm = user.dailyNorm || 1500;
+
   let waterRecord = await WaterCollection.findOne({ userId, date });
 
   if (!waterRecord) {
-    waterRecord = new WaterCollection({ userId, date, entries });
+    waterRecord = new WaterCollection({
+      userId,
+      date,
+      dailyNorm,
+      entries,
+      totalWater: entries.reduce((sum, entry) => sum + entry.waterVolume, 0),
+    });
   } else {
     waterRecord.entries.push(...entries);
+    waterRecord.totalWater += entries.reduce(
+      (sum, entry) => sum + entry.waterVolume,
+      0,
+    );
   }
 
   await waterRecord.save();
@@ -41,26 +91,28 @@ export const addWater = async ({ userId, date, entries }) => {
 
 // export const updateWater = async ({
 //   userId,
-//   date,
-//   time,
+//   entryId,
 //   newTime,
 //   waterVolume,
 // }) => {
-//   const waterRecord = await WaterCollection.findOne({ userId, date });
+//   const waterRecord = await WaterCollection.findOne({
+//     userId,
+//     'entries._id': entryId,
+//   });
 
 //   if (!waterRecord) {
 //     return null;
 //   }
 
-//   const entryIndex = waterRecord.entries.findIndex(
-//     (entry) => entry.time === time,
+//   const entry = waterRecord.entries.find(
+//     (entry) => entry._id.toString() === entryId,
 //   );
-//   if (entryIndex === -1) {
+//   if (!entry) {
 //     return null;
 //   }
 
-//   waterRecord.entries[entryIndex].time = newTime;
-//   waterRecord.entries[entryIndex].waterVolume = waterVolume;
+//   entry.time = newTime;
+//   entry.waterVolume = waterVolume;
 
 //   await waterRecord.save();
 //   return waterRecord;
@@ -91,30 +143,30 @@ export const updateWater = async ({
   entry.time = newTime;
   entry.waterVolume = waterVolume;
 
+  const totalWater = waterRecord.entries.reduce(
+    (sum, entry) => sum + entry.waterVolume,
+    0,
+  );
+
+  waterRecord.totalWater = totalWater;
+
   await waterRecord.save();
   return waterRecord;
 };
 
-// export const deleteWater = async ({ userId, date, time }) => {
-//   const waterRecord = await WaterCollection.findOne({ userId, date });
+// export const deleteWater = async ({ userId, entryId }) => {
+//   const waterRecord = await WaterCollection.findOne({
+//     userId,
+//     'entries._id': entryId,
+//   });
 
 //   if (!waterRecord) {
 //     return null;
 //   }
 
-//   const entryIndex = waterRecord.entries.findIndex(
-//     (entry) => entry.time === time,
+//   waterRecord.entries = waterRecord.entries.filter(
+//     (entry) => entry._id.toString() !== entryId,
 //   );
-//   if (entryIndex === -1) {
-//     return null;
-//   }
-
-//   waterRecord.entries.splice(entryIndex, 1);
-
-//   if (waterRecord.entries.length === 0) {
-//     await WaterCollection.deleteOne({ userId, date });
-//     return { message: 'All water entries for this day were deleted' };
-//   }
 
 //   await waterRecord.save();
 //   return waterRecord;
@@ -133,6 +185,13 @@ export const deleteWater = async ({ userId, entryId }) => {
   waterRecord.entries = waterRecord.entries.filter(
     (entry) => entry._id.toString() !== entryId,
   );
+
+  const totalWater = waterRecord.entries.reduce(
+    (sum, entry) => sum + entry.waterVolume,
+    0,
+  );
+
+  waterRecord.totalWater = totalWater;
 
   await waterRecord.save();
   return waterRecord;

@@ -28,6 +28,7 @@ export const addWaterSchema = Joi.object({
 });
 
 
+
 // export const updateWaterSchema = Joi.object({
 //   date: Joi.string().pattern(dateRegexp).required().messages({
 //     'string.pattern.base': 'Date must be in format YYYY-MM-DD',
@@ -62,6 +63,3 @@ export const updateWaterSchema = Joi.object({
     "any.required": "WaterVolume is required",
   }),
 });
-
-
-
