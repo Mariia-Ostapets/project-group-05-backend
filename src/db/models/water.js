@@ -1,8 +1,6 @@
 import { model, Schema } from 'mongoose';
 import { handleSaveError, setUpdateSettings } from './hooks.js';
-
-const dateRegexp = /^\d{4}-\d{2}-\d{2}$/;
-const dateTimeRegexp = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}$/;
+import { dateRegexp, dateTimeRegexp } from '../../constants/index.js';
 
 const waterEntrySchema = new Schema({
   time: {
@@ -28,6 +26,16 @@ const waterSchema = new Schema(
       type: Schema.Types.ObjectId,
       ref: 'users',
       required: true,
+    },
+    dailyNorm: {
+      type: Number,
+      required: true,
+      default: 1500
+    },
+    totalWater: {
+      type: Number,
+      required: true,
+      default: 0,
     },
     entries: [waterEntrySchema],
   },
