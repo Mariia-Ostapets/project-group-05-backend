@@ -193,7 +193,7 @@
                         },
                         "avatar": {
                           "type": "string",
-                          "example": "https://res.cloudinary.com/dtfo6b7gi/image/upload/v1738226311/tzsd56ad…"
+                          "example": "https://res.cloudinary.com/dhfwc4nmz/image/upload/v1738667492/ysf70wtw63hihtf14spo.avif"
                         },
                         "gender": {
                           "type": "string",
@@ -321,7 +321,7 @@
                     },
                     "avatar": {
                       "type": "string",
-                      "example": "https://res.cloudinary.com/dtfo6b7gi/image/upload/v1738226311/tzsd56ad…"
+                      "example": "https://res.cloudinary.com/dhfwc4nmz/image/upload/v1738667492/ysf70wtw63hihtf14spo.avif"
                     }
                   }
                 }
@@ -346,7 +346,7 @@
           "User"
         ],
         "summary": "Update User's Data",
-        "operationId": "updateUSer",
+        "operationId": "updateUser",
         "description": "Partially or fully update the User data. Requires authentication.",
         "security": [
           {
@@ -356,7 +356,7 @@
         "requestBody": {
           "required": true,
           "content": {
-            "application/json": {
+            "multipart/form-data": {
               "schema": {
                 "type": "object",
                 "properties": {
@@ -392,7 +392,7 @@
                   "avatar": {
                     "type": "string",
                     "format": "uri",
-                    "example": "https://res.cloudinary.com/dtfo6b7gi/image/upload/v1738226311/tzsd56ad…"
+                    "example": "https://res.cloudinary.com/dhfwc4nmz/image/upload/v1738667492/ysf70wtw63hihtf14spo.avif"
                   }
                 }
               }
@@ -448,7 +448,7 @@
                         },
                         "avatar": {
                           "type": "string",
-                          "example": "https://res.cloudinary.com/dtfo6b7gi/image/upload/v1738226311/tzsd56ad…"
+                          "example": "https://res.cloudinary.com/dhfwc4nmz/image/upload/v1738667492/ysf70wtw63hihtf14spo.avif"
                         }
                       }
                     }
@@ -510,6 +510,129 @@
                 }
               }
             }
+          },
+          "500": {
+            "$ref": "#/components/responses/500"
+          }
+        }
+      }
+    },
+    "/user/update-water-rate": {
+      "patch": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Update User's Water Rate",
+        "operationId": "updateUserWaterRate",
+        "description": "Update only User daily norm of water. Requires authentication.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "dailyNorm": {
+                    "type": "number",
+                    "example": 2000
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Request successful. The server has responded as required. The server returns an object with updated user data.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "integer",
+                      "example": 200
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Successfully update info!"
+                    },
+                    "data": {
+                      "type": "object",
+                      "required": [
+                        "_id",
+                        "name",
+                        "email",
+                        "gender",
+                        "dailyNorm",
+                        "avatar"
+                      ],
+                      "properties": {
+                        "_id": {
+                          "type": "string",
+                          "example": "679f770240e2b0ff4b442974"
+                        },
+                        "name": {
+                          "type": "string",
+                          "example": "John Doe"
+                        },
+                        "email": {
+                          "type": "string",
+                          "example": "example@mail.com"
+                        },
+                        "gender": {
+                          "type": "string",
+                          "example": "male"
+                        },
+                        "dailyNorm": {
+                          "type": "number",
+                          "example": 2000
+                        },
+                        "avatar": {
+                          "type": "string",
+                          "example": "https://res.cloudinary.com/dtfo6b7gi/image/upload/v1738226311/tzsd56ad…"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request. The server could not understand the request. Validation error.",
+            "content": {
+              "application\\json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "status",
+                    "message"
+                  ],
+                  "properties": {
+                    "status": {
+                      "type": "integer",
+                      "example": 400
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Daily norma should be at least 1. Daily norma should be at most 15000."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/401"
+          },
+          "404": {
+            "$ref": "#/components/responses/404"
           },
           "500": {
             "$ref": "#/components/responses/500"
@@ -784,6 +907,285 @@
                     "message": {
                       "type": "string",
                       "example": "No water entries found for this date. Route not found."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "$ref": "#/components/responses/500"
+          }
+        }
+      }
+    },
+    "/water/{entryId}": {
+      "patch": {
+        "tags": [
+          "Water"
+        ],
+        "summary": "Update water",
+        "operationId": "updateWaterByDay",
+        "description": "Update portion of water by entryId of specific portion of water. Requires authentication.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "entryId",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "67a1ead237b1d7c4cbf45e9a"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "newTime",
+                  "waterVolume"
+                ],
+                "properties": {
+                  "newTime": {
+                    "type": "string",
+                    "example": "2025-02-04T12:40",
+                    "description": "Time in the format YYYY-MM-DDTHH:mm at which the User changes the waterVolume record"
+                  },
+                  "waterVolume": {
+                    "type": "string",
+                    "example": "300",
+                    "description": "Volume of a portion of water in milliliters"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Request successful. A portion of water has been changed. The server returns an object with updated water data.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "_id": {
+                      "type": "string",
+                      "example": "67a1ead237b1d7c4cbf45e99"
+                    },
+                    "date": {
+                      "type": "string",
+                      "example": "2025-02-04"
+                    },
+                    "userId": {
+                      "type": "string",
+                      "example": "679b354048e50d740efa7684"
+                    },
+                    "entries": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "time": {
+                            "type": "string",
+                            "example": "2025-02-04T12:40"
+                          },
+                          "waterVolume": {
+                            "type": "number",
+                            "example": 300
+                          },
+                          "_id": {
+                            "type": "number",
+                            "example": "67a1ead237b1d7c4cbf45e9a"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request. The server could not understand the request. Validation error.",
+            "content": {
+              "application\\json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "status",
+                    "message"
+                  ],
+                  "properties": {
+                    "status": {
+                      "type": "integer",
+                      "example": 400
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "EntryId, newTime, and waterVolume are required. Time must be in format YYYY-MM-DDTHH:mm. WaterVolume must be at least 1 ml. WaterVolume cannot exceed 5000 ml."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found error. Requested resource could not be found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "status",
+                    "message"
+                  ],
+                  "properties": {
+                    "status": {
+                      "type": "integer",
+                      "example": 404
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Water entry not found. Route not found."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "$ref": "#/components/responses/500"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Water"
+        ],
+        "summary": "Delete water",
+        "operationId": "deleteWater",
+        "description": "Delete portion of water by entryId of specific portion of water. Requires authentication.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "entryId",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "67a1ead237b1d7c4cbf45e9a"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Request successful. A portion of water has been deleted. The server returns an object with updated water data.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Water entry deleted successfully!"
+                    },
+                    "updatedWaterRecord": {
+                      "type": "object",
+                      "properties": {
+                        "_id": {
+                          "type": "string",
+                          "example": "67a202229c65c88f8e73f8cf"
+                        },
+                        "date": {
+                          "type": "string",
+                          "example": "2025-02-04"
+                        },
+                        "userId": {
+                          "type": "string",
+                          "example": "679b354048e50d740efa7684"
+                        },
+                        "entries": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "time": {
+                                "type": "string",
+                                "example": "2025-02-04T14:00"
+                              },
+                              "waterVolume": {
+                                "type": "number",
+                                "example": 250
+                              },
+                              "_id": {
+                                "type": "number",
+                                "example": "67a202229c65c88f8e73f8d0"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request. The server could not understand the request. Validation error.",
+            "content": {
+              "application\\json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "status",
+                    "message"
+                  ],
+                  "properties": {
+                    "status": {
+                      "type": "integer",
+                      "example": 400
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Entry ID is required."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found error. Requested resource could not be found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "status",
+                    "message"
+                  ],
+                  "properties": {
+                    "status": {
+                      "type": "integer",
+                      "example": 404
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Water entry not found. Route not found."
                     }
                   }
                 }

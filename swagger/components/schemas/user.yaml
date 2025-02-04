@@ -31,7 +31,7 @@ properties:
   avatar:
     description: 'User`s avatar'
     type: string
-    example: 'https://res.cloudinary.com/dtfo6b7gi/image/upload/v1738226311/tzsd56ad…'
+    example: 'https://res.cloudinary.com/dhfwc4nmz/image/upload/v1738667492/ysf70wtw63hihtf14spo.avif'
   # token:
   #   description: 'User`s access token'
   #   type: string

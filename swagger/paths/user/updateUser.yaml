@@ -1,0 +1,121 @@
+tags:
+  - User
+summary: Update User's Data
+operationId: updateUser
+description: 'Partially or fully update the User data. Requires authentication.'
+security:
+  - bearerAuth: []
+requestBody:
+  required: true
+  content:
+    multipart/form-data:
+      schema:
+        type: object
+        properties:
+          email:
+            type: string
+            format: email
+            example: 'example@gmail.com'
+          password:
+            type: string
+            example: '123456asd'
+            description: 'Current password required for password change'
+          newPassword:
+            type: string
+            minLength: 8
+            maxLength: 64
+            example: 'newSecureP@ss123'
+            description: 'New password to replace the old one'
+          name:
+            type: string
+            example: 'John Doe'
+          gender:
+            type: string
+            example: 'male'
+          dailyNorm:
+            type: number
+            example: 1500
+          avatar:
+            type: string
+            format: uri
+            example: 'https://res.cloudinary.com/dhfwc4nmz/image/upload/v1738667492/ysf70wtw63hihtf14spo.avif'
+responses:
+  '200':
+    description: 'Request successful. The server has responded as required. The server returns an object with updated user data.'
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            status:
+              type: integer
+              example: 200
+            message:
+              type: string
+              example: 'Successfully update info!'
+            data:
+              type: object
+              required:
+                - _id
+                - name
+                - email
+                - gender
+                - dailyNorm
+                - avatar
+              properties:
+                _id:
+                  type: string
+                  example: '679f770240e2b0ff4b442974'
+                name:
+                  type: string
+                  example: 'John Doe'
+                email:
+                  type: string
+                  example: 'example@mail.com'
+                gender:
+                  type: string
+                  example: 'male'
+                dailyNorm:
+                  type: number
+                  example: 1500
+                avatar:
+                  type: string
+                  example: 'https://res.cloudinary.com/dhfwc4nmz/image/upload/v1738667492/ysf70wtw63hihtf14spo.avif'
+  '400':
+    description: 'Bad request. The server could not understand the request. Validation error.'
+    content:
+      application\json:
+        schema:
+          type: object
+          required:
+            - status
+            - message
+          properties:
+            status:
+              type: integer
+              example: 400
+            message:
+              type: string
+              example: Email should be in format example@mail.com. Password should be at least 8 characters. Password should be at most 64 characters. Name should be at most 32 characters. Gender must be either "male" or "female". Daily norma should be at least 1. Daily norma should be at most 15000.
+  '401':
+    $ref: '../../components/responses/401.yaml'
+  '404':
+    $ref: '../../components/responses/404.yaml'
+  '409':
+    description: 'Conflict Error. The request conflicts with the current state of the server.'
+    content:
+      application\json:
+        schema:
+          type: object
+          required:
+            - status
+            - message
+          properties:
+            status:
+              type: integer
+              example: 409
+            message:
+              type: string
+              example: 'Email in use.'
+  '500':
+    $ref: '../../components/responses/500.yaml'

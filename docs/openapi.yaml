@@ -28,16 +28,24 @@ paths:
       $ref: ../swagger/paths/auth/logout.yaml
   /user/current:
     get:
-      $ref: ../swagger/paths/user/current.yaml
+      $ref: ../swagger/paths/user/currentUser.yaml
   /user/update:
     patch:
-      $ref: ../swagger/paths/user/update.yaml
+      $ref: ../swagger/paths/user/updateUser.yaml
+  /user/update-water-rate:
+    patch:
+      $ref: ../swagger/paths/user/updateWaterRate.yaml
   /water:
     post:
       $ref: ../swagger/paths/water/addWater.yaml
   /water/today/{date}:
     get:
       $ref: ../swagger/paths/water/getWaterByDay.yaml
+  /water/{entryId}:
+    patch:
+      $ref: ../swagger/paths/water/updateWater.yaml
+    delete:
+      $ref: ../swagger/paths/water/deleteWater.yaml
 components:
   securitySchemes:
     bearerAuth:
