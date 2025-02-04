@@ -2,6 +2,7 @@ import { Router } from 'express';
 import {
   changeEmailAndPasswordUserSchema,
   changeDailyNorm,
+  changeAvatar,
 } from '../validation/auth.js';
 import { validateBody } from '../middlewares/validateBody.js';
 import { ctrlWrapper } from '../utils/ctrlWrapper.js';
@@ -15,9 +16,16 @@ userRouter.get('/current', checkToken, ctrlWrapper(userController.refreshUser));
 
 userRouter.patch(
   '/update',
-  upload.single('avatar'),
   checkToken,
   validateBody(changeEmailAndPasswordUserSchema),
+  ctrlWrapper(userController.patchUser),
+);
+
+userRouter.patch(
+  '/update-avatar',
+  upload.single('avatar'),
+  checkToken,
+  validateBody(changeAvatar),
   ctrlWrapper(userController.patchUser),
 );
 

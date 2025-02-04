@@ -35,7 +35,6 @@ export const changeEmailAndPasswordUserSchema = Joi.object({
     'number.min': 'Daily norma should be at least 1',
     'number.max': 'Daily norma should be at most 15000',
   }),
-  avatar: Joi.string(),
   token: Joi.string(),
 });
 
@@ -44,4 +43,8 @@ export const changeDailyNorm = Joi.object({
     'number.min': 'Daily norma should be at least 1',
     'number.max': 'Daily norma should be at most 15000',
   }),
+});
+
+export const changeAvatar = Joi.object({
+  avatar: Joi.string(),
 });
