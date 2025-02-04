@@ -14,17 +14,16 @@ waterRouter.use(checkToken);
 
 // waterRouter.get('/:id', isValidId, ctrlWrapper(waterController.getWaterByIdController));
 
-waterRouter.get('/today/:date', ctrlWrapper(waterController.getWaterByDayController));
+waterRouter.get('/:date', ctrlWrapper(waterController.getWaterByDayController));
 
 waterRouter.get('/:year/:month', ctrlWrapper(waterController.getWaterByMonthController));
 
+// waterRouter.get('/:yearMonth', ctrlWrapper(waterController.getWaterByMonthController));
+
 waterRouter.post('/', validateBody(addWaterSchema), ctrlWrapper(waterController.addWaterController));
 
-// waterRouter.patch('/:date/:time', validateBody(updateWaterSchema), ctrlWrapper(waterController.updateWaterController));
 waterRouter.patch('/:entryId', validateBody(updateWaterSchema), ctrlWrapper(waterController.updateWaterController));
 
-
-// waterRouter.delete('/:date/:time', ctrlWrapper(waterController.deleteWaterController));
 waterRouter.delete('/:entryId', ctrlWrapper(waterController.deleteWaterController));
 
 export default waterRouter;
