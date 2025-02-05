@@ -14,44 +14,38 @@ parameters:
       example: '2025-02-04'
 responses:
   '200':
-    description: 'Request successful. The server returns the object with waterRecord.'
+    description: 'Request successful. The server returns the object with information about water.'
     content:
       application/json:
         schema:
           type: object
           properties:
-            waterRecord:
-              type: object
-              properties:
-                _id:
-                  type: string
-                  example: '67a0d52a242782f7fdb53809'
-                date:
-                  type: string
-                  example: '2025-02-04'
-                userId:
-                  type: string
-                  example: '67a210a28f7f42ba355eb221'
-                entries:
-                  type: array
-                  items:
-                    type: object
-                    properties:
-                      time:
-                        type: string
-                        example: '2025-02-04T16:00'
-                      waterVolume:
-                        type: number
-                        example: 300
-                      _id:
-                        type: number
-                        example: '67a211b08f7f42ba355eb253'
+            date:
+              type: string
+              example: '2025-02-04'
+            dailyNorm:
+              type: number
+              example: 1500
             totalWater:
               type: number
-              example: 300
+              example: 750
             percentage:
               type: string
-              example: '20%'
+              example: '50%'
+            entries:
+              type: array
+              items:
+                type: object
+                properties:
+                  time:
+                    type: string
+                    example: '2025-02-04T16:00'
+                  waterVolume:
+                    type: number
+                    example: 750
+                  _id:
+                    type: number
+                    example: '67a211b08f7f42ba355eb253'
   '400':
     description: 'Bad request. The server could not understand the request. Validation error.'
     content:
@@ -67,7 +61,9 @@ responses:
               example: 400
             message:
               type: string
-              example: Date is required. Valid dailyNorm is required.
+              example: Date is required.
+  '401':
+    $ref: '../../components/responses/401.yaml'
   '404':
     description: Not found error. Requested resource could not be found.
     content:

@@ -65,6 +65,8 @@ responses:
             message:
               type: string
               example: Entry ID is required.
+  '401':
+    $ref: '../../components/responses/401.yaml'
   '404':
     description: Not found error. Requested resource could not be found.
     content:

@@ -1,26 +1,25 @@
 tags:
   - User
-summary: Update User`s Water Rate
-operationId: updateUserWaterRate
-description: 'Update only User`s daily norm of water. Requires authentication.'
+summary: Update User`s avatar
+operationId: updateUserAvatar
+description: 'Update only User`s avatar. Requires authentication.'
 security:
   - bearerAuth: []
 requestBody:
   required: true
   content:
-    application/json:
+    multipart/form-data:
       schema:
         type: object
         properties:
-          date:
+          avatar:
             type: string
-            example: '2025-02-04'
-          dailyNorm:
-            type: number
-            example: 2000
+            format: binary
+            description: 'User`s avatar'
+            example: 'https://res.cloudinary.com/dhfwc4nmz/image/upload/v1738667492/ysf70wtw63hihtf14spo.avif'
 responses:
   '200':
-    description: 'Request successful. The server has responded as required. The server returns an object with updated User`s data.'
+    description: 'Request successful. The server has responded as required. The server returns an object with updated user data.'
     content:
       application/json:
         schema:
@@ -75,7 +74,7 @@ responses:
               example: 400
             message:
               type: string
-              example: Daily norma is required. Daily norma should be at least 1. Daily norma should be at most 15000. Date is required. Date must be in format YYYY-MM-DD.
+              example: Avatar is not allowed to be empty.
   '401':
     $ref: '../../components/responses/401.yaml'
   '404':

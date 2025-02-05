@@ -54,10 +54,9 @@ export const getWaterByDayController = async (req, res, next) => {
       return res.status(400).json({ error: 'Date is required' });
     }
 
-    const { waterRecord, totalWater, dailyNorm } =
-      await waterServices.getWaterByDay(userId, date);
+    const waterData = await waterServices.getWaterByDay(userId, date);
 
-    if (!waterRecord) {
+    if (!waterData) {
       return res.status(200).json({
         date: moment(date, 'YYYY-MM-DD').format('YYYY-MM-DD'),
         dailyNorm: 'N/A',
@@ -66,6 +65,19 @@ export const getWaterByDayController = async (req, res, next) => {
         entries: [],
       });
     }
+
+    const { waterRecord, totalWater, dailyNorm } =
+      await waterServices.getWaterByDay(userId, date);
+
+    // if (!waterRecord) {
+    //   return res.status(200).json({
+    //     date: moment(date, 'YYYY-MM-DD').format('YYYY-MM-DD'),
+    //     dailyNorm: 'N/A',
+    //     totalWater: 0,
+    //     percentage: '0%',
+    //     entries: [],
+    //   });
+    // }
 
     const percentage = ((totalWater / dailyNorm) * 100).toFixed(0);
 

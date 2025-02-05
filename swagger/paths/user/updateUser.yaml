@@ -2,13 +2,13 @@ tags:
   - User
 summary: Update User's Data
 operationId: updateUser
-description: 'Partially or fully update the User data. Requires authentication.'
+description: 'Partially or fully update the User data, except avatar. Avatars need to be added or updated in a separate route. Requires authentication.'
 security:
   - bearerAuth: []
 requestBody:
   required: true
   content:
-    multipart/form-data:
+    application/json:
       schema:
         type: object
         properties:
@@ -36,14 +36,9 @@ requestBody:
             type: number
             example: 1500
             description: 'User`s daily norm of water. Should be at most 15000 ml. Default value is 2000 ml.'
-          avatar:
-            type: string
-            format: uri
-            example: 'https://res.cloudinary.com/dhfwc4nmz/image/upload/v1738667492/ysf70wtw63hihtf14spo.avif'
-            description: 'User`s avatar'
 responses:
   '200':
-    description: 'Request successful. The server has responded as required. The server returns an object with updated User data.'
+    description: 'Request successful. The server has responded as required. The server returns an object with updated User`s data.'
     content:
       application/json:
         schema:

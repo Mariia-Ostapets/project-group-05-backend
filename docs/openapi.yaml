@@ -32,16 +32,19 @@ paths:
   /user/update:
     patch:
       $ref: ../swagger/paths/user/updateUser.yaml
+  /user/update-avatar:
+    patch:
+      $ref: ../swagger/paths/user/updateAvatar.yaml
   /user/update-water-rate:
     patch:
       $ref: ../swagger/paths/user/updateWaterRate.yaml
   /water:
     post:
       $ref: ../swagger/paths/water/addWater.yaml
-  /water/today/{date}:
+  /water/day/{date}:
     get:
       $ref: ../swagger/paths/water/getWaterByDay.yaml
-  /water/{year}/{month}:
+  /water/month/{yearMonth}:
     get:
       $ref: ../swagger/paths/water/getWaterByMonth.yaml
   /water/{entryId}:

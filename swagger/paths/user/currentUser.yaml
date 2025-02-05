@@ -1,13 +1,13 @@
 tags:
   - User
-summary: Get User data
+summary: Get User`s data
 operationId: Current
-description: 'Get all User data. Requires authentication.'
+description: 'Get all User`s data. Requires authentication.'
 security:
   - bearerAuth: []
 responses:
   '200':
-    description: 'Get all User data'
+    description: 'Get all User`s data'
     content:
       application/json:
         schema:
