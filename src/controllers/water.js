@@ -34,7 +34,11 @@ export const updateDailyNormController = async (req, res, next) => {
       return res.status(400).json({ error: 'Date and dailyNorm are required' });
     }
 
-    const updatedWaterRecord = await waterServices.updateDailyNorm({ userId, date, dailyNorm });
+    const updatedWaterRecord = await waterServices.updateDailyNorm({
+      userId,
+      date,
+      dailyNorm,
+    });
     res.status(200).json(updatedWaterRecord);
   } catch (error) {
     next(error);
@@ -50,10 +54,11 @@ export const getWaterByDayController = async (req, res, next) => {
       return res.status(400).json({ error: 'Date is required' });
     }
 
-    const { waterRecord, totalWater, dailyNorm } = await waterServices.getWaterByDay(userId, date);
+    const { waterRecord, totalWater, dailyNorm } =
+      await waterServices.getWaterByDay(userId, date);
 
     if (!waterRecord) {
-            return res.status(200).json({
+      return res.status(200).json({
         date: moment(date, 'YYYY-MM-DD').format('YYYY-MM-DD'),
         dailyNorm: 'N/A',
         totalWater: 0,
@@ -79,11 +84,19 @@ export const getWaterByDayController = async (req, res, next) => {
 export const getWaterByMonthController = async (req, res, next) => {
   try {
     const { _id: userId } = req.user;
-    const { year, month } = req.params;
+    const { yearMonth } = req.params;
 
-    if (!year || !month) {
-      return res.status(400).json({ error: 'Year and month are required' });
+    if (!yearMonth) {
+      return res.status(400).json({ error: 'Missing yearMonth parameter' });
     }
+
+    if (!/^\d{4}-\d{2}$/.test(yearMonth)) {
+      return res
+        .status(400)
+        .json({ error: 'Invalid date format. Expected YYYY-MM' });
+    }
+
+    const [year, month] = yearMonth.split('-');
 
     const waterRecords = await waterServices.getWaterByMonth({
       userId,
@@ -196,12 +209,10 @@ export const deleteWaterController = async (req, res, next) => {
       return res.status(404).json({ error: 'Water entry not found' });
     }
 
-    res
-      .status(200)
-      .json({
-        message: 'Water entry deleted successfully',
-        updatedWaterRecord,
-      });
+    res.status(200).json({
+      message: 'Water entry deleted successfully',
+      updatedWaterRecord,
+    });
   } catch (error) {
     next(error);
   }
