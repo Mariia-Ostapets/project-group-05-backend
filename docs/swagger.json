@@ -321,7 +321,7 @@
                     },
                     "dailyNorm": {
                       "type": "number",
-                      "example": "1500"
+                      "example": "2000"
                     },
                     "avatar": {
                       "type": "string",
@@ -392,7 +392,7 @@
                   "dailyNorm": {
                     "type": "number",
                     "example": 1500,
-                    "description": "User`s daily norm of water. Should be at most 15000 ml. Default value is 1500 ml."
+                    "description": "User`s daily norm of water. Should be at most 15000 ml. Default value is 2000 ml."
                   },
                   "avatar": {
                     "type": "string",
@@ -1369,9 +1369,9 @@
             "example": "female"
           },
           "dailyNorm": {
-            "description": "User`s daily norm of water. Should be at most 15000 ml. Default value is 1500 ml.",
+            "description": "User`s daily norm of water. Should be at most 15000 ml. Default value is 2000 ml.",
             "type": "number",
-            "example": 1500
+            "example": 2000
           },
           "avatar": {
             "description": "User`s avatar",

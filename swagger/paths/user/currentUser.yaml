@@ -29,7 +29,7 @@ responses:
               example: 'female'
             dailyNorm:
               type: number
-              example: '1500'
+              example: '2000'
             avatar:
               type: string
               example: 'https://res.cloudinary.com/dhfwc4nmz/image/upload/v1738667492/ysf70wtw63hihtf14spo.avif'
