@@ -29,9 +29,6 @@ export const updateDailyNormController = async (req, res, next) => {
   try {
     const { _id: userId } = req.user;
     const { date, dailyNorm } = req.body;
-    // console.log(`userId: ${userId}`);
-    // console.log(`date: ${date}`);
-    // console.log(`dailyNorm: ${dailyNorm}`);
 
     if (!date || !dailyNorm) {
       return res.status(400).json({ error: 'Date and dailyNorm are required' });
