@@ -12,4 +12,4 @@ content:
           example: 500
         message:
           type: string
-          example: Server Error. Something went wrong
+          example: Server Error. Something went wrong.

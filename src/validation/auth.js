@@ -40,12 +40,13 @@ export const changeEmailAndPasswordUserSchema = Joi.object({
 
 export const changeDailyNorm = Joi.object({
   date: Joi.string().pattern(dateRegexp).required().messages({
-      'string.pattern.base': 'Date must be in format YYYY-MM-DD',
-      'any.required': 'Date is required',
-    }),
-  dailyNorm: Joi.number().integer().min(1).max(15000).messages({
+    'string.pattern.base': 'Date must be in format YYYY-MM-DD',
+    'any.required': 'Date is required',
+  }),
+  dailyNorm: Joi.number().integer().min(1).max(15000).required().messages({
     'number.min': 'Daily norma should be at least 1',
     'number.max': 'Daily norma should be at most 15000',
+    'any.required': 'Daily norma is required',
   }),
 });
 
