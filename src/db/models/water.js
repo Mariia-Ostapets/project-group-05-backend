@@ -30,7 +30,7 @@ const waterSchema = new Schema(
     dailyNorm: {
       type: Number,
       required: true,
-      default: 1500
+      default: 2000
     },
     totalWater: {
       type: Number,

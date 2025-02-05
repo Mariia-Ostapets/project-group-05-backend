@@ -14,14 +14,19 @@ waterRouter.use(checkToken);
 
 // waterRouter.get('/:id', isValidId, ctrlWrapper(waterController.getWaterByIdController));
 
-waterRouter.get('/:date', ctrlWrapper(waterController.getWaterByDayController));
-
 waterRouter.get(
-  '/:year/:month',
-  ctrlWrapper(waterController.getWaterByMonthController),
+  '/day/:date',
+  ctrlWrapper(waterController.getWaterByDayController),
 );
 
+// waterRouter.get('/:year/:month', ctrlWrapper(waterController.getWaterByMonthController));
+
 // waterRouter.get('/:yearMonth', ctrlWrapper(waterController.getWaterByMonthController));
+
+waterRouter.get(
+  '/month/:yearMonth',
+  ctrlWrapper(waterController.getWaterByMonthController),
+);
 
 waterRouter.post(
   '/',

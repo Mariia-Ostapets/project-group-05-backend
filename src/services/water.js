@@ -57,6 +57,10 @@ export const getWaterByDay = async (userId, date) => {
 };
 
 export const getWaterByMonth = async ({ userId, year, month }) => {
+  if (!userId || !year || !month) {
+    throw new Error('Missing required parameters');
+  }
+
   const startDate = `${year}-${month}-01`;
   const endDate = `${year}-${month}-31`;
 
@@ -65,7 +69,7 @@ export const getWaterByMonth = async ({ userId, year, month }) => {
     date: { $gte: startDate, $lte: endDate },
   });
 
-  return waterRecords;
+  return waterRecords.length ? waterRecords : null;
 };
 
 export const addWater = async ({ userId, date, entries }) => {
@@ -74,7 +78,7 @@ export const addWater = async ({ userId, date, entries }) => {
     throw createHttpError(404, 'User not found');
   }
 
-  const dailyNorm = user.dailyNorm || 1500;
+  const dailyNorm = user.dailyNorm || 2000;
 
   let waterRecord = await WaterCollection.findOne({ userId, date });
 
@@ -83,8 +87,8 @@ export const addWater = async ({ userId, date, entries }) => {
       userId,
       date,
       dailyNorm,
-      entries,
       totalWater: entries.reduce((sum, entry) => sum + entry.waterVolume, 0),
+      entries,
     });
   } else {
     waterRecord.entries.push(...entries);
