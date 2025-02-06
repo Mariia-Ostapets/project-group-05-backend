@@ -1,29 +1,5 @@
-import createError from 'http-errors';
 import * as waterServices from '../services/water.js';
-// import { parsePaginationParams } from '../utils/parsePaginationParams.js';
-// import { parseFilterParams } from '../utils/parseFilterParams.js';
 import moment from 'moment';
-
-// export const getWaterController = async (req, res) => {
-//   const { page, perPage } = parsePaginationParams(req.query);
-//   const filter = parseFilterParams(req.query);
-
-//   filter.userId = req.user._id;
-
-//   const data = await waterServices.getWater({ page, perPage });
-//   res.json({ data });
-// };
-
-// export const getWaterByIdController = async (req, res) => {
-//   const { _id: userId } = req.user;
-//   const { id: _id } = req.params;
-//   const data = await waterServices.getWaterById(_id, userId);
-
-//   if (!data) {
-//     throw createError(404, 'Not found');
-//   }
-//   res.json(data);
-// };
 
 export const updateDailyNormController = async (req, res, next) => {
   try {
@@ -68,16 +44,6 @@ export const getWaterByDayController = async (req, res, next) => {
 
     const { waterRecord, totalWater, dailyNorm } =
       await waterServices.getWaterByDay(userId, date);
-
-    // if (!waterRecord) {
-    //   return res.status(200).json({
-    //     date: moment(date, 'YYYY-MM-DD').format('YYYY-MM-DD'),
-    //     dailyNorm: 'N/A',
-    //     totalWater: 0,
-    //     percentage: '0%',
-    //     entries: [],
-    //   });
-    // }
 
     const percentage = ((totalWater / dailyNorm) * 100).toFixed(0);
 
@@ -127,7 +93,7 @@ export const getWaterByMonthController = async (req, res, next) => {
       const dailyNorm = record.dailyNorm;
       const percentage = ((totalWater / dailyNorm) * 100).toFixed(0);
       const entryCount = record.entries.length;
-
+      const entries = record.entries;
       return {
         date: `${moment(record.date, 'YYYY-MM-DD').date()}, ${moment(
           record.date,
@@ -136,6 +102,7 @@ export const getWaterByMonthController = async (req, res, next) => {
         dailyNorma: `${(dailyNorm / 1000).toFixed(1)} L`,
         percentage: `${percentage}%`,
         entryCount,
+        entries,
       };
     });
 
@@ -148,24 +115,18 @@ export const getWaterByMonthController = async (req, res, next) => {
 export const addWaterController = async (req, res, next) => {
   try {
     const { _id: userId } = req.user;
-    const { date, entries } = req.body;
+    const { time, waterVolume } = req.body;
 
-    if (!date || !entries || !Array.isArray(entries) || entries.length === 0) {
+    if (!time || !waterVolume) {
       return res
         .status(400)
-        .json({ error: 'Date and entries array are required' });
+        .json({ error: 'Time and waterVolume are required' });
     }
-
-    entries.forEach((entry) => {
-      if (!entry.time || !entry.waterVolume) {
-        throw createError('Each entry must have time and waterVolume');
-      }
-    });
 
     const updatedWaterRecord = await waterServices.addWater({
       userId,
-      date,
-      entries,
+      time,
+      waterVolume,
     });
 
     res.status(201).json(updatedWaterRecord);
