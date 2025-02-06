@@ -10,15 +10,15 @@ export const updateDailyNormController = async (req, res, next) => {
       return res.status(400).json({ error: 'Date and dailyNorm are required' });
     }
 
-    const updatedWaterRecord = await waterServices.updateDailyNorm({
+    await waterServices.updateDailyNorm({
       userId,
       date,
       dailyNorm,
     });
-    res.status(200).json(updatedWaterRecord);
   } catch (error) {
     next(error);
   }
+  next();
 };
 
 export const getWaterByDayController = async (req, res, next) => {
