@@ -47,6 +47,12 @@ responses:
             userId:
               type: string
               example: '67a210a28f7f42ba355eb221'
+            dailyNorm:
+              type: number
+              example: 1500
+            totalWater:
+              type: number
+              example: 300
             entries:
               type: array
               items:
@@ -76,7 +82,7 @@ responses:
               example: 400
             message:
               type: string
-              example: EntryId, newTime, and waterVolume are required. Time must be in format YYYY-MM-DDTHH:mm. WaterVolume must be at least 1 ml. WaterVolume cannot exceed 5000 ml.
+              example: EntryId, newTime, and waterVolume are required. Entry ID is required. Time is required. Time must be in format YYYY-MM-DDTHH:mm. WaterVolume must be at least 1 ml. WaterVolume cannot exceed 5000 ml.
   '401':
     $ref: '../../components/responses/401.yaml'
   '404':

@@ -401,7 +401,7 @@
         },
         "responses": {
           "200": {
-            "description": "Request successful. The server has responded as required. The server returns an object with updated User data.",
+            "description": "Request successful. The server has responded as required. The server returns an object with updated User`s data.",
             "content": {
               "application/json": {
                 "schema": {
@@ -677,7 +677,7 @@
         },
         "responses": {
           "200": {
-            "description": "Request successful. The server has responded as required. The server returns an object with updated user data.",
+            "description": "Request successful. The server has responded as required. The server returns an object with updated User`s data.",
             "content": {
               "application/json": {
                 "schema": {
@@ -789,42 +789,19 @@
               "schema": {
                 "type": "object",
                 "required": [
-                  "userId",
-                  "date",
-                  "entries"
+                  "time",
+                  "waterVolume"
                 ],
                 "properties": {
-                  "userId": {
+                  "time": {
                     "type": "string",
-                    "example": "67a210a28f7f42ba355eb221",
-                    "description": "User`s Id"
+                    "example": "2024-02-04T15:00",
+                    "description": "Water consumption time in format YYYY-MM-DDTHH:mm"
                   },
-                  "date": {
-                    "type": "string",
-                    "example": "2025-02-04",
-                    "description": "Date of addition of water portion in format YYYY-MM-DD"
-                  },
-                  "entries": {
-                    "type": "array",
-                    "items": {
-                      "type": "object",
-                      "required": [
-                        "time",
-                        "waterVolume"
-                      ],
-                      "properties": {
-                        "time": {
-                          "type": "string",
-                          "example": "2024-02-04T15:00",
-                          "description": "Water consumption time in format YYYY-MM-DDTHH:mm"
-                        },
-                        "waterVolume": {
-                          "type": "number",
-                          "example": 400,
-                          "description": "Volume of water drunk in milliliters"
-                        }
-                      }
-                    }
+                  "waterVolume": {
+                    "type": "number",
+                    "example": 400,
+                    "description": "Volume of water drunk in milliliters"
                   }
                 }
               }
@@ -833,7 +810,7 @@
         },
         "responses": {
           "201": {
-            "description": "Successfully Created. A portion of water has been added to database. The server returns an object with updated water data.",
+            "description": "Successfully Created. A portion of water has been added to database. The server returns an object with updated water data and statistic information about specific day.",
             "content": {
               "application/json": {
                 "schema": {
@@ -850,6 +827,14 @@
                     "userId": {
                       "type": "string",
                       "example": "67a210a28f7f42ba355eb221"
+                    },
+                    "dailyNorm": {
+                      "type": "number",
+                      "example": 1500
+                    },
+                    "totalWater": {
+                      "type": "number",
+                      "example": 400
                     },
                     "entries": {
                       "type": "array",
@@ -893,7 +878,7 @@
                     },
                     "message": {
                       "type": "string",
-                      "example": "userId is required. Date is required. Date must be in format YYYY-MM-DD. Date and entries array are required. Each entry must have time and waterVolume. Time is required. Time must be in format YYYY-MM-DDTHH:mm. WaterVolume is required. WaterVolume must contain at least 1 ml. WaterVolume must contain no more than 5000 ml."
+                      "example": "Time and waterVolume are required. Time is required. Time must be in format YYYY-MM-DDTHH:mm. WaterVolume is required. WaterVolume must contain at least 1 ml. WaterVolume must contain no more than 5000 ml."
                     }
                   }
                 }
@@ -959,7 +944,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Request successful. The server returns the object with information about water.",
+            "description": "Request successful. The server returns the object with information about water by specific day.",
             "content": {
               "application/json": {
                 "schema": {
@@ -1034,28 +1019,7 @@
             "$ref": "#/components/responses/401"
           },
           "404": {
-            "description": "Not found error. Requested resource could not be found.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "required": [
-                    "status",
-                    "message"
-                  ],
-                  "properties": {
-                    "status": {
-                      "type": "integer",
-                      "example": 404
-                    },
-                    "message": {
-                      "type": "string",
-                      "example": "No water entries found for this date. Route not found."
-                    }
-                  }
-                }
-              }
-            }
+            "$ref": "#/components/responses/404"
           },
           "500": {
             "$ref": "#/components/responses/500"
@@ -1112,6 +1076,26 @@
                       "entryCount": {
                         "type": "number",
                         "example": 1
+                      },
+                      "entries": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "time": {
+                              "type": "string",
+                              "example": "2025-02-04T16:00"
+                            },
+                            "waterVolume": {
+                              "type": "number",
+                              "example": 750
+                            },
+                            "_id": {
+                              "type": "number",
+                              "example": "67a211b08f7f42ba355eb253"
+                            }
+                          }
+                        }
                       }
                     }
                   }
@@ -1246,6 +1230,14 @@
                       "type": "string",
                       "example": "67a210a28f7f42ba355eb221"
                     },
+                    "dailyNorm": {
+                      "type": "number",
+                      "example": 1500
+                    },
+                    "totalWater": {
+                      "type": "number",
+                      "example": 300
+                    },
                     "entries": {
                       "type": "array",
                       "items": {
@@ -1288,7 +1280,7 @@
                     },
                     "message": {
                       "type": "string",
-                      "example": "EntryId, newTime, and waterVolume are required. Time must be in format YYYY-MM-DDTHH:mm. WaterVolume must be at least 1 ml. WaterVolume cannot exceed 5000 ml."
+                      "example": "EntryId, newTime, and waterVolume are required. Entry ID is required. Time is required. Time must be in format YYYY-MM-DDTHH:mm. WaterVolume must be at least 1 ml. WaterVolume cannot exceed 5000 ml."
                     }
                   }
                 }
@@ -1376,6 +1368,14 @@
                         "userId": {
                           "type": "string",
                           "example": "67a210a28f7f42ba355eb221"
+                        },
+                        "dailyNorm": {
+                          "type": "number",
+                          "example": 1500
+                        },
+                        "totalWater": {
+                          "type": "number",
+                          "example": 300
                         },
                         "entries": {
                           "type": "array",
@@ -1515,6 +1515,11 @@
             "description": "User`s avatar",
             "type": "string",
             "example": "https://res.cloudinary.com/dhfwc4nmz/image/upload/v1738667492/ysf70wtw63hihtf14spo.avif"
+          },
+          "token": {
+            "description": "User`s access token",
+            "type": "string",
+            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiIxMjM0NTY3ODkwIiwidXNlcm5hbWUiOiJqb2huZG9lIiwiaWF0IjoxNjkyMjM4NDAwLCJleHAiOjE2OTIzMjQ4MDB9.f5e6b4b3d9e9a5b7c6d8e3b4f7c9a2d1e8f4g6h5i7j8k9l0m1n2o3p4q5r6s7t8"
           }
         }
       },
@@ -1523,6 +1528,8 @@
         "required": [
           "date",
           "userId",
+          "dailyNorm",
+          "totalWater",
           "entries"
         ],
         "properties": {
@@ -1535,6 +1542,16 @@
             "description": "The ID of the User who created the entry.",
             "type": "string",
             "example": "67a210a28f7f42ba355eb221"
+          },
+          "dailyNorm": {
+            "description": "User`s daily norm of water. Should be at most 15000 ml. Default value is 2000 ml.",
+            "type": "number",
+            "example": 2000
+          },
+          "totalWater": {
+            "description": "Total amount of water the user drank per day. Default value is 0 ml.",
+            "type": "number",
+            "example": 1500
           },
           "entries": {
             "description": "Array of records about water consumption, consists of time in format YYYY-MM-DDTHH:mm and waterVolume.",
@@ -1552,7 +1569,7 @@
                   "example": "2024-02-04T15:30"
                 },
                 "waterVolume": {
-                  "description": "Volume of water drunk in milliliters.",
+                  "description": "Volume of water drunk in milliliters. Should be at least 1 ml.",
                   "type": "number",
                   "example": 250
                 }
