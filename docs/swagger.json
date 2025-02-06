@@ -24,7 +24,7 @@
     },
     {
       "name": "User",
-      "description": "Operations with User data"
+      "description": "Operations with User`s data"
     },
     {
       "name": "Water",
@@ -68,7 +68,41 @@
         },
         "responses": {
           "201": {
-            "description": "Register as a new User. User`s data is written to the database with unique _id. The server returns nothing in response. A registered User needs to go through the login procedure in the app."
+            "description": "Register as a new User. User data is written to the database with unique _id. The server returns an object with info message and User`s email. A registered User needs to go through the login procedure in the app.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "status",
+                    "message",
+                    "data"
+                  ],
+                  "properties": {
+                    "status": {
+                      "type": "integer",
+                      "example": 201
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Successfully registrate new user"
+                    },
+                    "data": {
+                      "type": "object",
+                      "required": [
+                        "email"
+                      ],
+                      "properties": {
+                        "email": {
+                          "type": "string",
+                          "example": "ladygaga@gmail.com"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
           },
           "400": {
             "description": "Bad request. The server could not understand the request. Validation error.",
@@ -167,20 +201,31 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "object",
                   "required": [
+                    "status",
+                    "message",
                     "user",
                     "token"
                   ],
                   "properties": {
+                    "status": {
+                      "type": "integer",
+                      "example": 201
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Successfully logged in"
+                    },
                     "user": {
                       "type": "object",
                       "required": [
                         "_id",
                         "name",
                         "email",
-                        "avatar",
                         "gender",
-                        "dailyNorm"
+                        "dailyNorm",
+                        "avatar"
                       ],
                       "properties": {
                         "_id": {
@@ -195,10 +240,6 @@
                           "type": "string",
                           "example": "ladygaga@gmail.com"
                         },
-                        "avatar": {
-                          "type": "string",
-                          "example": "https://res.cloudinary.com/dhfwc4nmz/image/upload/v1738667492/ysf70wtw63hihtf14spo.avif"
-                        },
                         "gender": {
                           "type": "string",
                           "example": "female"
@@ -206,6 +247,10 @@
                         "dailyNorm": {
                           "type": "number",
                           "example": 1500
+                        },
+                        "avatar": {
+                          "type": "string",
+                          "example": "https://res.cloudinary.com/dhfwc4nmz/image/upload/v1738667492/ysf70wtw63hihtf14spo.avif"
                         }
                       }
                     },
@@ -401,7 +446,7 @@
         },
         "responses": {
           "200": {
-            "description": "Request successful. The server has responded as required. The server returns an object with updated User data.",
+            "description": "Request successful. The server has responded as required. The server returns an object with updated User`s data.",
             "content": {
               "application/json": {
                 "schema": {
@@ -677,7 +722,7 @@
         },
         "responses": {
           "200": {
-            "description": "Request successful. The server has responded as required. The server returns an object with updated user data.",
+            "description": "Request successful. The server has responded as required. The server returns an object with updated User`s data.",
             "content": {
               "application/json": {
                 "schema": {
@@ -858,7 +903,7 @@
                         "properties": {
                           "time": {
                             "type": "string",
-                            "example": "2024-02-04T15:00"
+                            "example": "2025-02-04T15:00"
                           },
                           "waterVolume": {
                             "type": "number",

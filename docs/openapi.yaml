@@ -10,7 +10,7 @@ tags:
   - name: Auth
     description: Auth operations
   - name: User
-    description: Operations with User data
+    description: Operations with User`s data
   - name: Water
     description: Water consumption tracking operations
 servers:
