@@ -16,14 +16,14 @@ const userRouter = Router();
 userRouter.get('/current', checkToken, ctrlWrapper(userController.refreshUser));
 
 userRouter.patch(
-  '/update',
+  '/',
   checkToken,
   validateBody(changeEmailAndPasswordUserSchema),
   ctrlWrapper(userController.patchUser),
 );
 
 userRouter.patch(
-  '/update-avatar',
+  '/avatar',
   upload.single('avatar'),
   checkToken,
   validateBody(changeAvatar),
@@ -31,7 +31,7 @@ userRouter.patch(
 );
 
 userRouter.patch(
-  '/update-water-rate',
+  '/water-rate',
   checkToken,
   validateBody(changeDailyNorm),
   ctrlWrapper(waterController.updateDailyNormController),
