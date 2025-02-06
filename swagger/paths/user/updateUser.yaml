@@ -1,8 +1,8 @@
 tags:
   - User
 summary: Update User's Data
-operationId: updateUSer
-description: 'Partially or fully update the User data. Requires authentication.'
+operationId: updateUser
+description: 'Partially or fully update the User data, except avatar. Avatars need to be added or updated in a separate route. Requires authentication.'
 security:
   - bearerAuth: []
 requestBody:
@@ -14,34 +14,31 @@ requestBody:
         properties:
           email:
             type: string
-            format: email
-            example: 'example@gmail.com'
+            example: 'ladygaga@gmail.com'
+            description: 'User`s email. Should be in format example@mail.com.'
           password:
             type: string
-            example: '123456asd'
-            description: 'Current password required for password change'
+            example: '1234567890'
+            description: 'Current password required for password change.'
           newPassword:
             type: string
-            minLength: 8
-            maxLength: 64
-            example: 'newSecureP@ss123'
-            description: 'New password to replace the old one'
+            example: '0987654321'
+            description: 'New password to replace the old one.'
           name:
             type: string
-            example: 'John Doe'
+            example: 'Lady Gaga'
+            description: 'User`s name. Should be at most 32 characters.'
           gender:
             type: string
-            example: 'male'
+            example: 'female'
+            description: 'User`s gender. Should be be one of the suggested values female or male. Default value is female.'
           dailyNorm:
             type: number
             example: 1500
-          avatar:
-            type: string
-            format: uri
-            example: 'https://res.cloudinary.com/dtfo6b7gi/image/upload/v1738226311/tzsd56ad…'
+            description: 'User`s daily norm of water. Should be at most 15000 ml. Default value is 2000 ml.'
 responses:
   '200':
-    description: 'Request successful. The server has responded as required. The server returns an object with updated user data.'
+    description: 'Request successful. The server has responded as required. The server returns an object with updated User`s data.'
     content:
       application/json:
         schema:
@@ -65,22 +62,22 @@ responses:
               properties:
                 _id:
                   type: string
-                  example: '679f770240e2b0ff4b442974'
+                  example: '67a210a28f7f42ba355eb221'
                 name:
                   type: string
-                  example: 'John Doe'
+                  example: 'Lady Gaga'
                 email:
                   type: string
-                  example: 'example@mail.com'
+                  example: 'ladygaga@gmail.com'
                 gender:
                   type: string
-                  example: 'male'
+                  example: 'female'
                 dailyNorm:
                   type: number
                   example: 1500
                 avatar:
                   type: string
-                  example: 'https://res.cloudinary.com/dtfo6b7gi/image/upload/v1738226311/tzsd56ad…'
+                  example: 'https://res.cloudinary.com/dhfwc4nmz/image/upload/v1738667492/ysf70wtw63hihtf14spo.avif'
   '400':
     description: 'Bad request. The server could not understand the request. Validation error.'
     content:

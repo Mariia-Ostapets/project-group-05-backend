@@ -1,13 +1,13 @@
 tags:
   - User
-summary: Get User data
+summary: Get User`s data
 operationId: Current
-description: 'Get all User data. Requires authentication.'
+description: 'Get all User`s data. Requires authentication.'
 security:
   - bearerAuth: []
 responses:
   '200':
-    description: 'Get all User data'
+    description: 'Get all User`s data'
     content:
       application/json:
         schema:
@@ -20,19 +20,19 @@ responses:
           properties:
             name:
               type: string
-              example: 'John Doe'
+              example: 'Lady Gaga'
             email:
               type: string
-              example: 'example@mail.com'
+              example: 'ladygaga@mail.com'
             gender:
               type: string
               example: 'female'
             dailyNorm:
               type: number
-              example: '1500'
+              example: '2000'
             avatar:
               type: string
-              example: 'https://res.cloudinary.com/dtfo6b7gi/image/upload/v1738226311/tzsd56ad…'
+              example: 'https://res.cloudinary.com/dhfwc4nmz/image/upload/v1738667492/ysf70wtw63hihtf14spo.avif'
 
   '401':
     $ref: '../../components/responses/401.yaml'

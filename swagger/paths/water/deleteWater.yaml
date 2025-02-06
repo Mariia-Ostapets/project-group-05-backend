@@ -1,0 +1,87 @@
+tags:
+  - Water
+summary: Delete water
+operationId: deleteWater
+description: 'Delete portion of water by entryId of specific portion of water. Requires authentication.'
+security:
+  - bearerAuth: []
+parameters:
+  - in: path
+    name: entryId
+    required: true
+    schema:
+      type: string
+      example: '67a211b08f7f42ba355eb253'
+responses:
+  '200':
+    description: 'Request successful. A portion of water has been deleted. The server returns an object with updated water data.'
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            message:
+              type: string
+              example: Water entry deleted successfully!
+            updatedWaterRecord:
+              type: object
+              properties:
+                _id:
+                  type: string
+                  example: '67a202229c65c88f8e73f8cf'
+                date:
+                  type: string
+                  example: '2025-02-04'
+                userId:
+                  type: string
+                  example: '67a210a28f7f42ba355eb221'
+                entries:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      time:
+                        type: string
+                        example: '2025-02-04T14:00'
+                      waterVolume:
+                        type: number
+                        example: 250
+                      _id:
+                        type: number
+                        example: '67a202229c65c88f8e73f8d0'
+  '400':
+    description: 'Bad request. The server could not understand the request. Validation error.'
+    content:
+      application\json:
+        schema:
+          type: object
+          required:
+            - status
+            - message
+          properties:
+            status:
+              type: integer
+              example: 400
+            message:
+              type: string
+              example: Entry ID is required.
+  '401':
+    $ref: '../../components/responses/401.yaml'
+  '404':
+    description: Not found error. Requested resource could not be found.
+    content:
+      application/json:
+        schema:
+          type: object
+          required:
+            - status
+            - message
+          properties:
+            status:
+              type: integer
+              example: 404
+            message:
+              type: string
+              example: Water entry not found. Route not found.
+  '500':
+    $ref: '../../components/responses/500.yaml'

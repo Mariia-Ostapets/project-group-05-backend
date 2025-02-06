@@ -1,0 +1,84 @@
+tags:
+  - User
+summary: Update User`s Water Rate
+operationId: updateUserWaterRate
+description: 'Update only User`s daily norm of water. Requires authentication.'
+security:
+  - bearerAuth: []
+requestBody:
+  required: true
+  content:
+    application/json:
+      schema:
+        type: object
+        properties:
+          date:
+            type: string
+            example: '2025-02-04'
+          dailyNorm:
+            type: number
+            example: 2000
+responses:
+  '200':
+    description: 'Request successful. The server has responded as required. The server returns an object with updated User`s data.'
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            status:
+              type: integer
+              example: 200
+            message:
+              type: string
+              example: 'Successfully update info!'
+            data:
+              type: object
+              required:
+                - _id
+                - name
+                - email
+                - gender
+                - dailyNorm
+                - avatar
+              properties:
+                _id:
+                  type: string
+                  example: '67a210a28f7f42ba355eb221'
+                name:
+                  type: string
+                  example: 'Lady Gaga'
+                email:
+                  type: string
+                  example: 'ladygaga@gmail.com'
+                gender:
+                  type: string
+                  example: 'female'
+                dailyNorm:
+                  type: number
+                  example: 2000
+                avatar:
+                  type: string
+                  example: 'https://res.cloudinary.com/dhfwc4nmz/image/upload/v1738667492/ysf70wtw63hihtf14spo.avif'
+  '400':
+    description: 'Bad request. The server could not understand the request. Validation error.'
+    content:
+      application\json:
+        schema:
+          type: object
+          required:
+            - status
+            - message
+          properties:
+            status:
+              type: integer
+              example: 400
+            message:
+              type: string
+              example: Daily norma is required. Daily norma should be at least 1. Daily norma should be at most 15000. Date is required. Date must be in format YYYY-MM-DD.
+  '401':
+    $ref: '../../components/responses/401.yaml'
+  '404':
+    $ref: '../../components/responses/404.yaml'
+  '500':
+    $ref: '../../components/responses/500.yaml'

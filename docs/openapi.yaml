@@ -28,16 +28,30 @@ paths:
       $ref: ../swagger/paths/auth/logout.yaml
   /user/current:
     get:
-      $ref: ../swagger/paths/user/current.yaml
+      $ref: ../swagger/paths/user/currentUser.yaml
   /user/update:
     patch:
-      $ref: ../swagger/paths/user/update.yaml
+      $ref: ../swagger/paths/user/updateUser.yaml
+  /user/update-avatar:
+    patch:
+      $ref: ../swagger/paths/user/updateAvatar.yaml
+  /user/update-water-rate:
+    patch:
+      $ref: ../swagger/paths/user/updateWaterRate.yaml
   /water:
     post:
       $ref: ../swagger/paths/water/addWater.yaml
-  /water/today/:date:
+  /water/day/{date}:
     get:
       $ref: ../swagger/paths/water/getWaterByDay.yaml
+  /water/month/{yearMonth}:
+    get:
+      $ref: ../swagger/paths/water/getWaterByMonth.yaml
+  /water/{entryId}:
+    patch:
+      $ref: ../swagger/paths/water/updateWater.yaml
+    delete:
+      $ref: ../swagger/paths/water/deleteWater.yaml
 components:
   securitySchemes:
     bearerAuth:
@@ -53,32 +67,32 @@ components:
         _id:
           description: 'Backend-generated unique identifier.'
           type: string
-          example: '679e59ee76bc89b649731a32'
+          example: '67a210a28f7f42ba355eb221'
         name:
           description: 'User`s name. Should be at most 32 characters'
           type: string
-          example: 'John Doe'
+          example: 'Lady Gaga'
         email:
-          description: 'User`s email. Is required. Should be in format example@mail.com'
+          description: 'User`s email. Is required. Should be in format example@mail.com.'
           type: string
-          example: 'example@mail.com'
+          example: 'ladygaga@mail.com'
         password:
-          description: 'User`s password. Is required. Should be at least 8 and at most 64 characters'
+          description: 'User`s password. Is required. Should be at least 8 and at most 64 characters.'
           type: string
-          example: '123456asd'
+          example: '1234567890'
         gender:
-          description: 'User`s gender. Should be one of the suggested values'
+          description: 'User`s gender. Should be one of the suggested values.'
           type: string
           enum: ['female', 'male']
           example: 'female'
         dailyNorm:
-          description: 'User`s daily norm of water. Should be at most 15000 ml. Default value is 1500 ml'
+          description: 'User`s daily norm of water. Should be at most 15000 ml. Default value is 2000 ml.'
           type: number
-          example: 1500
+          example: 2000
         avatar:
           description: 'User`s avatar'
           type: string
-          example: 'https://res.cloudinary.com/dtfo6b7gi/image/upload/v1738226311/tzsd56ad…'
+          example: 'https://res.cloudinary.com/dhfwc4nmz/image/upload/v1738667492/ysf70wtw63hihtf14spo.avif'
     Water:
       type: object
       required:
@@ -87,15 +101,15 @@ components:
         - entries
       properties:
         date:
-          description: 'Recording date in format YYYY-MM-DD'
+          description: 'Recording date in format YYYY-MM-DD.'
           type: string
-          example: '2024-02-01'
+          example: '2024-02-04'
         userId:
-          description: 'The ID of the User who created the entry'
+          description: 'The ID of the User who created the entry.'
           type: string
-          example: '65af5c7e8d3f3b1f2e3a7c9a'
+          example: '67a210a28f7f42ba355eb221'
         entries:
-          description: 'Array of records about water consumption'
+          description: 'Array of records about water consumption, consists of time in format YYYY-MM-DDTHH:mm and waterVolume.'
           type: array
           items:
             type: object
@@ -104,10 +118,10 @@ components:
               - waterVolume
             properties:
               time:
-                description: 'Water consumption time in format YYYY-MM-DDTHH:MM'
+                description: 'Water consumption time in format YYYY-MM-DDTHH:mm.'
                 type: string
-                example: '2024-02-01T08:30'
+                example: '2024-02-04T15:30'
               waterVolume:
-                description: 'Volume of water drunk in milliliters'
+                description: 'Volume of water drunk in milliliters.'
                 type: number
                 example: 250

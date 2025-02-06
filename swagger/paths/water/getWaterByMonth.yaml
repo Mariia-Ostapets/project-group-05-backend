@@ -1,0 +1,72 @@
+tags:
+  - Water
+summary: Get water by month and year
+operationId: getWaterByMonth
+description: 'Get all portions of water by specific month and year. Requires authentication.'
+security:
+  - bearerAuth: []
+parameters:
+  - in: path
+    name: yearMonth
+    required: true
+    schema:
+      type: string
+      example: '2025-02'
+responses:
+  '200':
+    description: 'Request successful. The server returns the array of the objects with statistic informaion about specific month in year. Every day of month is single object.'
+    content:
+      application/json:
+        schema:
+          type: array
+          items:
+            type: object
+            properties:
+              date:
+                type: string
+                example: '4, February'
+              dailyNorma:
+                type: string
+                example: '1.5 L'
+              percentage:
+                type: string
+                example: '20%'
+              entryCount:
+                type: number
+                example: 1
+  '400':
+    description: 'Bad request. The server could not understand the request. Validation error.'
+    content:
+      application\json:
+        schema:
+          type: object
+          required:
+            - status
+            - message
+          properties:
+            status:
+              type: integer
+              example: 400
+            message:
+              type: string
+              example: Missing yearMonth parameter. Invalid date format. Expected YYYY-MM.
+  '401':
+    $ref: '../../components/responses/401.yaml'
+  '404':
+    description: Not found error. Requested resource could not be found.
+    content:
+      application/json:
+        schema:
+          type: object
+          required:
+            - status
+            - message
+          properties:
+            status:
+              type: integer
+              example: 404
+            message:
+              type: string
+              example: No water entries found for this month. Route not found.
+  '500':
+    $ref: '../../components/responses/500.yaml'

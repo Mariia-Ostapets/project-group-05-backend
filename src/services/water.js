@@ -2,14 +2,6 @@ import createHttpError from 'http-errors';
 import { UsersCollection } from '../db/models/user.js';
 import { WaterCollection } from '../db/models/water.js';
 
-// export const getWater = async ({ page = 1, perPage = 1 }) => {
-//   const limit = perPage;
-//   const skip = (page - 1) * limit;
-//   return WaterCollection.find().skip(skip).limit(limit);
-// };
-
-// export const getWaterById = (id) => WaterCollection.findById(id);
-
 export const updateDailyNorm = async ({ userId, date, dailyNorm }) => {
   const user = await UsersCollection.findById(userId);
   if (!user) {
@@ -57,6 +49,10 @@ export const getWaterByDay = async (userId, date) => {
 };
 
 export const getWaterByMonth = async ({ userId, year, month }) => {
+  if (!userId || !year || !month) {
+    throw createHttpError('Missing required parameters');
+  }
+
   const startDate = `${year}-${month}-01`;
   const endDate = `${year}-${month}-31`;
 
@@ -65,17 +61,18 @@ export const getWaterByMonth = async ({ userId, year, month }) => {
     date: { $gte: startDate, $lte: endDate },
   });
 
-  return waterRecords;
+  return waterRecords.length ? waterRecords : null;
 };
 
-export const addWater = async ({ userId, date, entries }) => {
+export const addWater = async ({ userId, time, waterVolume }) => {
+  const date = time.split('T')[0];
   const user = await UsersCollection.findById(userId);
+
   if (!user) {
     throw createHttpError(404, 'User not found');
   }
 
-  const dailyNorm = user.dailyNorm || 1500;
-
+  const dailyNorm = user.dailyNorm || 2000;
   let waterRecord = await WaterCollection.findOne({ userId, date });
 
   if (!waterRecord) {
@@ -83,15 +80,12 @@ export const addWater = async ({ userId, date, entries }) => {
       userId,
       date,
       dailyNorm,
-      entries,
-      totalWater: entries.reduce((sum, entry) => sum + entry.waterVolume, 0),
+      totalWater: waterVolume,
+      entries: [{ time, waterVolume }],
     });
   } else {
-    waterRecord.entries.push(...entries);
-    waterRecord.totalWater += entries.reduce(
-      (sum, entry) => sum + entry.waterVolume,
-      0,
-    );
+    waterRecord.entries.push({ time, waterVolume });
+    waterRecord.totalWater += waterVolume;
   }
 
   await waterRecord.save();

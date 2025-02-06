@@ -1,29 +1,5 @@
-import createError from 'http-errors';
 import * as waterServices from '../services/water.js';
-// import { parsePaginationParams } from '../utils/parsePaginationParams.js';
-// import { parseFilterParams } from '../utils/parseFilterParams.js';
 import moment from 'moment';
-
-// export const getWaterController = async (req, res) => {
-//   const { page, perPage } = parsePaginationParams(req.query);
-//   const filter = parseFilterParams(req.query);
-
-//   filter.userId = req.user._id;
-
-//   const data = await waterServices.getWater({ page, perPage });
-//   res.json({ data });
-// };
-
-// export const getWaterByIdController = async (req, res) => {
-//   const { _id: userId } = req.user;
-//   const { id: _id } = req.params;
-//   const data = await waterServices.getWaterById(_id, userId);
-
-//   if (!data) {
-//     throw createError(404, 'Not found');
-//   }
-//   res.json(data);
-// };
 
 export const updateDailyNormController = async (req, res, next) => {
   try {
@@ -34,11 +10,15 @@ export const updateDailyNormController = async (req, res, next) => {
       return res.status(400).json({ error: 'Date and dailyNorm are required' });
     }
 
-    const updatedWaterRecord = await waterServices.updateDailyNorm({ userId, date, dailyNorm });
-    res.status(200).json(updatedWaterRecord);
+    await waterServices.updateDailyNorm({
+      userId,
+      date,
+      dailyNorm,
+    });
   } catch (error) {
     next(error);
   }
+  next();
 };
 
 export const getWaterByDayController = async (req, res, next) => {
@@ -50,10 +30,10 @@ export const getWaterByDayController = async (req, res, next) => {
       return res.status(400).json({ error: 'Date is required' });
     }
 
-    const { waterRecord, totalWater, dailyNorm } = await waterServices.getWaterByDay(userId, date);
+    const waterData = await waterServices.getWaterByDay(userId, date);
 
-    if (!waterRecord) {
-            return res.status(200).json({
+    if (!waterData) {
+      return res.status(200).json({
         date: moment(date, 'YYYY-MM-DD').format('YYYY-MM-DD'),
         dailyNorm: 'N/A',
         totalWater: 0,
@@ -61,6 +41,9 @@ export const getWaterByDayController = async (req, res, next) => {
         entries: [],
       });
     }
+
+    const { waterRecord, totalWater, dailyNorm } =
+      await waterServices.getWaterByDay(userId, date);
 
     const percentage = ((totalWater / dailyNorm) * 100).toFixed(0);
 
@@ -79,11 +62,19 @@ export const getWaterByDayController = async (req, res, next) => {
 export const getWaterByMonthController = async (req, res, next) => {
   try {
     const { _id: userId } = req.user;
-    const { year, month } = req.params;
+    const { yearMonth } = req.params;
 
-    if (!year || !month) {
-      return res.status(400).json({ error: 'Year and month are required' });
+    if (!yearMonth) {
+      return res.status(400).json({ error: 'Missing yearMonth parameter' });
     }
+
+    if (!/^\d{4}-\d{2}$/.test(yearMonth)) {
+      return res
+        .status(400)
+        .json({ error: 'Invalid date format. Expected YYYY-MM' });
+    }
+
+    const [year, month] = yearMonth.split('-');
 
     const waterRecords = await waterServices.getWaterByMonth({
       userId,
@@ -102,7 +93,7 @@ export const getWaterByMonthController = async (req, res, next) => {
       const dailyNorm = record.dailyNorm;
       const percentage = ((totalWater / dailyNorm) * 100).toFixed(0);
       const entryCount = record.entries.length;
-
+      const entries = record.entries;
       return {
         date: `${moment(record.date, 'YYYY-MM-DD').date()}, ${moment(
           record.date,
@@ -111,6 +102,7 @@ export const getWaterByMonthController = async (req, res, next) => {
         dailyNorma: `${(dailyNorm / 1000).toFixed(1)} L`,
         percentage: `${percentage}%`,
         entryCount,
+        entries,
       };
     });
 
@@ -123,24 +115,18 @@ export const getWaterByMonthController = async (req, res, next) => {
 export const addWaterController = async (req, res, next) => {
   try {
     const { _id: userId } = req.user;
-    const { date, entries } = req.body;
+    const { time, waterVolume } = req.body;
 
-    if (!date || !entries || !Array.isArray(entries) || entries.length === 0) {
+    if (!time || !waterVolume) {
       return res
         .status(400)
-        .json({ error: 'Date and entries array are required' });
+        .json({ error: 'Time and waterVolume are required' });
     }
-
-    entries.forEach((entry) => {
-      if (!entry.time || !entry.waterVolume) {
-        throw createError('Each entry must have time and waterVolume');
-      }
-    });
 
     const updatedWaterRecord = await waterServices.addWater({
       userId,
-      date,
-      entries,
+      time,
+      waterVolume,
     });
 
     res.status(201).json(updatedWaterRecord);
@@ -196,12 +182,10 @@ export const deleteWaterController = async (req, res, next) => {
       return res.status(404).json({ error: 'Water entry not found' });
     }
 
-    res
-      .status(200)
-      .json({
-        message: 'Water entry deleted successfully',
-        updatedWaterRecord,
-      });
+    res.status(200).json({
+      message: 'Water entry deleted successfully',
+      updatedWaterRecord,
+    });
   } catch (error) {
     next(error);
   }

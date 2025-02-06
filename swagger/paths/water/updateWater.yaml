@@ -1,37 +1,52 @@
 tags:
   - Water
-summary: Get water by day
-operationId: getWaterByDay
-description: 'Get all portions of water by specific day. Requires authentication.'
+summary: Update water
+operationId: updateWaterByDay
+description: 'Update portion of water by entryId of specific portion of water. Requires authentication.'
 security:
   - bearerAuth: []
 parameters:
   - in: path
-    name: date
+    name: entryId
     required: true
     schema:
       type: string
-      example: '2025-02-04'
+      example: '67a211b08f7f42ba355eb253'
+requestBody:
+  required: true
+  content:
+    application/json:
+      schema:
+        type: object
+        required:
+          - newTime
+          - waterVolume
+        properties:
+          newTime:
+            type: string
+            example: '2025-02-04T16:00'
+            description: 'Time in the format YYYY-MM-DDTHH:mm at which the User changes the waterVolume record.'
+          waterVolume:
+            type: number
+            example: 300
+            description: 'Volume of a portion of water in milliliters'
 responses:
   '200':
-    description: 'Request successful. The server returns the object with information about water.'
+    description: 'Request successful. A portion of water has been changed. The server returns an object with updated water data.'
     content:
       application/json:
         schema:
           type: object
           properties:
+            _id:
+              type: string
+              example: '67a211838f7f42ba355eb247'
             date:
               type: string
               example: '2025-02-04'
-            dailyNorm:
-              type: number
-              example: 1500
-            totalWater:
-              type: number
-              example: 750
-            percentage:
+            userId:
               type: string
-              example: '50%'
+              example: '67a210a28f7f42ba355eb221'
             entries:
               type: array
               items:
@@ -42,7 +57,7 @@ responses:
                     example: '2025-02-04T16:00'
                   waterVolume:
                     type: number
-                    example: 750
+                    example: 300
                   _id:
                     type: number
                     example: '67a211b08f7f42ba355eb253'
@@ -61,7 +76,7 @@ responses:
               example: 400
             message:
               type: string
-              example: Date is required.
+              example: EntryId, newTime, and waterVolume are required. Time must be in format YYYY-MM-DDTHH:mm. WaterVolume must be at least 1 ml. WaterVolume cannot exceed 5000 ml.
   '401':
     $ref: '../../components/responses/401.yaml'
   '404':
@@ -79,6 +94,6 @@ responses:
               example: 404
             message:
               type: string
-              example: No water entries found for this date. Route not found.
+              example: Water entry not found. Route not found.
   '500':
     $ref: '../../components/responses/500.yaml'

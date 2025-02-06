@@ -1,15 +1,15 @@
-const parseDate = (date) => {
-    if (typeof date !== 'string') return;
+// const parseDate = (date) => {
+//     if (typeof date !== 'string') return;
 
-    const parsedDate = new Date(date);
-    if (!isNaN(parsedDate.getTime())) return parsedDate;
-  };
+//     const parsedDate = new Date(date);
+//     if (!isNaN(parsedDate.getTime())) return parsedDate;
+//   };
 
-  export const parseFilterParams = (query) => {
-    const { date} = query;
-    const parsedDate = parseDate(date);
+//   export const parseFilterParams = (query) => {
+//     const { date} = query;
+//     const parsedDate = parseDate(date);
 
-    return {
-      date: parsedDate,
-    };
-  };
+//     return {
+//       date: parsedDate,
+//     };
+//   };
