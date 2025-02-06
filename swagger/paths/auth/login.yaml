@@ -27,6 +27,7 @@ responses:
     content:
       application/json:
         schema:
+          type: object
           required:
             - user
             - token
@@ -37,9 +38,9 @@ responses:
                 - _id
                 - name
                 - email
-                - avatar
                 - gender
                 - dailyNorm
+                - avatar
               properties:
                 _id:
                   type: string
@@ -50,15 +51,15 @@ responses:
                 email:
                   type: string
                   example: 'ladygaga@gmail.com'
-                avatar:
-                  type: string
-                  example: 'https://res.cloudinary.com/dhfwc4nmz/image/upload/v1738667492/ysf70wtw63hihtf14spo.avif'
                 gender:
                   type: string
                   example: 'female'
                 dailyNorm:
                   type: number
                   example: 1500
+                avatar:
+                  type: string
+                  example: 'https://res.cloudinary.com/dhfwc4nmz/image/upload/v1738667492/ysf70wtw63hihtf14spo.avif'
             token:
               type: string
               example: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3OWIzNTQwNDhlNTBkNzQwZWZhNzY4NCIsImlhdCI6MTczODQ5NjI2NX0.W5OVo5431woG8wIvNauHKa9Gn8kC1Q-0GByzG67x6hA'

@@ -10,7 +10,7 @@ tags:
   - name: Auth
     description: Auth operations
   - name: User
-    description: Operations with User data
+    description: Operations with User`s data
   - name: Water
     description: Water consumption tracking operations
 servers:
@@ -26,16 +26,16 @@ paths:
   /auth/logout:
     post:
       $ref: ../swagger/paths/auth/logout.yaml
+  /user:
+    patch:
+      $ref: ../swagger/paths/user/updateUser.yaml
   /user/current:
     get:
       $ref: ../swagger/paths/user/currentUser.yaml
-  /user/update:
-    patch:
-      $ref: ../swagger/paths/user/updateUser.yaml
-  /user/update-avatar:
+  /user/avatar:
     patch:
       $ref: ../swagger/paths/user/updateAvatar.yaml
-  /user/update-water-rate:
+  /user/water-rate:
     patch:
       $ref: ../swagger/paths/user/updateWaterRate.yaml
   /water:
