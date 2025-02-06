@@ -9,7 +9,7 @@ import { ctrlWrapper } from '../utils/ctrlWrapper.js';
 import { checkToken } from '../middlewares/checkToken.js';
 import * as userController from '../controllers/user.js';
 import { upload } from '../middlewares/multer.js';
-import { updateDailyNormController } from '../controllers/water.js';
+import * as waterController from '../controllers/water.js';
 
 const userRouter = Router();
 
@@ -34,8 +34,8 @@ userRouter.patch(
   '/update-water-rate',
   checkToken,
   validateBody(changeDailyNorm),
+  ctrlWrapper(waterController.updateDailyNormController),
   ctrlWrapper(userController.patchUser),
-  ctrlWrapper(updateDailyNormController),
 );
 
 export default userRouter;
