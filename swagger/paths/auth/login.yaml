@@ -29,17 +29,9 @@ responses:
         schema:
           type: object
           required:
-            - status
-            - message
             - user
             - token
           properties:
-            status:
-              type: integer
-              example: 201
-            message:
-              type: string
-              example: Successfully logged in
             user:
               type: object
               required:

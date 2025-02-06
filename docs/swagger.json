@@ -68,36 +68,18 @@
         },
         "responses": {
           "201": {
-            "description": "Register as a new User. User data is written to the database with unique _id. The server returns an object with info message and User`s email. A registered User needs to go through the login procedure in the app.",
+            "description": "Register as a new User. User data is written to the database with unique _id. The server returns an object with User`s email. A registered User needs to go through the login procedure in the app.",
             "content": {
               "application/json": {
                 "schema": {
                   "type": "object",
                   "required": [
-                    "status",
-                    "message",
-                    "data"
+                    "email"
                   ],
                   "properties": {
-                    "status": {
-                      "type": "integer",
-                      "example": 201
-                    },
-                    "message": {
+                    "email": {
                       "type": "string",
-                      "example": "Successfully registrate new user"
-                    },
-                    "data": {
-                      "type": "object",
-                      "required": [
-                        "email"
-                      ],
-                      "properties": {
-                        "email": {
-                          "type": "string",
-                          "example": "ladygaga@gmail.com"
-                        }
-                      }
+                      "example": "ladygaga@gmail.com"
                     }
                   }
                 }
@@ -203,20 +185,10 @@
                 "schema": {
                   "type": "object",
                   "required": [
-                    "status",
-                    "message",
                     "user",
                     "token"
                   ],
                   "properties": {
-                    "status": {
-                      "type": "integer",
-                      "example": 201
-                    },
-                    "message": {
-                      "type": "string",
-                      "example": "Successfully logged in"
-                    },
                     "user": {
                       "type": "object",
                       "required": [
@@ -325,71 +297,7 @@
         }
       }
     },
-    "/user/current": {
-      "get": {
-        "tags": [
-          "User"
-        ],
-        "summary": "Get User`s data",
-        "operationId": "Current",
-        "description": "Get all User`s data. Requires authentication.",
-        "security": [
-          {
-            "bearerAuth": []
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Get all User`s data",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "required": [
-                    "name",
-                    "email",
-                    "gender",
-                    "dailyNorm",
-                    "avatar"
-                  ],
-                  "properties": {
-                    "name": {
-                      "type": "string",
-                      "example": "Lady Gaga"
-                    },
-                    "email": {
-                      "type": "string",
-                      "example": "ladygaga@mail.com"
-                    },
-                    "gender": {
-                      "type": "string",
-                      "example": "female"
-                    },
-                    "dailyNorm": {
-                      "type": "number",
-                      "example": "2000"
-                    },
-                    "avatar": {
-                      "type": "string",
-                      "example": "https://res.cloudinary.com/dhfwc4nmz/image/upload/v1738667492/ysf70wtw63hihtf14spo.avif"
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "401": {
-            "$ref": "#/components/responses/401"
-          },
-          "404": {
-            "$ref": "#/components/responses/404"
-          },
-          "500": {
-            "$ref": "#/components/responses/500"
-          }
-        }
-      }
-    },
-    "/user/update": {
+    "/user": {
       "patch": {
         "tags": [
           "User"
@@ -451,51 +359,38 @@
               "application/json": {
                 "schema": {
                   "type": "object",
+                  "required": [
+                    "_id",
+                    "name",
+                    "email",
+                    "gender",
+                    "dailyNorm",
+                    "avatar"
+                  ],
                   "properties": {
-                    "status": {
-                      "type": "integer",
-                      "example": 200
-                    },
-                    "message": {
+                    "_id": {
                       "type": "string",
-                      "example": "Successfully update info!"
+                      "example": "67a210a28f7f42ba355eb221"
                     },
-                    "data": {
-                      "type": "object",
-                      "required": [
-                        "_id",
-                        "name",
-                        "email",
-                        "gender",
-                        "dailyNorm",
-                        "avatar"
-                      ],
-                      "properties": {
-                        "_id": {
-                          "type": "string",
-                          "example": "67a210a28f7f42ba355eb221"
-                        },
-                        "name": {
-                          "type": "string",
-                          "example": "Lady Gaga"
-                        },
-                        "email": {
-                          "type": "string",
-                          "example": "ladygaga@gmail.com"
-                        },
-                        "gender": {
-                          "type": "string",
-                          "example": "female"
-                        },
-                        "dailyNorm": {
-                          "type": "number",
-                          "example": 1500
-                        },
-                        "avatar": {
-                          "type": "string",
-                          "example": "https://res.cloudinary.com/dhfwc4nmz/image/upload/v1738667492/ysf70wtw63hihtf14spo.avif"
-                        }
-                      }
+                    "name": {
+                      "type": "string",
+                      "example": "Lady Gaga"
+                    },
+                    "email": {
+                      "type": "string",
+                      "example": "ladygaga@gmail.com"
+                    },
+                    "gender": {
+                      "type": "string",
+                      "example": "female"
+                    },
+                    "dailyNorm": {
+                      "type": "number",
+                      "example": 1500
+                    },
+                    "avatar": {
+                      "type": "string",
+                      "example": "https://res.cloudinary.com/dhfwc4nmz/image/upload/v1738667492/ysf70wtw63hihtf14spo.avif"
                     }
                   }
                 }
@@ -562,7 +457,71 @@
         }
       }
     },
-    "/user/update-avatar": {
+    "/user/current": {
+      "get": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Get User`s data",
+        "operationId": "Current",
+        "description": "Get all User`s data. Requires authentication.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Get all User`s data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "required": [
+                    "name",
+                    "email",
+                    "avatar",
+                    "gender",
+                    "dailyNorm"
+                  ],
+                  "properties": {
+                    "name": {
+                      "type": "string",
+                      "example": "Lady Gaga"
+                    },
+                    "email": {
+                      "type": "string",
+                      "example": "ladygaga@mail.com"
+                    },
+                    "avatar": {
+                      "type": "string",
+                      "example": "https://res.cloudinary.com/dhfwc4nmz/image/upload/v1738667492/ysf70wtw63hihtf14spo.avif"
+                    },
+                    "gender": {
+                      "type": "string",
+                      "example": "female"
+                    },
+                    "dailyNorm": {
+                      "type": "number",
+                      "example": "2000"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/401"
+          },
+          "404": {
+            "$ref": "#/components/responses/404"
+          },
+          "500": {
+            "$ref": "#/components/responses/500"
+          }
+        }
+      }
+    },
+    "/user/avatar": {
       "patch": {
         "tags": [
           "User"
@@ -600,51 +559,38 @@
               "application/json": {
                 "schema": {
                   "type": "object",
+                  "required": [
+                    "_id",
+                    "name",
+                    "email",
+                    "gender",
+                    "dailyNorm",
+                    "avatar"
+                  ],
                   "properties": {
-                    "status": {
-                      "type": "integer",
-                      "example": 200
-                    },
-                    "message": {
+                    "_id": {
                       "type": "string",
-                      "example": "Successfully update info!"
+                      "example": "67a210a28f7f42ba355eb221"
                     },
-                    "data": {
-                      "type": "object",
-                      "required": [
-                        "_id",
-                        "name",
-                        "email",
-                        "gender",
-                        "dailyNorm",
-                        "avatar"
-                      ],
-                      "properties": {
-                        "_id": {
-                          "type": "string",
-                          "example": "67a210a28f7f42ba355eb221"
-                        },
-                        "name": {
-                          "type": "string",
-                          "example": "Lady Gaga"
-                        },
-                        "email": {
-                          "type": "string",
-                          "example": "ladygaga@gmail.com"
-                        },
-                        "gender": {
-                          "type": "string",
-                          "example": "female"
-                        },
-                        "dailyNorm": {
-                          "type": "number",
-                          "example": 2000
-                        },
-                        "avatar": {
-                          "type": "string",
-                          "example": "https://res.cloudinary.com/dhfwc4nmz/image/upload/v1738667492/ysf70wtw63hihtf14spo.avif"
-                        }
-                      }
+                    "name": {
+                      "type": "string",
+                      "example": "Lady Gaga"
+                    },
+                    "email": {
+                      "type": "string",
+                      "example": "ladygaga@gmail.com"
+                    },
+                    "gender": {
+                      "type": "string",
+                      "example": "female"
+                    },
+                    "dailyNorm": {
+                      "type": "number",
+                      "example": 2000
+                    },
+                    "avatar": {
+                      "type": "string",
+                      "example": "https://res.cloudinary.com/dhfwc4nmz/image/upload/v1738667492/ysf70wtw63hihtf14spo.avif"
                     }
                   }
                 }
@@ -687,7 +633,7 @@
         }
       }
     },
-    "/user/update-water-rate": {
+    "/user/water-rate": {
       "patch": {
         "tags": [
           "User"
@@ -727,51 +673,38 @@
               "application/json": {
                 "schema": {
                   "type": "object",
+                  "required": [
+                    "_id",
+                    "name",
+                    "email",
+                    "gender",
+                    "dailyNorm",
+                    "avatar"
+                  ],
                   "properties": {
-                    "status": {
-                      "type": "integer",
-                      "example": 200
-                    },
-                    "message": {
+                    "_id": {
                       "type": "string",
-                      "example": "Successfully update info!"
+                      "example": "67a210a28f7f42ba355eb221"
                     },
-                    "data": {
-                      "type": "object",
-                      "required": [
-                        "_id",
-                        "name",
-                        "email",
-                        "gender",
-                        "dailyNorm",
-                        "avatar"
-                      ],
-                      "properties": {
-                        "_id": {
-                          "type": "string",
-                          "example": "67a210a28f7f42ba355eb221"
-                        },
-                        "name": {
-                          "type": "string",
-                          "example": "Lady Gaga"
-                        },
-                        "email": {
-                          "type": "string",
-                          "example": "ladygaga@gmail.com"
-                        },
-                        "gender": {
-                          "type": "string",
-                          "example": "female"
-                        },
-                        "dailyNorm": {
-                          "type": "number",
-                          "example": 2000
-                        },
-                        "avatar": {
-                          "type": "string",
-                          "example": "https://res.cloudinary.com/dhfwc4nmz/image/upload/v1738667492/ysf70wtw63hihtf14spo.avif"
-                        }
-                      }
+                    "name": {
+                      "type": "string",
+                      "example": "Lady Gaga"
+                    },
+                    "email": {
+                      "type": "string",
+                      "example": "ladygaga@gmail.com"
+                    },
+                    "gender": {
+                      "type": "string",
+                      "example": "female"
+                    },
+                    "dailyNorm": {
+                      "type": "number",
+                      "example": 2000
+                    },
+                    "avatar": {
+                      "type": "string",
+                      "example": "https://res.cloudinary.com/dhfwc4nmz/image/upload/v1738667492/ysf70wtw63hihtf14spo.avif"
                     }
                   }
                 }
@@ -795,7 +728,7 @@
                     },
                     "message": {
                       "type": "string",
-                      "example": "Daily norma is required. Daily norma should be at least 1. Daily norma should be at most 15000. Date is required. Date must be in format YYYY-MM-DD."
+                      "example": "Date and dailyNorm are required. Daily norma is required. Daily norma should be at least 1. Daily norma should be at most 15000. Date is required. Date must be in format YYYY-MM-DD."
                     }
                   }
                 }

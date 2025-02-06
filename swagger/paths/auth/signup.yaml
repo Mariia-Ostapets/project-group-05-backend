@@ -23,30 +23,17 @@ requestBody:
             example: '1234567890'
 responses:
   '201':
-    description: 'Register as a new User. User data is written to the database with unique _id. The server returns an object with info message and User`s email. A registered User needs to go through the login procedure in the app.'
+    description: 'Register as a new User. User data is written to the database with unique _id. The server returns an object with User`s email. A registered User needs to go through the login procedure in the app.'
     content:
       application/json:
         schema:
           type: object
           required:
-            - status
-            - message
-            - data
+            - email
           properties:
-            status:
-              type: integer
-              example: 201
-            message:
+            email:
               type: string
-              example: Successfully registrate new user
-            data:
-              type: object
-              required:
-                - email
-              properties:
-                email:
-                  type: string
-                  example: 'ladygaga@gmail.com'
+              example: 'ladygaga@gmail.com'
   '400':
     description: 'Bad request. The server could not understand the request. Validation error.'
     content:
