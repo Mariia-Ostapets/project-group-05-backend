@@ -7,15 +7,11 @@ import { saveFileToCloudinary } from '../utils/saveFileToCloudinary.js';
 export const refreshUser = (req, res) => {
   const user = req.user;
   res.json({
-    status: 200,
-    message: 'Successfully refreshed info!',
-    data: {
-      name: user.name,
-      email: user.email,
-      avatar: user.avatar,
-      gender: user.gender,
-      dailyNorm: user.dailyNorm,
-    },
+    name: user.name,
+    email: user.email,
+    avatar: user.avatar,
+    gender: user.gender,
+    dailyNorm: user.dailyNorm,
   });
 };
 
@@ -45,10 +41,5 @@ export const patchUser = async (req, res) => {
   newData.password = newPassword;
   newData.avatar = photo;
   const newUser = await updateUser({ _id }, newData);
-
-  res.json({
-    status: 200,
-    message: 'Successfully update info!',
-    data: newUser.data,
-  });
+  res.json(newUser.data);
 };
