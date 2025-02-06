@@ -35,6 +35,12 @@ responses:
                 userId:
                   type: string
                   example: '67a210a28f7f42ba355eb221'
+                dailyNorm:
+                  type: number
+                  example: 1500
+                totalWater:
+                  type: number
+                  example: 300
                 entries:
                   type: array
                   items:

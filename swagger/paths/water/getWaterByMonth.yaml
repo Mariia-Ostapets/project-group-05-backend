@@ -34,6 +34,20 @@ responses:
               entryCount:
                 type: number
                 example: 1
+              entries:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    time:
+                      type: string
+                      example: '2025-02-04T16:00'
+                    waterVolume:
+                      type: number
+                      example: 750
+                    _id:
+                      type: number
+                      example: '67a211b08f7f42ba355eb253'
   '400':
     description: 'Bad request. The server could not understand the request. Validation error.'
     content:
