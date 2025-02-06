@@ -5,11 +5,7 @@ import bcrypt from 'bcrypt';
 export const registerController = async (req, res) => {
   const user = await authServices.register(req.body);
   res.status(201).json({
-    status: 201,
-    message: 'Successfully registrate new user',
-    data: {
-      email: user.email,
-    },
+    email: user.email,
   });
 };
 
@@ -29,8 +25,6 @@ export const loginUserController = async (req, res) => {
   const updatedUser = await authServices.updateUserWithToken(user._id);
 
   res.json({
-    status: 200,
-    message: 'Successfully logged in',
     user: {
       _id: updatedUser._id,
       name: updatedUser.name,
