@@ -7,11 +7,15 @@ import { saveFileToCloudinary } from '../utils/saveFileToCloudinary.js';
 export const refreshUser = (req, res) => {
   const user = req.user;
   res.json({
-    name: user.name,
-    email: user.email,
-    avatar: user.avatar,
-    gender: user.gender,
-    dailyNorm: user.dailyNorm,
+    status: 200,
+    message: 'Successfully refreshed info!',
+    data: {
+      name: user.name,
+      email: user.email,
+      avatar: user.avatar,
+      gender: user.gender,
+      dailyNorm: user.dailyNorm,
+    },
   });
 };
 
