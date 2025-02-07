@@ -24,7 +24,7 @@
     },
     {
       "name": "User",
-      "description": "Operations with User data"
+      "description": "Operations with User`s data"
     },
     {
       "name": "Water",
@@ -68,7 +68,23 @@
         },
         "responses": {
           "201": {
-            "description": "Register as a new User. User`s data is written to the database with unique _id. The server returns nothing in response. A registered User needs to go through the login procedure in the app."
+            "description": "Register as a new User. User data is written to the database with unique _id. The server returns an object with User`s email. A registered User needs to go through the login procedure in the app.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "email"
+                  ],
+                  "properties": {
+                    "email": {
+                      "type": "string",
+                      "example": "ladygaga@gmail.com"
+                    }
+                  }
+                }
+              }
+            }
           },
           "400": {
             "description": "Bad request. The server could not understand the request. Validation error.",
@@ -167,6 +183,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "object",
                   "required": [
                     "user",
                     "token"
@@ -178,9 +195,9 @@
                         "_id",
                         "name",
                         "email",
-                        "avatar",
                         "gender",
-                        "dailyNorm"
+                        "dailyNorm",
+                        "avatar"
                       ],
                       "properties": {
                         "_id": {
@@ -195,10 +212,6 @@
                           "type": "string",
                           "example": "ladygaga@gmail.com"
                         },
-                        "avatar": {
-                          "type": "string",
-                          "example": "https://res.cloudinary.com/dhfwc4nmz/image/upload/v1738667492/ysf70wtw63hihtf14spo.avif"
-                        },
                         "gender": {
                           "type": "string",
                           "example": "female"
@@ -206,6 +219,10 @@
                         "dailyNorm": {
                           "type": "number",
                           "example": 1500
+                        },
+                        "avatar": {
+                          "type": "string",
+                          "example": "https://res.cloudinary.com/dhfwc4nmz/image/upload/v1738667492/ysf70wtw63hihtf14spo.avif"
                         }
                       }
                     },
@@ -280,71 +297,7 @@
         }
       }
     },
-    "/user/current": {
-      "get": {
-        "tags": [
-          "User"
-        ],
-        "summary": "Get User`s data",
-        "operationId": "Current",
-        "description": "Get all User`s data. Requires authentication.",
-        "security": [
-          {
-            "bearerAuth": []
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Get all User`s data",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "required": [
-                    "name",
-                    "email",
-                    "gender",
-                    "dailyNorm",
-                    "avatar"
-                  ],
-                  "properties": {
-                    "name": {
-                      "type": "string",
-                      "example": "Lady Gaga"
-                    },
-                    "email": {
-                      "type": "string",
-                      "example": "ladygaga@mail.com"
-                    },
-                    "gender": {
-                      "type": "string",
-                      "example": "female"
-                    },
-                    "dailyNorm": {
-                      "type": "number",
-                      "example": "2000"
-                    },
-                    "avatar": {
-                      "type": "string",
-                      "example": "https://res.cloudinary.com/dhfwc4nmz/image/upload/v1738667492/ysf70wtw63hihtf14spo.avif"
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "401": {
-            "$ref": "#/components/responses/401"
-          },
-          "404": {
-            "$ref": "#/components/responses/404"
-          },
-          "500": {
-            "$ref": "#/components/responses/500"
-          }
-        }
-      }
-    },
-    "/user/update": {
+    "/user": {
       "patch": {
         "tags": [
           "User"
@@ -401,56 +354,43 @@
         },
         "responses": {
           "200": {
-            "description": "Request successful. The server has responded as required. The server returns an object with updated User data.",
+            "description": "Request successful. The server has responded as required. The server returns an object with updated User`s data.",
             "content": {
               "application/json": {
                 "schema": {
                   "type": "object",
+                  "required": [
+                    "_id",
+                    "name",
+                    "email",
+                    "gender",
+                    "dailyNorm",
+                    "avatar"
+                  ],
                   "properties": {
-                    "status": {
-                      "type": "integer",
-                      "example": 200
-                    },
-                    "message": {
+                    "_id": {
                       "type": "string",
-                      "example": "Successfully update info!"
+                      "example": "67a210a28f7f42ba355eb221"
                     },
-                    "data": {
-                      "type": "object",
-                      "required": [
-                        "_id",
-                        "name",
-                        "email",
-                        "gender",
-                        "dailyNorm",
-                        "avatar"
-                      ],
-                      "properties": {
-                        "_id": {
-                          "type": "string",
-                          "example": "67a210a28f7f42ba355eb221"
-                        },
-                        "name": {
-                          "type": "string",
-                          "example": "Lady Gaga"
-                        },
-                        "email": {
-                          "type": "string",
-                          "example": "ladygaga@gmail.com"
-                        },
-                        "gender": {
-                          "type": "string",
-                          "example": "female"
-                        },
-                        "dailyNorm": {
-                          "type": "number",
-                          "example": 1500
-                        },
-                        "avatar": {
-                          "type": "string",
-                          "example": "https://res.cloudinary.com/dhfwc4nmz/image/upload/v1738667492/ysf70wtw63hihtf14spo.avif"
-                        }
-                      }
+                    "name": {
+                      "type": "string",
+                      "example": "Lady Gaga"
+                    },
+                    "email": {
+                      "type": "string",
+                      "example": "ladygaga@gmail.com"
+                    },
+                    "gender": {
+                      "type": "string",
+                      "example": "female"
+                    },
+                    "dailyNorm": {
+                      "type": "number",
+                      "example": 1500
+                    },
+                    "avatar": {
+                      "type": "string",
+                      "example": "https://res.cloudinary.com/dhfwc4nmz/image/upload/v1738667492/ysf70wtw63hihtf14spo.avif"
                     }
                   }
                 }
@@ -517,7 +457,71 @@
         }
       }
     },
-    "/user/update-avatar": {
+    "/user/current": {
+      "get": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Get User`s data",
+        "operationId": "Current",
+        "description": "Get all User`s data. Requires authentication.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Get all User`s data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "required": [
+                    "name",
+                    "email",
+                    "avatar",
+                    "gender",
+                    "dailyNorm"
+                  ],
+                  "properties": {
+                    "name": {
+                      "type": "string",
+                      "example": "Lady Gaga"
+                    },
+                    "email": {
+                      "type": "string",
+                      "example": "ladygaga@mail.com"
+                    },
+                    "avatar": {
+                      "type": "string",
+                      "example": "https://res.cloudinary.com/dhfwc4nmz/image/upload/v1738667492/ysf70wtw63hihtf14spo.avif"
+                    },
+                    "gender": {
+                      "type": "string",
+                      "example": "female"
+                    },
+                    "dailyNorm": {
+                      "type": "number",
+                      "example": "2000"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/401"
+          },
+          "404": {
+            "$ref": "#/components/responses/404"
+          },
+          "500": {
+            "$ref": "#/components/responses/500"
+          }
+        }
+      }
+    },
+    "/user/avatar": {
       "patch": {
         "tags": [
           "User"
@@ -555,51 +559,38 @@
               "application/json": {
                 "schema": {
                   "type": "object",
+                  "required": [
+                    "_id",
+                    "name",
+                    "email",
+                    "gender",
+                    "dailyNorm",
+                    "avatar"
+                  ],
                   "properties": {
-                    "status": {
-                      "type": "integer",
-                      "example": 200
-                    },
-                    "message": {
+                    "_id": {
                       "type": "string",
-                      "example": "Successfully update info!"
+                      "example": "67a210a28f7f42ba355eb221"
                     },
-                    "data": {
-                      "type": "object",
-                      "required": [
-                        "_id",
-                        "name",
-                        "email",
-                        "gender",
-                        "dailyNorm",
-                        "avatar"
-                      ],
-                      "properties": {
-                        "_id": {
-                          "type": "string",
-                          "example": "67a210a28f7f42ba355eb221"
-                        },
-                        "name": {
-                          "type": "string",
-                          "example": "Lady Gaga"
-                        },
-                        "email": {
-                          "type": "string",
-                          "example": "ladygaga@gmail.com"
-                        },
-                        "gender": {
-                          "type": "string",
-                          "example": "female"
-                        },
-                        "dailyNorm": {
-                          "type": "number",
-                          "example": 2000
-                        },
-                        "avatar": {
-                          "type": "string",
-                          "example": "https://res.cloudinary.com/dhfwc4nmz/image/upload/v1738667492/ysf70wtw63hihtf14spo.avif"
-                        }
-                      }
+                    "name": {
+                      "type": "string",
+                      "example": "Lady Gaga"
+                    },
+                    "email": {
+                      "type": "string",
+                      "example": "ladygaga@gmail.com"
+                    },
+                    "gender": {
+                      "type": "string",
+                      "example": "female"
+                    },
+                    "dailyNorm": {
+                      "type": "number",
+                      "example": 2000
+                    },
+                    "avatar": {
+                      "type": "string",
+                      "example": "https://res.cloudinary.com/dhfwc4nmz/image/upload/v1738667492/ysf70wtw63hihtf14spo.avif"
                     }
                   }
                 }
@@ -642,7 +633,7 @@
         }
       }
     },
-    "/user/update-water-rate": {
+    "/user/water-rate": {
       "patch": {
         "tags": [
           "User"
@@ -677,56 +668,43 @@
         },
         "responses": {
           "200": {
-            "description": "Request successful. The server has responded as required. The server returns an object with updated user data.",
+            "description": "Request successful. The server has responded as required. The server returns an object with updated User`s data.",
             "content": {
               "application/json": {
                 "schema": {
                   "type": "object",
+                  "required": [
+                    "_id",
+                    "name",
+                    "email",
+                    "gender",
+                    "dailyNorm",
+                    "avatar"
+                  ],
                   "properties": {
-                    "status": {
-                      "type": "integer",
-                      "example": 200
-                    },
-                    "message": {
+                    "_id": {
                       "type": "string",
-                      "example": "Successfully update info!"
+                      "example": "67a210a28f7f42ba355eb221"
                     },
-                    "data": {
-                      "type": "object",
-                      "required": [
-                        "_id",
-                        "name",
-                        "email",
-                        "gender",
-                        "dailyNorm",
-                        "avatar"
-                      ],
-                      "properties": {
-                        "_id": {
-                          "type": "string",
-                          "example": "67a210a28f7f42ba355eb221"
-                        },
-                        "name": {
-                          "type": "string",
-                          "example": "Lady Gaga"
-                        },
-                        "email": {
-                          "type": "string",
-                          "example": "ladygaga@gmail.com"
-                        },
-                        "gender": {
-                          "type": "string",
-                          "example": "female"
-                        },
-                        "dailyNorm": {
-                          "type": "number",
-                          "example": 2000
-                        },
-                        "avatar": {
-                          "type": "string",
-                          "example": "https://res.cloudinary.com/dhfwc4nmz/image/upload/v1738667492/ysf70wtw63hihtf14spo.avif"
-                        }
-                      }
+                    "name": {
+                      "type": "string",
+                      "example": "Lady Gaga"
+                    },
+                    "email": {
+                      "type": "string",
+                      "example": "ladygaga@gmail.com"
+                    },
+                    "gender": {
+                      "type": "string",
+                      "example": "female"
+                    },
+                    "dailyNorm": {
+                      "type": "number",
+                      "example": 2000
+                    },
+                    "avatar": {
+                      "type": "string",
+                      "example": "https://res.cloudinary.com/dhfwc4nmz/image/upload/v1738667492/ysf70wtw63hihtf14spo.avif"
                     }
                   }
                 }
@@ -750,7 +728,7 @@
                     },
                     "message": {
                       "type": "string",
-                      "example": "Daily norma is required. Daily norma should be at least 1. Daily norma should be at most 15000. Date is required. Date must be in format YYYY-MM-DD."
+                      "example": "Date and dailyNorm are required. Daily norma is required. Daily norma should be at least 1. Daily norma should be at most 15000. Date is required. Date must be in format YYYY-MM-DD."
                     }
                   }
                 }
@@ -789,42 +767,19 @@
               "schema": {
                 "type": "object",
                 "required": [
-                  "userId",
-                  "date",
-                  "entries"
+                  "time",
+                  "waterVolume"
                 ],
                 "properties": {
-                  "userId": {
+                  "time": {
                     "type": "string",
-                    "example": "67a210a28f7f42ba355eb221",
-                    "description": "User`s Id"
+                    "example": "2024-02-04T15:00",
+                    "description": "Water consumption time in format YYYY-MM-DDTHH:mm"
                   },
-                  "date": {
-                    "type": "string",
-                    "example": "2025-02-04",
-                    "description": "Date of addition of water portion in format YYYY-MM-DD"
-                  },
-                  "entries": {
-                    "type": "array",
-                    "items": {
-                      "type": "object",
-                      "required": [
-                        "time",
-                        "waterVolume"
-                      ],
-                      "properties": {
-                        "time": {
-                          "type": "string",
-                          "example": "2024-02-04T15:00",
-                          "description": "Water consumption time in format YYYY-MM-DDTHH:mm"
-                        },
-                        "waterVolume": {
-                          "type": "number",
-                          "example": 400,
-                          "description": "Volume of water drunk in milliliters"
-                        }
-                      }
-                    }
+                  "waterVolume": {
+                    "type": "number",
+                    "example": 400,
+                    "description": "Volume of water drunk in milliliters"
                   }
                 }
               }
@@ -833,7 +788,7 @@
         },
         "responses": {
           "201": {
-            "description": "Successfully Created. A portion of water has been added to database. The server returns an object with updated water data.",
+            "description": "Successfully Created. A portion of water has been added to database. The server returns an object with updated water data and statistic information about specific day.",
             "content": {
               "application/json": {
                 "schema": {
@@ -851,6 +806,14 @@
                       "type": "string",
                       "example": "67a210a28f7f42ba355eb221"
                     },
+                    "dailyNorm": {
+                      "type": "number",
+                      "example": 1500
+                    },
+                    "totalWater": {
+                      "type": "number",
+                      "example": 400
+                    },
                     "entries": {
                       "type": "array",
                       "items": {
@@ -858,7 +821,7 @@
                         "properties": {
                           "time": {
                             "type": "string",
-                            "example": "2024-02-04T15:00"
+                            "example": "2025-02-04T15:00"
                           },
                           "waterVolume": {
                             "type": "number",
@@ -893,7 +856,7 @@
                     },
                     "message": {
                       "type": "string",
-                      "example": "userId is required. Date is required. Date must be in format YYYY-MM-DD. Date and entries array are required. Each entry must have time and waterVolume. Time is required. Time must be in format YYYY-MM-DDTHH:mm. WaterVolume is required. WaterVolume must contain at least 1 ml. WaterVolume must contain no more than 5000 ml."
+                      "example": "Time and waterVolume are required. Time is required. Time must be in format YYYY-MM-DDTHH:mm. WaterVolume is required. WaterVolume must contain at least 1 ml. WaterVolume must contain no more than 5000 ml."
                     }
                   }
                 }
@@ -959,7 +922,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Request successful. The server returns the object with information about water.",
+            "description": "Request successful. The server returns the object with information about water by specific day.",
             "content": {
               "application/json": {
                 "schema": {
@@ -1034,28 +997,7 @@
             "$ref": "#/components/responses/401"
           },
           "404": {
-            "description": "Not found error. Requested resource could not be found.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "required": [
-                    "status",
-                    "message"
-                  ],
-                  "properties": {
-                    "status": {
-                      "type": "integer",
-                      "example": 404
-                    },
-                    "message": {
-                      "type": "string",
-                      "example": "No water entries found for this date. Route not found."
-                    }
-                  }
-                }
-              }
-            }
+            "$ref": "#/components/responses/404"
           },
           "500": {
             "$ref": "#/components/responses/500"
@@ -1112,6 +1054,26 @@
                       "entryCount": {
                         "type": "number",
                         "example": 1
+                      },
+                      "entries": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "time": {
+                              "type": "string",
+                              "example": "2025-02-04T16:00"
+                            },
+                            "waterVolume": {
+                              "type": "number",
+                              "example": 750
+                            },
+                            "_id": {
+                              "type": "number",
+                              "example": "67a211b08f7f42ba355eb253"
+                            }
+                          }
+                        }
                       }
                     }
                   }
@@ -1246,6 +1208,14 @@
                       "type": "string",
                       "example": "67a210a28f7f42ba355eb221"
                     },
+                    "dailyNorm": {
+                      "type": "number",
+                      "example": 1500
+                    },
+                    "totalWater": {
+                      "type": "number",
+                      "example": 300
+                    },
                     "entries": {
                       "type": "array",
                       "items": {
@@ -1288,7 +1258,7 @@
                     },
                     "message": {
                       "type": "string",
-                      "example": "EntryId, newTime, and waterVolume are required. Time must be in format YYYY-MM-DDTHH:mm. WaterVolume must be at least 1 ml. WaterVolume cannot exceed 5000 ml."
+                      "example": "EntryId, newTime, and waterVolume are required. Entry ID is required. Time is required. Time must be in format YYYY-MM-DDTHH:mm. WaterVolume must be at least 1 ml. WaterVolume cannot exceed 5000 ml."
                     }
                   }
                 }
@@ -1376,6 +1346,14 @@
                         "userId": {
                           "type": "string",
                           "example": "67a210a28f7f42ba355eb221"
+                        },
+                        "dailyNorm": {
+                          "type": "number",
+                          "example": 1500
+                        },
+                        "totalWater": {
+                          "type": "number",
+                          "example": 300
                         },
                         "entries": {
                           "type": "array",
@@ -1515,6 +1493,11 @@
             "description": "User`s avatar",
             "type": "string",
             "example": "https://res.cloudinary.com/dhfwc4nmz/image/upload/v1738667492/ysf70wtw63hihtf14spo.avif"
+          },
+          "token": {
+            "description": "User`s access token",
+            "type": "string",
+            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiIxMjM0NTY3ODkwIiwidXNlcm5hbWUiOiJqb2huZG9lIiwiaWF0IjoxNjkyMjM4NDAwLCJleHAiOjE2OTIzMjQ4MDB9.f5e6b4b3d9e9a5b7c6d8e3b4f7c9a2d1e8f4g6h5i7j8k9l0m1n2o3p4q5r6s7t8"
           }
         }
       },
@@ -1523,6 +1506,8 @@
         "required": [
           "date",
           "userId",
+          "dailyNorm",
+          "totalWater",
           "entries"
         ],
         "properties": {
@@ -1535,6 +1520,16 @@
             "description": "The ID of the User who created the entry.",
             "type": "string",
             "example": "67a210a28f7f42ba355eb221"
+          },
+          "dailyNorm": {
+            "description": "User`s daily norm of water. Should be at most 15000 ml. Default value is 2000 ml.",
+            "type": "number",
+            "example": 2000
+          },
+          "totalWater": {
+            "description": "Total amount of water the user drank per day. Default value is 0 ml.",
+            "type": "number",
+            "example": 1500
           },
           "entries": {
             "description": "Array of records about water consumption, consists of time in format YYYY-MM-DDTHH:mm and waterVolume.",
@@ -1552,7 +1547,7 @@
                   "example": "2024-02-04T15:30"
                 },
                 "waterVolume": {
-                  "description": "Volume of water drunk in milliliters.",
+                  "description": "Volume of water drunk in milliliters. Should be at least 1 ml.",
                   "type": "number",
                   "example": 250
                 }

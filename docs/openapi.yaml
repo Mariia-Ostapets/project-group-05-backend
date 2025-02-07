@@ -10,7 +10,7 @@ tags:
   - name: Auth
     description: Auth operations
   - name: User
-    description: Operations with User data
+    description: Operations with User`s data
   - name: Water
     description: Water consumption tracking operations
 servers:
@@ -26,16 +26,16 @@ paths:
   /auth/logout:
     post:
       $ref: ../swagger/paths/auth/logout.yaml
+  /user:
+    patch:
+      $ref: ../swagger/paths/user/updateUser.yaml
   /user/current:
     get:
       $ref: ../swagger/paths/user/currentUser.yaml
-  /user/update:
-    patch:
-      $ref: ../swagger/paths/user/updateUser.yaml
-  /user/update-avatar:
+  /user/avatar:
     patch:
       $ref: ../swagger/paths/user/updateAvatar.yaml
-  /user/update-water-rate:
+  /user/water-rate:
     patch:
       $ref: ../swagger/paths/user/updateWaterRate.yaml
   /water:
@@ -93,11 +93,17 @@ components:
           description: 'User`s avatar'
           type: string
           example: 'https://res.cloudinary.com/dhfwc4nmz/image/upload/v1738667492/ysf70wtw63hihtf14spo.avif'
+        token:
+          description: 'User`s access token'
+          type: string
+          example: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiIxMjM0NTY3ODkwIiwidXNlcm5hbWUiOiJqb2huZG9lIiwiaWF0IjoxNjkyMjM4NDAwLCJleHAiOjE2OTIzMjQ4MDB9.f5e6b4b3d9e9a5b7c6d8e3b4f7c9a2d1e8f4g6h5i7j8k9l0m1n2o3p4q5r6s7t8'
     Water:
       type: object
       required:
         - date
         - userId
+        - dailyNorm
+        - totalWater
         - entries
       properties:
         date:
@@ -108,6 +114,14 @@ components:
           description: 'The ID of the User who created the entry.'
           type: string
           example: '67a210a28f7f42ba355eb221'
+        dailyNorm:
+          description: 'User`s daily norm of water. Should be at most 15000 ml. Default value is 2000 ml.'
+          type: number
+          example: 2000
+        totalWater:
+          description: 'Total amount of water the user drank per day. Default value is 0 ml.'
+          type: number
+          example: 1500
         entries:
           description: 'Array of records about water consumption, consists of time in format YYYY-MM-DDTHH:mm and waterVolume.'
           type: array
@@ -122,6 +136,6 @@ components:
                 type: string
                 example: '2024-02-04T15:30'
               waterVolume:
-                description: 'Volume of water drunk in milliliters.'
+                description: 'Volume of water drunk in milliliters. Should be at least 1 ml.'
                 type: number
                 example: 250

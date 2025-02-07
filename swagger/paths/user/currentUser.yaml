@@ -14,9 +14,9 @@ responses:
           required:
             - name
             - email
+            - avatar
             - gender
             - dailyNorm
-            - avatar
           properties:
             name:
               type: string
@@ -24,16 +24,15 @@ responses:
             email:
               type: string
               example: 'ladygaga@mail.com'
+            avatar:
+              type: string
+              example: 'https://res.cloudinary.com/dhfwc4nmz/image/upload/v1738667492/ysf70wtw63hihtf14spo.avif'
             gender:
               type: string
               example: 'female'
             dailyNorm:
               type: number
               example: '2000'
-            avatar:
-              type: string
-              example: 'https://res.cloudinary.com/dhfwc4nmz/image/upload/v1738667492/ysf70wtw63hihtf14spo.avif'
-
   '401':
     $ref: '../../components/responses/401.yaml'
   '404':

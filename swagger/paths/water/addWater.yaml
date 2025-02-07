@@ -12,37 +12,20 @@ requestBody:
       schema:
         type: object
         required:
-          - userId
-          - date
-          - entries
+          - time
+          - waterVolume
         properties:
-          userId:
+          time:
             type: string
-            example: '67a210a28f7f42ba355eb221'
-            description: 'User`s Id'
-          date:
-            type: string
-            example: '2025-02-04'
-            description: 'Date of addition of water portion in format YYYY-MM-DD'
-          entries:
-            type: array
-            items:
-              type: object
-              required:
-                - time
-                - waterVolume
-              properties:
-                time:
-                  type: string
-                  example: '2024-02-04T15:00'
-                  description: 'Water consumption time in format YYYY-MM-DDTHH:mm'
-                waterVolume:
-                  type: number
-                  example: 400
-                  description: 'Volume of water drunk in milliliters'
+            example: '2024-02-04T15:00'
+            description: 'Water consumption time in format YYYY-MM-DDTHH:mm'
+          waterVolume:
+            type: number
+            example: 400
+            description: 'Volume of water drunk in milliliters'
 responses:
   '201':
-    description: 'Successfully Created. A portion of water has been added to database. The server returns an object with updated water data.'
+    description: 'Successfully Created. A portion of water has been added to database. The server returns an object with updated water data and statistic information about specific day.'
     content:
       application/json:
         schema:
@@ -57,6 +40,12 @@ responses:
             userId:
               type: string
               example: '67a210a28f7f42ba355eb221'
+            dailyNorm:
+              type: number
+              example: 1500
+            totalWater:
+              type: number
+              example: 400
             entries:
               type: array
               items:
@@ -64,7 +53,7 @@ responses:
                 properties:
                   time:
                     type: string
-                    example: '2024-02-04T15:00'
+                    example: '2025-02-04T15:00'
                   waterVolume:
                     type: number
                     example: 400
@@ -86,7 +75,7 @@ responses:
               example: 400
             message:
               type: string
-              example: userId is required. Date is required. Date must be in format YYYY-MM-DD. Date and entries array are required. Each entry must have time and waterVolume. Time is required. Time must be in format YYYY-MM-DDTHH:mm. WaterVolume is required. WaterVolume must contain at least 1 ml. WaterVolume must contain no more than 5000 ml.
+              example: Time and waterVolume are required. Time is required. Time must be in format YYYY-MM-DDTHH:mm. WaterVolume is required. WaterVolume must contain at least 1 ml. WaterVolume must contain no more than 5000 ml.
   '401':
     $ref: '../../components/responses/401.yaml'
   '404':

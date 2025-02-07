@@ -41,10 +41,5 @@ export const patchUser = async (req, res) => {
   newData.password = newPassword;
   newData.avatar = photo;
   const newUser = await updateUser({ _id }, newData);
-
-  res.json({
-    status: 200,
-    message: 'Successfully update info!',
-    data: newUser.data,
-  });
+  res.json(newUser.data);
 };

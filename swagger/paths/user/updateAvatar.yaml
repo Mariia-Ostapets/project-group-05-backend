@@ -24,41 +24,32 @@ responses:
       application/json:
         schema:
           type: object
+          required:
+            - _id
+            - name
+            - email
+            - gender
+            - dailyNorm
+            - avatar
           properties:
-            status:
-              type: integer
-              example: 200
-            message:
+            _id:
               type: string
-              example: 'Successfully update info!'
-            data:
-              type: object
-              required:
-                - _id
-                - name
-                - email
-                - gender
-                - dailyNorm
-                - avatar
-              properties:
-                _id:
-                  type: string
-                  example: '67a210a28f7f42ba355eb221'
-                name:
-                  type: string
-                  example: 'Lady Gaga'
-                email:
-                  type: string
-                  example: 'ladygaga@gmail.com'
-                gender:
-                  type: string
-                  example: 'female'
-                dailyNorm:
-                  type: number
-                  example: 2000
-                avatar:
-                  type: string
-                  example: 'https://res.cloudinary.com/dhfwc4nmz/image/upload/v1738667492/ysf70wtw63hihtf14spo.avif'
+              example: '67a210a28f7f42ba355eb221'
+            name:
+              type: string
+              example: 'Lady Gaga'
+            email:
+              type: string
+              example: 'ladygaga@gmail.com'
+            gender:
+              type: string
+              example: 'female'
+            dailyNorm:
+              type: number
+              example: 2000
+            avatar:
+              type: string
+              example: 'https://res.cloudinary.com/dhfwc4nmz/image/upload/v1738667492/ysf70wtw63hihtf14spo.avif'
   '400':
     description: 'Bad request. The server could not understand the request. Validation error.'
     content:

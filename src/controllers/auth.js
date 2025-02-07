@@ -3,8 +3,10 @@ import * as authServices from '../services/auth.js';
 import bcrypt from 'bcrypt';
 
 export const registerController = async (req, res) => {
-  await authServices.register(req.body);
-  res.status(201).send();
+  const user = await authServices.register(req.body);
+  res.status(201).json({
+    email: user.email,
+  });
 };
 
 export const loginUserController = async (req, res) => {
