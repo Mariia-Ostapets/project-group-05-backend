@@ -35,9 +35,9 @@ export const getWaterByDayController = async (req, res, next) => {
     if (!waterData) {
       return res.status(200).json({
         date: moment(date, 'YYYY-MM-DD').format('YYYY-MM-DD'),
-        dailyNorm: 'N/A',
-        totalWater: 0,
-        percentage: '0%',
+        dailyNorm: null,
+        totalWater: null,
+        percentage: null,
         entries: [],
       });
     }
@@ -83,9 +83,7 @@ export const getWaterByMonthController = async (req, res, next) => {
     });
 
     if (!waterRecords || waterRecords.length === 0) {
-      return res
-        .status(404)
-        .json({ error: 'No water entries found for this month' });
+      return res.status(200).json([]);
     }
 
     const formattedData = waterRecords.map((record) => {
