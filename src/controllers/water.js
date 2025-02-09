@@ -97,7 +97,7 @@ export const getWaterByMonthController = async (req, res, next) => {
           record.date,
           'YYYY-MM-DD',
         ).format('MMMM')}`,
-        dailyNorma: `${(dailyNorm / 1000).toFixed(1)} L`,
+        dailyNorma: `${(dailyNorm / 1000).toFixed(2)} L`,
         percentage: `${percentage}%`,
         entryCount,
         entries,
