@@ -97,7 +97,7 @@ export const getWaterByMonthController = async (req, res, next) => {
           record.date,
           'YYYY-MM-DD',
         ).format('MMMM')}`,
-        dailyNorma: `${(dailyNorm / 1000).toFixed(1)} L`,
+        dailyNorma: `${(dailyNorm / 1000).toFixed(2)} L`,
         percentage: `${percentage}%`,
         entryCount,
         entries,
@@ -116,9 +116,14 @@ export const addWaterController = async (req, res, next) => {
     const { time, waterVolume } = req.body;
 
     if (!time || !waterVolume) {
-      return res
-        .status(400)
-        .json({ error: 'Time and waterVolume are required' });
+      return res.status(400).json({ error: 'Time and waterVolume are required' });
+    }
+
+    const today = new Date().toISOString().split('T')[0];
+    const entryDate = time.split('T')[0];
+
+    if (entryDate > today) {
+      return res.status(400).json({ error: 'Cannot add water for future dates' });
     }
 
     const updatedWaterRecord = await waterServices.addWater({
