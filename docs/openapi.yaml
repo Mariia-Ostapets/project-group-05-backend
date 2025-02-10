@@ -15,7 +15,7 @@ tags:
     description: Water consumption tracking operations
 servers:
   - url: https://project-group-05-backend.onrender.com
-  - url: http://localhost:3000
+  # - url: http://localhost:3000
 paths:
   /auth/signup:
     post:
