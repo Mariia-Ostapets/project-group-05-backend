@@ -1342,7 +1342,7 @@
                               },
                               "waterVolume": {
                                 "type": "number",
-                                "example": 250
+                                "example": 300
                               },
                               "_id": {
                                 "type": "number",
