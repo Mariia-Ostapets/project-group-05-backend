@@ -17,7 +17,7 @@ requestBody:
         properties:
           time:
             type: string
-            example: '2024-02-04T15:00'
+            example: '2025-02-04T15:00'
             description: 'Water consumption time in format YYYY-MM-DDTHH:mm'
           waterVolume:
             type: number
