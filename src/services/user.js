@@ -2,7 +2,6 @@ import { UsersCollection } from '../db/models/user.js';
 import bcrypt from 'bcrypt';
 
 export const updateUser = async (_id, payload, options = {}) => {
-  console.log(_id);
   if (payload.password) {
     const hashPassword = await bcrypt.hash(payload.password, 10);
     const user = await UsersCollection.findOneAndUpdate(
