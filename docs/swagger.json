@@ -12,9 +12,6 @@
   "servers": [
     {
       "url": "https://project-group-05-backend.onrender.com"
-    },
-    {
-      "url": "http://localhost:3000"
     }
   ],
   "tags": [
@@ -773,7 +770,7 @@
                 "properties": {
                   "time": {
                     "type": "string",
-                    "example": "2024-02-04T15:00",
+                    "example": "2025-02-04T15:00",
                     "description": "Water consumption time in format YYYY-MM-DDTHH:mm"
                   },
                   "waterVolume": {
@@ -856,7 +853,7 @@
                     },
                     "message": {
                       "type": "string",
-                      "example": "Time and waterVolume are required. Time is required. Time must be in format YYYY-MM-DDTHH:mm. WaterVolume is required. WaterVolume must contain at least 1 ml. WaterVolume must contain no more than 5000 ml."
+                      "example": "Time and waterVolume are required. Cannot add water for future dates. Time is required. Time must be in format YYYY-MM-DDTHH:mm. WaterVolume is required. WaterVolume must contain at least 1 ml. WaterVolume must contain no more than 5000 ml."
                     }
                   }
                 }
@@ -1345,7 +1342,7 @@
                               },
                               "waterVolume": {
                                 "type": "number",
-                                "example": 250
+                                "example": 300
                               },
                               "_id": {
                                 "type": "number",
