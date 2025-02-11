@@ -2,7 +2,10 @@ import createHttpError from 'http-errors';
 import bcrypt from 'bcrypt';
 import { updateUser } from '../services/user.js';
 import * as authServices from '../services/auth.js';
-import { saveFileToCloudinary } from '../utils/saveFileToCloudinary.js';
+import {
+  saveFileToCloudinary,
+  deleteFileFromCloudinary,
+} from '../utils/saveFileToCloudinary.js';
 
 export const refreshUser = (req, res) => {
   const user = req.user;
@@ -18,8 +21,15 @@ export const refreshUser = (req, res) => {
 export const patchUser = async (req, res) => {
   const user = req.user;
   let photo;
-  console.log(req.file);
   if (req.file) {
+    if (user.avatar) {
+      const splittedUrl = user.avatar.split('/');
+      const photoPublicId = splittedUrl[splittedUrl.length - 1].replace(
+        '.jpg',
+        '',
+      );
+      await deleteFileFromCloudinary(photoPublicId);
+    }
     photo = await saveFileToCloudinary(req.file);
   }
 

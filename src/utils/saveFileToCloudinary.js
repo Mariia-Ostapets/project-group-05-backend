@@ -15,3 +15,8 @@ export const saveFileToCloudinary = async (file) => {
   await fs.unlink(file.path);
   return response.secure_url;
 };
+
+export const deleteFileFromCloudinary = async (publicId) => {
+  const response = await cloudinary.v2.uploader.destroy(publicId);
+  return response;
+};
