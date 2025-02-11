@@ -67,20 +67,6 @@ responses:
   '401':
     $ref: '../../components/responses/401.yaml'
   '404':
-    description: Not found error. Requested resource could not be found.
-    content:
-      application/json:
-        schema:
-          type: object
-          required:
-            - status
-            - message
-          properties:
-            status:
-              type: integer
-              example: 404
-            message:
-              type: string
-              example: No water entries found for this month. Route not found.
+    $ref: '../../components/responses/404.yaml'
   '500':
     $ref: '../../components/responses/500.yaml'

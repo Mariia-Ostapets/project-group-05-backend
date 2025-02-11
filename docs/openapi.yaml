@@ -15,7 +15,7 @@ tags:
     description: Water consumption tracking operations
 servers:
   - url: https://project-group-05-backend.onrender.com
-  - url: http://localhost:3000
+  # - url: http://localhost:3000
 paths:
   /auth/signup:
     post:
@@ -58,84 +58,7 @@ components:
       type: http
       scheme: bearer
   schemas:
-    User:
-      type: object
-      required:
-        - email
-        - password
-      properties:
-        _id:
-          description: 'Backend-generated unique identifier.'
-          type: string
-          example: '67a210a28f7f42ba355eb221'
-        name:
-          description: 'User`s name. Should be at most 32 characters'
-          type: string
-          example: 'Lady Gaga'
-        email:
-          description: 'User`s email. Is required. Should be in format example@mail.com.'
-          type: string
-          example: 'ladygaga@mail.com'
-        password:
-          description: 'User`s password. Is required. Should be at least 8 and at most 64 characters.'
-          type: string
-          example: '1234567890'
-        gender:
-          description: 'User`s gender. Should be one of the suggested values.'
-          type: string
-          enum: ['female', 'male']
-          example: 'female'
-        dailyNorm:
-          description: 'User`s daily norm of water. Should be at most 15000 ml. Default value is 2000 ml.'
-          type: number
-          example: 2000
-        avatar:
-          description: 'User`s avatar'
-          type: string
-          example: 'https://res.cloudinary.com/dhfwc4nmz/image/upload/v1738667492/ysf70wtw63hihtf14spo.avif'
-        token:
-          description: 'User`s access token'
-          type: string
-          example: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiIxMjM0NTY3ODkwIiwidXNlcm5hbWUiOiJqb2huZG9lIiwiaWF0IjoxNjkyMjM4NDAwLCJleHAiOjE2OTIzMjQ4MDB9.f5e6b4b3d9e9a5b7c6d8e3b4f7c9a2d1e8f4g6h5i7j8k9l0m1n2o3p4q5r6s7t8'
-    Water:
-      type: object
-      required:
-        - date
-        - userId
-        - dailyNorm
-        - totalWater
-        - entries
-      properties:
-        date:
-          description: 'Recording date in format YYYY-MM-DD.'
-          type: string
-          example: '2024-02-04'
-        userId:
-          description: 'The ID of the User who created the entry.'
-          type: string
-          example: '67a210a28f7f42ba355eb221'
-        dailyNorm:
-          description: 'User`s daily norm of water. Should be at most 15000 ml. Default value is 2000 ml.'
-          type: number
-          example: 2000
-        totalWater:
-          description: 'Total amount of water the user drank per day. Default value is 0 ml.'
-          type: number
-          example: 1500
-        entries:
-          description: 'Array of records about water consumption, consists of time in format YYYY-MM-DDTHH:mm and waterVolume.'
-          type: array
-          items:
-            type: object
-            required:
-              - time
-              - waterVolume
-            properties:
-              time:
-                description: 'Water consumption time in format YYYY-MM-DDTHH:mm.'
-                type: string
-                example: '2024-02-04T15:30'
-              waterVolume:
-                description: 'Volume of water drunk in milliliters. Should be at least 1 ml.'
-                type: number
-                example: 250
+    user:
+      $ref: ../swagger/components/schemas/user.yaml
+    water:
+      $ref: ../swagger/components/schemas/water.yaml

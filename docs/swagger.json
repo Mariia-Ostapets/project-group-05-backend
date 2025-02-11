@@ -12,9 +12,6 @@
   "servers": [
     {
       "url": "https://project-group-05-backend.onrender.com"
-    },
-    {
-      "url": "http://localhost:3000"
     }
   ],
   "tags": [
@@ -773,7 +770,7 @@
                 "properties": {
                   "time": {
                     "type": "string",
-                    "example": "2024-02-04T15:00",
+                    "example": "2025-02-04T15:00",
                     "description": "Water consumption time in format YYYY-MM-DDTHH:mm"
                   },
                   "waterVolume": {
@@ -856,7 +853,7 @@
                     },
                     "message": {
                       "type": "string",
-                      "example": "Time and waterVolume are required. Time is required. Time must be in format YYYY-MM-DDTHH:mm. WaterVolume is required. WaterVolume must contain at least 1 ml. WaterVolume must contain no more than 5000 ml."
+                      "example": "Time and waterVolume are required. Cannot add water for future dates. Time is required. Time must be in format YYYY-MM-DDTHH:mm. WaterVolume is required. WaterVolume must contain at least 1 ml. WaterVolume must contain no more than 5000 ml."
                     }
                   }
                 }
@@ -1109,28 +1106,7 @@
             "$ref": "#/components/responses/401"
           },
           "404": {
-            "description": "Not found error. Requested resource could not be found.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "required": [
-                    "status",
-                    "message"
-                  ],
-                  "properties": {
-                    "status": {
-                      "type": "integer",
-                      "example": 404
-                    },
-                    "message": {
-                      "type": "string",
-                      "example": "No water entries found for this month. Route not found."
-                    }
-                  }
-                }
-              }
-            }
+            "$ref": "#/components/responses/404"
           },
           "500": {
             "$ref": "#/components/responses/500"
@@ -1366,7 +1342,7 @@
                               },
                               "waterVolume": {
                                 "type": "number",
-                                "example": 250
+                                "example": 300
                               },
                               "_id": {
                                 "type": "number",
@@ -1448,7 +1424,7 @@
       }
     },
     "schemas": {
-      "User": {
+      "user": {
         "type": "object",
         "required": [
           "email",
@@ -1461,14 +1437,14 @@
             "example": "67a210a28f7f42ba355eb221"
           },
           "name": {
-            "description": "User`s name. Should be at most 32 characters",
+            "description": "User`s name. Should be at most 32 characters.",
             "type": "string",
             "example": "Lady Gaga"
           },
           "email": {
             "description": "User`s email. Is required. Should be in format example@mail.com.",
             "type": "string",
-            "example": "ladygaga@mail.com"
+            "example": "ladygaga@gmail.com"
           },
           "password": {
             "description": "User`s password. Is required. Should be at least 8 and at most 64 characters.",
@@ -1476,7 +1452,7 @@
             "example": "1234567890"
           },
           "gender": {
-            "description": "User`s gender. Should be one of the suggested values.",
+            "description": "User`s gender. Should be be one of the suggested values. Default value is female.",
             "type": "string",
             "enum": [
               "female",
@@ -1501,7 +1477,7 @@
           }
         }
       },
-      "Water": {
+      "water": {
         "type": "object",
         "required": [
           "date",

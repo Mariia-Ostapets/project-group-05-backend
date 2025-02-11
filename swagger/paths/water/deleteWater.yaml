@@ -51,7 +51,7 @@ responses:
                         example: '2025-02-04T14:00'
                       waterVolume:
                         type: number
-                        example: 250
+                        example: 300
                       _id:
                         type: number
                         example: '67a202229c65c88f8e73f8d0'
