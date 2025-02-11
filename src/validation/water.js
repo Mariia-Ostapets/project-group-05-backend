@@ -6,7 +6,7 @@ export const addWaterSchema = Joi.object({
     'string.pattern.base': 'Time must be in format YYYY-MM-DDTHH:mm',
     'any.required': 'Time is required',
   }),
-  waterVolume: Joi.number().min(1).max(5000).required().messages({
+  waterVolume: Joi.number().min(1).max(5000).required().strict().messages({
     'number.min': 'WaterVolume must contain at least 1 ml',
     'number.max': 'WaterVolume must contain no more than 5000 ml',
     'any.required': 'WaterVolume is required',

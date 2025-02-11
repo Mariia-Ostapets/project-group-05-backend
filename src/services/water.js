@@ -74,7 +74,7 @@ export const addWater = async ({ userId, time, waterVolume }) => {
 
   const dailyNorm = user.dailyNorm || 2000;
   let waterRecord = await WaterCollection.findOne({ userId, date });
-
+  
   if (!waterRecord) {
     waterRecord = new WaterCollection({
       userId,
